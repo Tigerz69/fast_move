@@ -10,7 +10,7 @@ import Recover from './pages/Recover'
 import Register from './pages/Registration'
 import Account from './pages/Account'
 import Edit from './pages/Edit'
-import SelectLocation from './pages/SelectLocation'
+import LocationView from './src/LocationView'
 import Home from './pages/Home'
 
 
@@ -45,8 +45,8 @@ const HomeScreen=({navigation})=>(
   <Home navigation={navigation}/>
 )
 
-const SelectLocationScreen=({navigation})=>(
-  <SelectLocation navigation={navigation}/>
+const LocationViewScreen=({navigation})=>(
+  <LocationView navigation={navigation}/>
 )
 
 
@@ -88,7 +88,7 @@ const MyStack = ()=>(
       options={{ headerStyle: {backgroundColor: '#6b4683'},headerTintColor: 'white'}}/>
     <Stack.Screen name='DrawerTab' component={MyDrawer} options={{headerShown:false}}/>
     <Stack.Screen name='Login' component={LoginScreen} options={{headerShown:false}}/>
-    <Stack.Screen name='SelectLocation' component={SelectLocationScreen} options={{headerShown:false}}/>
+    <Stack.Screen name='LocationView' component={LocationViewScreen} options={{headerShown:false}}/>
   </Stack.Navigator>
 )
 

@@ -15,7 +15,7 @@ import * as React from 'react';
 import {AntDesign} from "@expo/vector-icons";
 import { MaterialIcons } from '@expo/vector-icons';
 
-
+import { connect } from 'react-redux';
 
 
 class Home extends Component {
@@ -57,7 +57,7 @@ class Home extends Component {
   }  
     
     goToPickLocationPage=()=>{
-        this.props.navigation.navigate('SelectLocation')
+        this.props.navigation.navigate('LocationView')
     }
 
     removeInput =()=>{
@@ -132,6 +132,8 @@ const styles = StyleSheet.create({
         backgroundColor:'white',
     },
 });
+
+
 
 
 export default Home;

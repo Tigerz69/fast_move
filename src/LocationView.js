@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, Animated, Platform, UIManager, 
   TouchableOpacity, Text, ViewPropTypes } from 'react-native';
@@ -29,7 +29,7 @@ const timeout=15000;
 
 const maximumAge= 'Infinity';
 const enableHighAccuracy= true;
-class LocationView extends React.Component {
+class LocationView extends Component {
 
   constructor(props) {
     super(props);
@@ -62,7 +62,8 @@ class LocationView extends React.Component {
   };
   
   onLocationSelect=()=>{
-
+    this.props.addRegion(this.state.region)
+    this.props.navigation.navigate('DrawerTab')
   }
 
   _animateInput = () => {
@@ -163,7 +164,7 @@ class LocationView extends React.Component {
         <TouchableOpacity
           style={[styles.actionButton]}
           onPress={() =>{ this.onLocationSelect({...this.state.region, address: this._input.getAddress(), placeDetails: this.state.placeDetails})
-          this.props.addRegion(this.state.region)}}
+          }}
           
         >
           <View>
@@ -225,6 +226,6 @@ const mapDispatchToProps = (dispatch)=>(
   {addRegion:(item)=>dispatch(addRegion(item))}
 )
 
+const mapStateToProps = state => ({});
 
-
-export default  connect (mapDispatchToProps)  (LocationView)
+export default  connect (mapStateToProps,mapDispatchToProps)  (LocationView)
