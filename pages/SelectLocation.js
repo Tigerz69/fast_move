@@ -31,8 +31,6 @@ class SelectLocation extends Component {
   }
 }
 
-const mapStateToProps = (store) => (
-  {pointList:store.locationReducer.pointList}
-)
 
-export default connect(mapStateToProps)(SelectLocation)
+
+export default SelectLocation

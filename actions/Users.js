@@ -14,27 +14,3 @@ export const addUser=(item)=>(
   }
 )
 
-export const addOrder=()=>(
-  {
-    type:CREATE_ORDER,
-    
-  }
-)
-
-export const addPoint=(item)=>(
-  {
-    type:ADD_POINT,
-    //waypointnum:item.waypointnum,
-    region:item,
-    // secway:item.secway,
-    // thirdway:item.thirdway,
-    // fourway:item.fourway,
-    // fiveway:item.fiveway,
-    // sixway:item.sixway,
-    // sevenway:item.sevenway,
-    // eigthway:item.eigthway,
-    // nineway:item.nineway,
-    // tenway:item.tenway,
-    
-  }
-)

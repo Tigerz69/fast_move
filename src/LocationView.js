@@ -50,8 +50,7 @@ class LocationView extends React.Component {
     if (Platform.OS === 'android') {
       UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
     }
-    //const {dispatch} = props;
-    //this.dispatch = dispatch;
+    
   }
 
   componentDidMount() {
@@ -119,7 +118,7 @@ class LocationView extends React.Component {
   };
 
   _getCurrentLocation = () => {
-    // const { timeout, maximumAge, enableHighAccuracy } = this.props;
+    const { timeout, maximumAge, enableHighAccuracy } = this.props;
     let options = {
     timeout: 5000,
     enableHighAccuracy: false,maximumAge: 1000
@@ -232,7 +231,5 @@ const styles = StyleSheet.create({
 
 
 
-//const mapDispatchToProps = (dispatch)=>(
-//  {add:(item)=>dispatch(addPoint(item))}
-//)
+
 export default LocationView
