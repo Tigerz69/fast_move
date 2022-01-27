@@ -21,7 +21,7 @@ class SelectLocation extends Component {
           }}
           
           actionText ={
-            'Select'
+            'add'
           }
           
           

@@ -12,6 +12,7 @@ const intialState = {
 const locationReducer=(state = intialState,action)=>{
    switch(action.type){
      case ADD_REGION:
+         console.log('come')
       return{
         ...state,point:{
           id:Math.floor(Math.random() * 10),

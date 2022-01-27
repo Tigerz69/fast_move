@@ -14,42 +14,29 @@ import {addRegion} from '../actions/Users'
 
 const PLACE_DETAIL_URL = 'https://maps.googleapis.com/maps/api/place/details/json';
 const DEFAULT_DELTA = { latitudeDelta: 0.015, longitudeDelta: 0.0121 };
+const apiKey="AIzaSyCfjk1u2VcAvNfK31VMN581MMNePvR2J-k";
+const initialLocation={
+            latitude: 15.870032,
+            longitude: 100.992541,
+          };
+          
+const actionText 
+            ='add';
+const markerColor='red';
+const debounceDuration =300;
+const components=[];
+const timeout=15000;
 
+const maximumAge= 'Infinity';
+const enableHighAccuracy= true;
 class LocationView extends React.Component {
-  static propTypes = {
-    apiKey: PropTypes.string.isRequired,
-    initialLocation: PropTypes.shape({
-      latitude: PropTypes.number,
-      longitude: PropTypes.number,
-    }).isRequired,
-    markerColor: PropTypes.string,
-    actionButtonStyle: ViewPropTypes.style,
-    actionTextStyle: Text.propTypes.style,
-    actionText: PropTypes.string,
-    onLocationSelect: PropTypes.func,
-    debounceDuration: PropTypes.number,
-    components: PropTypes.arrayOf(PropTypes.string),
-    timeout: PropTypes.number,
-    maximumAge: PropTypes.number,
-    enableHighAccuracy: PropTypes.bool
-  };
-
-  static defaultProps = {
-    markerColor: 'red',
-    actionText: 'Done',
-    onLocationSelect: () => ({}),
-    debounceDuration: 300,
-    components: [],
-    timeout: 15000,
-    maximumAge: Infinity,
-    enableHighAccuracy: true
-  };
 
   constructor(props) {
     super(props);
     if (Platform.OS === 'android') {
       UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
     }
+    
     
   }
 
@@ -70,9 +57,13 @@ class LocationView extends React.Component {
     inFocus: false,
     region: {
       ...DEFAULT_DELTA,
-      ...this.props.initialLocation,
+      ...initialLocation,
     },
   };
+  
+  onLocationSelect=()=>{
+
+  }
 
   _animateInput = () => {
     Animated.timing(this.state.inputScale, {
@@ -105,12 +96,13 @@ class LocationView extends React.Component {
   _setRegion = (region, animate = true) => {
     this.state.region = { ...this.state.region, ...region };
     console.log(this.state.region)
+    
     if (animate) this._map.animateToRegion(this.state.region);
   };
 
   _onPlaceSelected = placeId => {
     this._input.blur();
-    axios.get(`${PLACE_DETAIL_URL}?key=${this.props.apiKey}&placeid=${placeId}`).then(({ data }) => {
+    axios.get(`${PLACE_DETAIL_URL}?key=${apiKey}&placeid=${placeId}`).then(({ data }) => {
       let region = (({ lat, lng }) => ({ latitude: lat, longitude: lng }))(data.result.geometry.location);
       this._setRegion(region);
       this.setState({placeDetails: data.result});
@@ -118,7 +110,7 @@ class LocationView extends React.Component {
   };
 
   _getCurrentLocation = () => {
-    const { timeout, maximumAge, enableHighAccuracy } = this.props;
+    //const { timeout, maximumAge, enableHighAccuracy } = this.props;
     let options = {
     timeout: 5000,
     enableHighAccuracy: false,maximumAge: 1000
@@ -150,32 +142,33 @@ class LocationView extends React.Component {
         <Entypo
           name={'location-pin'}
           size={30}
-          color={this.props.markerColor}
+          color={markerColor}
           style={{ backgroundColor: 'transparent' }}
         />
         <View style={styles.fullWidthContainer}>
           <AutoCompleteInput
             ref={input => (this._input = input)}
-            apiKey={this.props.apiKey}
+            apiKey={apiKey}
             style={[styles.input, { transform: [{ scale: inputScale }] }]}
-            debounceDuration={this.props.debounceDuration}
-            components={this.props.components}
+            debounceDuration={debounceDuration}
+            components={components}
           />
         </View>
         {/* <TouchableOpacity
-          style={[styles.currentLocBtn, { backgroundColor: this.props.markerColor }]}
+          style={[styles.currentLocBtn, { backgroundColor: markerColor }]}
           onPress={this._getCurrentLocation}
         >
           <MaterialIcons name={'my-location'} color={'white'} size={25} />
         </TouchableOpacity> */}
         <TouchableOpacity
-          style={[styles.actionButton, this.props.actionButtonStyle]}
-          onPress={() => this.props.onLocationSelect({...this.state.region, address: this._input.getAddress(), placeDetails: this.state.placeDetails}),this.props.add(this.state.region)}
+          style={[styles.actionButton]}
+          onPress={() =>{ this.onLocationSelect({...this.state.region, address: this._input.getAddress(), placeDetails: this.state.placeDetails})
+          this.props.addRegion(this.state.region)}}
           
         >
           <View>
             
-            <Text style={[styles.actionText, this.props.actionTextStyle]}>{this.props.actionText}</Text>
+            <Text style={[styles.actionText]}>{actionText}</Text>
           </View>
         </TouchableOpacity>
         {this.props.children}
@@ -229,7 +222,7 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = (dispatch)=>(
-  {add:(item)=>dispatch(addRegion(item))}
+  {addRegion:(item)=>dispatch(addRegion(item))}
 )
 
 
