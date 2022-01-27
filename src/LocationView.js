@@ -170,7 +170,7 @@ class LocationView extends React.Component {
         </TouchableOpacity> */}
         <TouchableOpacity
           style={[styles.actionButton, this.props.actionButtonStyle]}
-          onPress={() => this.props.onLocationSelect({...this.state.region, address: this._input.getAddress(), placeDetails: this.state.placeDetails}),this.props.add(this.state.region)}
+          onPress={() => this.props.onLocationSelect({...this.state.region, address: this._input.getAddress(), placeDetails: this.state.placeDetails})}
           
         >
           <View>
