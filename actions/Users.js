@@ -1,4 +1,4 @@
-import {ADD_USER,CREATE_ORDER,ADD_POINT} from './Types'
+import {ADD_USER,ADD_REGION} from './Types'
 
 
 export const addUser=(item)=>(
@@ -14,3 +14,9 @@ export const addUser=(item)=>(
   }
 )
 
+export const addRegion=(item)=>(
+  {
+    type:ADD_REGION,
+    region:item,
+  }
+)

@@ -10,7 +10,7 @@ import MapView from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 import AutoCompleteInput from './AutoCompleteInput';
 import { connect } from 'react-redux';
-import {addPoint} from '../actions/Users'
+import {addRegion} from '../actions/Users'
 
 const PLACE_DETAIL_URL = 'https://maps.googleapis.com/maps/api/place/details/json';
 const DEFAULT_DELTA = { latitudeDelta: 0.015, longitudeDelta: 0.0121 };
@@ -170,7 +170,7 @@ class LocationView extends React.Component {
         </TouchableOpacity> */}
         <TouchableOpacity
           style={[styles.actionButton, this.props.actionButtonStyle]}
-          onPress={() => this.props.onLocationSelect({...this.state.region, address: this._input.getAddress(), placeDetails: this.state.placeDetails})}
+          onPress={() => this.props.onLocationSelect({...this.state.region, address: this._input.getAddress(), placeDetails: this.state.placeDetails}),this.props.add(this.state.region)}
           
         >
           <View>
@@ -228,8 +228,10 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapDispatchToProps = (dispatch)=>(
+  {add:(item)=>dispatch(addRegion(item))}
+)
 
 
 
-
-export default LocationView
+export default  connect (mapDispatchToProps)  (LocationView)
