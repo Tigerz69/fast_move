@@ -1,4 +1,4 @@
-import {ADD_USER,ADD_REGION} from './Types'
+import {ADD_USER,ADD_REGION,EDIT_REGION} from './Types'
 
 
 export const addUser=(item)=>(
@@ -17,6 +17,17 @@ export const addUser=(item)=>(
 export const addRegion=(item)=>(
   {
     type:ADD_REGION,
-    region:item,
+    region:item.region,
+    address:item.address,
+    index:item.index
+  }
+)
+
+export const editRegion=(item)=>(
+  {
+    type:EDIT_REGION,
+    region:item.region,
+    address:item.address,
+    index:item.index
   }
 )

@@ -16,6 +16,7 @@ import {AntDesign} from "@expo/vector-icons";
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { connect } from 'react-redux';
+import { addRegion } from "../actions/Users";
 
 
 class Home extends Component {
@@ -28,7 +29,7 @@ class Home extends Component {
            lastname:null,
            id:null,
            waypointnum:0,
-           waypointlist:[],
+           waypointlist:['Select location'],
            oneway:[],
            secway:[],
            thirdway:[],
@@ -56,8 +57,9 @@ class Home extends Component {
       );  
   }  
     
-    goToPickLocationPage=()=>{
-        this.props.navigation.navigate('LocationView')
+    goToPickLocationPage=(i)=>{
+        this.props.navigation.navigate('LocationView',{index:i})
+        
     }
 
     removeInput =()=>{
@@ -67,7 +69,17 @@ class Home extends Component {
 
     addInput =()=>{
       console.log('in point',this.props.pointList)
-      if(this.state.waypointnum<3){
+      //this.setState({waypointlist:this.props.pointList.address})
+      this.setState({waypointlist : this.state.waypointlist.concat(["Select location"])});
+      let item ={
+        id:0,
+        region:{},
+        address:'',
+        index:''
+
+      }
+      this.props.addRegion(item)
+      if(this.state.waypointnum<10){
         this.setState({waypointnum:this.state.waypointnum+1})
       }else{
         this.showAlert()
@@ -81,16 +93,18 @@ class Home extends Component {
     
     render(props) {
         const { navigation } = this.props;
+        
         let arr=[]
         for (let i=0;i<this.state.waypointnum;i++){
         
             arr.push(
               <View key={i} style={{flexDirection:'row',alignItems:'center',padding:'2%'}}>
                 <Text> {i+1}.</Text>
-                <TextInput editable={false} selectTextOnFocus={false} style={{backgroundColor:'white',borderColor:'black',borderWidth:1}} placeholder="select location">
+                <TextInput editable={false} selectTextOnFocus={false} style={{backgroundColor:'white',borderColor:'black',borderWidth:1,width:'80%'}} placeholder='select location'
+                value={this.props.pointList[i] ? this.props.pointList[i].address : "Select waypoint"}>
                 
                 </TextInput>
-                <TouchableOpacity onPress={this.goToPickLocationPage}
+                <TouchableOpacity onPress={()=>this.goToPickLocationPage(i)}
                   styles={StyleSheet.buttonLogin}>
                   <MaterialIcons name="gps-fixed" size={24} color="black" />
                 </TouchableOpacity>
@@ -106,11 +120,12 @@ class Home extends Component {
       
               <ScrollView contentContainerStyle={styles.container}>
                 {arr}
-                    <TouchableOpacity onPress={this.addInput}
+                <TouchableOpacity onPress={this.addInput}
                       styles={StyleSheet.buttonLogin}
                     >
                       <Text style={{color:'black',fontWeight:'bold'}}>+ Add New Waypoint</Text>
                     </TouchableOpacity>
+                
               </ScrollView>
             
           );
@@ -138,6 +153,8 @@ const mapStateToProps = (state) => (
   {pointList:state.locationReducer.pointList}
 )
 
-const mapDispatchToProps = state => ({});
+const mapDispatchToProps = (dispatch)=>(
+  {addRegion:(item)=>dispatch(addRegion(item))}
+)
 
 export default connect(mapStateToProps,mapDispatchToProps) (Home)

@@ -10,7 +10,7 @@ import MapView from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 import AutoCompleteInput from './AutoCompleteInput';
 import { connect } from 'react-redux';
-import {addRegion} from '../actions/Users'
+import {editRegion} from '../actions/Users'
 
 const PLACE_DETAIL_URL = 'https://maps.googleapis.com/maps/api/place/details/json';
 const DEFAULT_DELTA = { latitudeDelta: 0.015, longitudeDelta: 0.0121 };
@@ -62,7 +62,17 @@ class LocationView extends Component {
   };
   
   onLocationSelect=()=>{
-    this.props.addRegion(this.state.region)
+    
+    
+    const {route} =this.props
+    //let i = route.getParent("index")
+    console.log("route",route.params.index)
+    
+    let item ={ region:this.state.region,
+                address:this._input.getAddress(),
+                index:route.params.index
+    } 
+    this.props.editRegion(item)
     this.props.navigation.navigate('DrawerTab')
   }
 
@@ -156,12 +166,14 @@ class LocationView extends Component {
             components={components}
           />
         </View>
+
         {/* <TouchableOpacity
           style={[styles.currentLocBtn, { backgroundColor: markerColor }]}
           onPress={this._getCurrentLocation}
         >
           <MaterialIcons name={'my-location'} color={'white'} size={25} />
         </TouchableOpacity> */}
+
         <TouchableOpacity
           style={[styles.actionButton]}
           onPress={() =>{ this.onLocationSelect({...this.state.region, address: this._input.getAddress(), placeDetails: this.state.placeDetails})
@@ -224,7 +236,7 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = (dispatch)=>(
-  {addRegion:(item)=>dispatch(addRegion(item))}
+  {editRegion:(item)=>dispatch(editRegion(item))}
 )
 
 const mapStateToProps = state => ({});

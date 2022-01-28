@@ -42,12 +42,7 @@ class Splash extends Component {
      let id = user.uid
      firestore.getUser(id,this.getUserSuccess,this.getUserUnsuccess)
     }else{
-      this.props.addRegion({
-        latitude: 15.870686825332383,
-        latitudeDelta: 0.019332658711174844,
-        longitude: 100.99160151556136,
-        longitudeDelta : 0.012099780142307281,
-      })
+      
       this.props.navigation.navigate('Login')
       
       this.props.navigation.reset({index:0,routes:[{name:'Login'}]});
