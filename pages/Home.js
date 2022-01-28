@@ -66,6 +66,7 @@ class Home extends Component {
     }
 
     addInput =()=>{
+      console.log('in point',this.props.pointList)
       if(this.state.waypointnum<3){
         this.setState({waypointnum:this.state.waypointnum+1})
       }else{
@@ -82,6 +83,7 @@ class Home extends Component {
         const { navigation } = this.props;
         let arr=[]
         for (let i=0;i<this.state.waypointnum;i++){
+        
             arr.push(
               <View key={i} style={{flexDirection:'row',alignItems:'center',padding:'2%'}}>
                 <Text> {i+1}.</Text>
@@ -109,7 +111,6 @@ class Home extends Component {
                     >
                       <Text style={{color:'black',fontWeight:'bold'}}>+ Add New Waypoint</Text>
                     </TouchableOpacity>
-      
               </ScrollView>
             
           );
@@ -133,7 +134,10 @@ const styles = StyleSheet.create({
     },
 });
 
+const mapStateToProps = (state) => (
+  {pointList:state.locationReducer.pointList}
+)
 
+const mapDispatchToProps = state => ({});
 
-
-export default Home;
+export default connect(mapStateToProps,mapDispatchToProps) (Home)

@@ -6,6 +6,8 @@ import AutoCompleteListView from './AutoCompleteListView';
 import axios, { CancelToken } from 'axios';
 import Events from 'react-native-simple-events';
 import debounce from '../utils/debounce';
+import { connect } from 'react-redux';
+import {addRegion} from '../actions/Users'
 
 const AUTOCOMPLETE_URL = 'https://maps.googleapis.com/maps/api/place/autocomplete/json';
 const REVRSE_GEO_CODE_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
@@ -58,6 +60,7 @@ export default class AutoCompleteInput extends React.Component {
         if (results.length > 0) {
           let { formatted_address } = results[0];
           this.setState({ text: formatted_address });
+          console.log(this.state.text)
         }
       });
   };

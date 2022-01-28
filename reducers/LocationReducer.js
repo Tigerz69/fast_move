@@ -1,10 +1,11 @@
 import {ADD_REGION,} from '../actions/Types'
 
 const intialState = {
- point:{
+ pointList:[{
     id:0,
-    region:{lat:150,lng:20}
- }
+    region:{lat:150,lng:20},
+    details:'details'
+ }]
 }
 
 
@@ -14,12 +15,9 @@ const locationReducer=(state = intialState,action)=>{
      case ADD_REGION:
          console.log('come')
       return{
-        ...state,point:{
-          id:Math.floor(Math.random() * 10),
-          region:action.region,
-          
+        ...state,pointList:[...state.pointList,{id:Math.floor(Math.random() * 10),region:action.region}]
         }
-      }
+      
     default:
       return state
    }

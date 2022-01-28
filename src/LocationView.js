@@ -70,6 +70,7 @@ class LocationView extends Component {
     Animated.timing(this.state.inputScale, {
       toValue: this.state.inFocus ? 1.2 : 1,
       duration: 300,
+      useNativeDriver: true
     }).start();
   };
 
