@@ -77,6 +77,8 @@ class Home extends Component {
         id:0,
         region:{},
         address:'',
+        phonenumber:'',
+        details:''
         
 
       }

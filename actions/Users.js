@@ -19,7 +19,8 @@ export const addRegion=(item)=>(
     type:ADD_REGION,
     region:item.region,
     address:item.address,
-    
+    phonenumber:item.phonenumber,
+    details:item.details
   }
 )
 
@@ -28,7 +29,9 @@ export const editRegion=(item)=>(
     type:EDIT_REGION,
     region:item.region,
     address:item.address,
-    index:item.index
+    index:item.index,
+    phonenumber:item.phonenumber,
+    details:item.details
   }
 )
 

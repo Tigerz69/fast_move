@@ -11,6 +11,7 @@ import Geolocation from 'react-native-geolocation-service';
 import AutoCompleteInput from './AutoCompleteInput';
 import { connect } from 'react-redux';
 import {editRegion} from '../actions/Users'
+import { TextInput } from 'react-native-gesture-handler';
 
 const PLACE_DETAIL_URL = 'https://maps.googleapis.com/maps/api/place/details/json';
 const DEFAULT_DELTA = { latitudeDelta: 0.015, longitudeDelta: 0.0121 };
@@ -59,6 +60,8 @@ class LocationView extends Component {
       ...DEFAULT_DELTA,
       ...initialLocation,
     },
+    phonenumber:'',
+    details:''
   };
   
   onLocationSelect=()=>{
@@ -67,10 +70,14 @@ class LocationView extends Component {
     const {route} =this.props
     //let i = route.getParent("index")
     console.log("route",route.params.index)
-    
+    console.log('ph',this.state.phonenumber)
+    console.log('deta',this.state.details)
+
     let item ={ region:this.state.region,
                 address:this._input.getAddress(),
-                index:route.params.index
+                index:route.params.index,
+                phonenumber:this.state.phonenumber,
+                details:this.state.details
     } 
     this.props.editRegion(item)
     this.props.navigation.navigate('DrawerTab')
@@ -151,12 +158,7 @@ class LocationView extends Component {
           onRegionChange={this._onMapRegionChange}
           onRegionChangeComplete={this._onMapRegionChangeComplete}
         />
-        <Entypo
-          name={'location-pin'}
-          size={30}
-          color={markerColor}
-          style={{ backgroundColor: 'transparent' }}
-        />
+        
         <View style={styles.fullWidthContainer}>
           <AutoCompleteInput
             ref={input => (this._input = input)}
@@ -165,7 +167,14 @@ class LocationView extends Component {
             debounceDuration={debounceDuration}
             components={components}
           />
+
         </View>
+        <Entypo
+          name={'location-pin'}
+          size={30}
+          color={markerColor}
+          style={{flex:1,alignItems:'center',justifyContent:'center', backgroundColor: 'transparent' }}
+        />
 
         {/* <TouchableOpacity
           style={[styles.currentLocBtn, { backgroundColor: markerColor }]}
@@ -173,22 +182,29 @@ class LocationView extends Component {
         >
           <MaterialIcons name={'my-location'} color={'white'} size={25} />
         </TouchableOpacity> */}
+        <View style={styles.detailView}>
+          <Text style={styles.headers}>ระบุข้อมูลจุดรับ-ส่ง </Text>
+          <TextInput style={styles.detailTextInput} placeholder=' เบอร์ติดต่อ' 
+          onChangeText={txt=>{this.setState({phonenumber:txt})}}></TextInput>
+          <TextInput style={styles.detailTextInput} placeholder=' รายละเอียดงานที่ต้องทำกับจุดนี้'
+          onChangeText={txt=>{this.setState({details:txt})}}></TextInput>
 
-        <Text>ระบุข้อมูลจุดรับ-ส่ง </Text>
-        
-        <TouchableOpacity
-          style={[styles.actionButton]}
-          onPress={() =>{ this.onLocationSelect({...this.state.region, address: this._input.getAddress(), placeDetails: this.state.placeDetails})
-          }}
-          
-        >
-          <View>
+          <TouchableOpacity
+            style={[styles.actionButton]}
+            onPress={() =>{ this.onLocationSelect({...this.state.region, address: this._input.getAddress(), placeDetails: this.state.placeDetails})
+            }}
             
-            <Text style={[styles.actionText]}>{actionText}</Text>
-          </View>
-        </TouchableOpacity>
+          >
+            <View>
+              
+              <Text style={[styles.actionText]}>{actionText}</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        
         {this.props.children}
       </View>
+
     );
   }
 }
@@ -196,21 +212,25 @@ class LocationView extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    
     justifyContent: 'center',
     alignItems: 'center',
+    //backgroundColor:'red',
+    flexDirection:'column'
   },
   mapView: {
     ...StyleSheet.absoluteFillObject,
   },
   fullWidthContainer: {
-    position: 'absolute',
+    flex:1.70,
     width: '100%',
-    top: 80,
+    
     alignItems: 'center',
+    //backgroundColor:'green'
   },
   input: {
-    width: '80%',
-    padding: 5,
+    width: '90%',
+    padding: '10%',
   },
   currentLocBtn: {
     backgroundColor: '#000',
@@ -222,11 +242,8 @@ const styles = StyleSheet.create({
   },
   actionButton: {
     backgroundColor: '#000',
-    height: 50,
-    position: 'absolute',
-    bottom: 10,
-    left: 10,
-    right: 10,
+    width:'80%',
+    height:'20%',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
@@ -235,6 +252,24 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 23,
   },
+  detailView:{
+    flex:1,
+    backgroundColor:'white',
+    flexDirection:'column',
+    justifyContent: 'center',
+    alignItems:'center',
+    width:'100%',
+    
+  },
+  headers:{
+  
+  padding:'2%',
+  fontSize:23
+  },
+  detailTextInput:{
+    borderWidth: 1,
+    width:'80%'
+  }
 });
 
 const mapDispatchToProps = (dispatch)=>(
