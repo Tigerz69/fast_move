@@ -16,7 +16,7 @@ import {AntDesign} from "@expo/vector-icons";
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { connect } from 'react-redux';
-import { addRegion } from "../actions/Users";
+import { addRegion,deleteRegion } from "../actions/Users";
 
 
 class Home extends Component {
@@ -62,29 +62,32 @@ class Home extends Component {
         
     }
 
-    removeInput =()=>{
-      
+    removeInput =(i)=>{
+      let item ={index:i}
+      this.props.deleteRegion(item)
+      console.log(this.props.pointList)
       this.setState({waypointnum:this.state.waypointnum-1})
     }
 
     addInput =()=>{
-      console.log('in point',this.props.pointList)
-      //this.setState({waypointlist:this.props.pointList.address})
+      
+      console.log(this.props.pointList)
       this.setState({waypointlist : this.state.waypointlist.concat(["Select location"])});
       let item ={
         id:0,
         region:{},
         address:'',
-        index:''
+        
 
       }
       this.props.addRegion(item)
+
       if(this.state.waypointnum<10){
         this.setState({waypointnum:this.state.waypointnum+1})
       }else{
         this.showAlert()
       }
-      
+      console.log('in point',this.props.pointList)
     }
 
     
@@ -108,7 +111,7 @@ class Home extends Component {
                   styles={StyleSheet.buttonLogin}>
                   <MaterialIcons name="gps-fixed" size={24} color="black" />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={this.removeInput}
+                <TouchableOpacity onPress={()=>this.removeInput(i)}
                   styles={StyleSheet.buttonLogin}>
                   <AntDesign name="minuscircleo" size={20} color="red"></AntDesign>
                 </TouchableOpacity>
@@ -153,8 +156,12 @@ const mapStateToProps = (state) => (
   {pointList:state.locationReducer.pointList}
 )
 
-const mapDispatchToProps = (dispatch)=>(
-  {addRegion:(item)=>dispatch(addRegion(item))}
-)
+const mapDispatchToProps = (dispatch)=>{
+  return{
+    addRegion:(item)=>dispatch(addRegion(item)),
+    deleteRegion:(item)=>dispatch(deleteRegion(item))
+  }
+  
+}
 
 export default connect(mapStateToProps,mapDispatchToProps) (Home)

@@ -174,6 +174,8 @@ class LocationView extends Component {
           <MaterialIcons name={'my-location'} color={'white'} size={25} />
         </TouchableOpacity> */}
 
+        <Text>ระบุข้อมูลจุดรับ-ส่ง </Text>
+        
         <TouchableOpacity
           style={[styles.actionButton]}
           onPress={() =>{ this.onLocationSelect({...this.state.region, address: this._input.getAddress(), placeDetails: this.state.placeDetails})

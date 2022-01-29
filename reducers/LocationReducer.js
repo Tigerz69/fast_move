@@ -1,4 +1,4 @@
-import {ADD_REGION,EDIT_REGION,RESET_REGION} from '../actions/Types'
+import {ADD_REGION,EDIT_REGION,RESET_REGION,DELETE_REGION} from '../actions/Types'
 
 const intialState = {
  pointList:[]
@@ -11,22 +11,29 @@ const locationReducer=(state = intialState,action)=>{
 
    switch(action.type){
      case ADD_REGION:
-         console.log('come')
+         //console.log('come')
          const point_number2 = ++point_number;
       return{
         ...state,pointList:[...state.pointList,{id:point_number2,region:action.region,address:action.address,index:action.index}]
         }
      case RESET_REGION:
       return{
-         ...state,pointList:['']
+         ...state,pointList:[]
          }
-         case EDIT_REGION:
+     case EDIT_REGION:
             let pointListcopie = JSON.parse(JSON.stringify(state.pointList));
             pointListcopie[action.index] = {id:pointListcopie[action.index].id,address : action.address,region:action.region}
 
-           return{
-               ...state,pointList:pointListcopie
+      return{
+            ...state,pointList:pointListcopie
           }
+      case DELETE_REGION:
+         
+            let pointListcopie2 = JSON.parse(JSON.stringify(state.pointList));
+            pointListcopie2[action.index] = {id:pointListcopie2[action.index].id,address:'',region:{}}
+      return{
+         ...state,pointList:pointListcopie2
+      }
 
     default:
       return state
