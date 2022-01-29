@@ -1,4 +1,4 @@
-import {ADD_USER,ADD_REGION,EDIT_REGION,DELETE_REGION} from './Types'
+import {ADD_USER,ADD_REGION,EDIT_REGION,DELETE_REGION,SAVE_TIME_ORDER} from './Types'
 
 
 export const addUser=(item)=>(
@@ -39,5 +39,12 @@ export const deleteRegion=(item)=>(
   {
     type:DELETE_REGION,
     index:item.index,
+  }
+)
+
+export const saveTimeOrder=(item)=>(
+  {
+    type:SAVE_TIME_ORDER,
+    
   }
 )

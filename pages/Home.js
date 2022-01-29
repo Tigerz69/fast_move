@@ -14,10 +14,20 @@ import { TextInput } from "react-native-gesture-handler";
 import * as React from 'react';
 import {AntDesign} from "@expo/vector-icons";
 import { MaterialIcons } from '@expo/vector-icons';
-
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { addRegion,deleteRegion } from "../actions/Users";
+import { Dropdown } from 'react-native-element-dropdown';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
+
+
+const options = [
+  { value: 'instanly', label: 'รับสินค้าทันที' },
+  { value: 'picktime', label: 'รับสินค้าล่วงหน้า' }
+  
+];
+const defaultOption = options[0];
 
 class Home extends Component {
     constructor(props){
@@ -30,17 +40,8 @@ class Home extends Component {
            id:null,
            waypointnum:0,
            waypointlist:['Select location'],
-           oneway:[],
-           secway:[],
-           thirdway:[],
-           fourway:[],
-           fiveway:[],
-           sixway:[],
-           sevenway:[],
-           eigthway:[],
-           nineway:[],
-           tenway:[]
-
+           value: null,
+           isFocus:false
         };
         this.myRef = React.createRef();
       
@@ -92,13 +93,34 @@ class Home extends Component {
       console.log('in point',this.props.pointList)
     }
 
-    
+    handleChange = (selectedOption) => {
+      this.setState({ selectedOption }, () =>
+        console.log(`Option selected:`, this.state.selectedOption)
+      );
+    };
 
-    
+    renderLabel = () => {
+      let value=this.state.value
+      let isFocus=this.state.isFocus
+      if (value || isFocus) {
+        return (
+          <Text style={[styles.label, isFocus && { color: 'blue' }]}>
+            เลือกเวลา
+          </Text>
+        );
+      }
+      return null;
+    };
+
+    popupDatePicker = () =>{
+
+    }
+
     
     render(props) {
         const { navigation } = this.props;
-        
+        const { selectedOption } = this.state;
+
         let arr=[]
         for (let i=0;i<this.state.waypointnum;i++){
         
@@ -129,8 +151,40 @@ class Home extends Component {
                       styles={StyleSheet.buttonLogin}
                     >
                       <Text style={{color:'black',fontWeight:'bold'}}>+ Add New Waypoint</Text>
-                    </TouchableOpacity>
-                
+                </TouchableOpacity>
+                {this.renderLabel()}
+                <Dropdown
+                  style={[styles.dropdown, this.state.isFocus && { borderColor: 'blue' }]}
+                  placeholderStyle={styles.placeholderStyle}
+                  selectedTextStyle={styles.selectedTextStyle}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  iconStyle={styles.iconStyle}
+                  data={options}
+                  //search
+                  dropdownPosition='auto'
+                  maxHeight={120}
+
+                  labelField="label"
+                  valueField="value"
+                  placeholder={!this.state.isFocus ? 'เลือกเวลา' : '...'}
+                  searchPlaceholder="Search..."
+                  value={this.state.value}
+                  onFocus={() => this.setState({isFocus:true})}
+                  onBlur={() =>this.setState({isFocus:false})}
+                  onChange={item => {
+                    this.setState({value:item.value});
+                    this.setState({isFocus:false});
+                    this.popupDatePicker();
+                  }}
+                   renderLeftIcon={() => (
+                      <MaterialCommunityIcons
+                        style={styles.icon}
+                        color={this.state.isFocus ? 'blue' : 'black'}
+                        name="timetable"
+                        size={20}
+                      />
+          )}
+                />
               </ScrollView>
             
           );
@@ -138,6 +192,9 @@ class Home extends Component {
 }
 
 const styles = StyleSheet.create({
+  icon: {
+    marginRight: 5,
+  },
     buttonLogin: {
       justifyContent:"center",
       alignItems: "center",
@@ -151,6 +208,28 @@ const styles = StyleSheet.create({
         justifyContent:"center",
         alignItems: "center",
         backgroundColor:'white',
+    },
+    dropdown: {
+      width:'90%',
+      height: '10%',
+      borderColor: 'gray',
+      borderWidth: 0.5,
+      borderRadius: 8,
+      paddingHorizontal: 8,
+    },
+    placeholderStyle: {
+      fontSize: 16,
+    },
+    selectedTextStyle: {
+      fontSize: 16,
+    },
+    iconStyle: {
+      width: 20,
+      height: 20,
+    },
+    inputSearchStyle: {
+      height: 40,
+      fontSize: 16,
     },
 });
 

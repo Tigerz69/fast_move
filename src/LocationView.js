@@ -12,6 +12,8 @@ import AutoCompleteInput from './AutoCompleteInput';
 import { connect } from 'react-redux';
 import {editRegion} from '../actions/Users'
 import { TextInput } from 'react-native-gesture-handler';
+import { Feather } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 const PLACE_DETAIL_URL = 'https://maps.googleapis.com/maps/api/place/details/json';
 const DEFAULT_DELTA = { latitudeDelta: 0.015, longitudeDelta: 0.0121 };
@@ -184,10 +186,17 @@ class LocationView extends Component {
         </TouchableOpacity> */}
         <View style={styles.detailView}>
           <Text style={styles.headers}>ระบุข้อมูลจุดรับ-ส่ง </Text>
-          <TextInput style={styles.detailTextInput} placeholder=' เบอร์ติดต่อ' 
-          onChangeText={txt=>{this.setState({phonenumber:txt})}}></TextInput>
-          <TextInput style={styles.detailTextInput} placeholder=' รายละเอียดงานที่ต้องทำกับจุดนี้'
-          onChangeText={txt=>{this.setState({details:txt})}}></TextInput>
+          <View style={{flexDirection:'row',paddingBottom:'5%'}}>
+            <Feather name="phone-call" size={24} color="black"  />
+            <TextInput style={styles.detailTextInput} placeholder=' เบอร์ติดต่อ' 
+            onChangeText={txt=>{this.setState({phonenumber:txt})}}></TextInput>
+          </View>
+          <View style={{flexDirection:'row',paddingBottom:'5%'}}>
+            <Ionicons name="document-text-outline" size={24} color="black" />
+            <TextInput style={styles.detailTextInput} placeholder=' รายละเอียดงานที่ต้องทำกับจุดนี้'
+            onChangeText={txt=>{this.setState({details:txt})}}></TextInput>
+          </View>
+          
 
           <TouchableOpacity
             style={[styles.actionButton]}
@@ -229,7 +238,7 @@ const styles = StyleSheet.create({
     //backgroundColor:'green'
   },
   input: {
-    width: '90%',
+    width: '95%',
     padding: '10%',
   },
   currentLocBtn: {
@@ -247,6 +256,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
+    marginBottom:'5%'
   },
   actionText: {
     color: 'white',
@@ -268,7 +278,7 @@ const styles = StyleSheet.create({
   },
   detailTextInput:{
     borderWidth: 1,
-    width:'80%'
+    width:'70%',
   }
 });
 
