@@ -41,7 +41,12 @@ class Home extends Component {
            waypointnum:0,
            waypointlist:['Select location'],
            value: null,
-           isFocus:false
+           isFocus:false,
+           date:null,
+           time:null,
+           isTimeShow:false,
+           isDateShow:false
+
         };
         this.myRef = React.createRef();
       
@@ -57,6 +62,29 @@ class Home extends Component {
           ]  
       );  
   }  
+
+    showAlert2() {  
+      Alert.alert(  
+          'Error',  
+          'You choose instanly no need to pick a time',  
+          [  
+              
+              {text: 'OK', onPress: () => console.log('OK Pressed')},  
+          ]  
+      );  
+  }  
+  
+
+  showAlert3() {  
+    Alert.alert(  
+        'Error',  
+        'You have to choose time to get item',  
+        [  
+            
+            {text: 'OK', onPress: () => console.log('OK Pressed')},  
+        ]  
+    );  
+}  
     
     goToPickLocationPage=(i)=>{
         this.props.navigation.navigate('LocationView',{index:i})
@@ -113,9 +141,48 @@ class Home extends Component {
     };
 
     popupDatePicker = () =>{
-
+      console.log('popupDate')
+      if(this.state.value==='instanly'){
+        this.showAlert2()
+      }
+      if(this.state.value==='picktime'){
+        console.log('เข้าเลือกวันที่นะ')
+        this.setState({isDateShow:true})
+      }if(this.state.value===null){
+        console.log('null kb')
+        this.showAlert3()
+      }
     }
 
+
+    popupTimePicker = () =>{
+      let currentDate = new Date();
+      let currentTime = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
+      this.setState({time:currentTime})
+      console.log('popupTime')
+      if(this.state.value==='instanly'){
+        this.showAlert2()
+      }
+      if(this.state.value==='picktime'){
+        console.log('เข้าเลือกเวลานะ')
+        this.setState({isTimeShow:true})
+      }if(this.state.value===null){
+        console.log('null kb')
+        this.showAlert3()
+      }
+    }
+
+    
+
+    onChangeDate = (event,selectedDate) => {
+     this.setState({date:selectedDate})
+      console.log('changed date',date)
+    };
+    onChangeTime = (event,selectedTime) => {
+      this.setState({time:selectedTime})
+       console.log('changed time',time)
+     };
+     
     
     render(props) {
         const { navigation } = this.props;
@@ -174,7 +241,7 @@ class Home extends Component {
                   onChange={item => {
                     this.setState({value:item.value});
                     this.setState({isFocus:false});
-                    this.popupDatePicker();
+                    console.log(this.state.value)
                   }}
                    renderLeftIcon={() => (
                       <MaterialCommunityIcons
@@ -185,6 +252,37 @@ class Home extends Component {
                       />
           )}
                 />
+                <TouchableOpacity style={styles.pickDateTimeButton}  onPress={this.popupDatePicker}>
+                <Text style={{color:'black',fontWeight:'bold'}}>เลือกวัน</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.pickDateTimeButton} onPress={this.popupTimePicker}>
+                <Text style={{color:'black',fontWeight:'bold'}}>เลือกเวลา</Text>
+                </TouchableOpacity>
+                {this.state.isDateShow && (
+                      <DateTimePicker
+                      testID="DatePicker"
+                      value={this.state.date}
+                      mode={'date'}
+                      is24Hour={true}
+                      display="default"
+                      onChange={this.onChangeDate}
+                      />
+                    )}
+                  {this.state.isTimeShow &&(
+                    <View >
+          
+  
+                    <DateTimePicker
+                      testID="TimePicker"
+                      value={this.state.time}
+                      mode={'time'}
+                      is24Hour={true}
+                      display="default"
+                      onChange={this.onChangeTime}
+                    />
+                  
+                </View>
+                  )}
               </ScrollView>
             
           );
@@ -230,6 +328,13 @@ const styles = StyleSheet.create({
     inputSearchStyle: {
       height: 40,
       fontSize: 16,
+    },
+    pickDateTimeButton:{
+      justifyContent:"center",
+      alignItems: "center",
+      backgroundColor: "#6b4683",
+      marginBottom:8,
+      padding:8,
     },
 });
 
