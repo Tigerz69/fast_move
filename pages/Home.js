@@ -42,10 +42,10 @@ class Home extends Component {
            waypointlist:['Select location'],
            value: null,
            isFocus:false,
-           date:null,
+           date:new Date(),
            time:null,
-           isTimeShow:false,
-           isDateShow:false
+           mode:null,
+           show:false
 
         };
         this.myRef = React.createRef();
@@ -147,7 +147,7 @@ class Home extends Component {
       }
       if(this.state.value==='picktime'){
         console.log('เข้าเลือกวันที่นะ')
-        this.setState({isDateShow:true})
+        this.showDatepicker()
       }if(this.state.value===null){
         console.log('null kb')
         this.showAlert3()
@@ -156,32 +156,42 @@ class Home extends Component {
 
 
     popupTimePicker = () =>{
-      let currentDate = new Date();
-      let currentTime = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
-      this.setState({time:currentTime})
+      
       console.log('popupTime')
       if(this.state.value==='instanly'){
         this.showAlert2()
       }
       if(this.state.value==='picktime'){
         console.log('เข้าเลือกเวลานะ')
-        this.setState({isTimeShow:true})
+        this.showTimepicker()
       }if(this.state.value===null){
         console.log('null kb')
         this.showAlert3()
       }
     }
 
+    showDatepicker = () => {
+      this.showMode('date')
+    };
+  
+    showTimepicker = () => {
+      this.showMode('time');
+    };
+
+    showMode = (currentMode) => {
+      this.setState({show:true})
+      this.setState({mode:currentMode})
+    };
     
 
-    onChangeDate = (event,selectedDate) => {
-     this.setState({date:selectedDate})
-      console.log('changed date',date)
+    onChange = (event,selectedDate) => {
+      const currentDate = selectedDate || this.state.date;
+      
+      this.setState({date:currentDate});
+     
+      console.log('changed date',this.state.date)
     };
-    onChangeTime = (event,selectedTime) => {
-      this.setState({time:selectedTime})
-       console.log('changed time',time)
-     };
+   
      
     
     render(props) {
@@ -250,7 +260,7 @@ class Home extends Component {
                         name="timetable"
                         size={20}
                       />
-          )}
+                      )}
                 />
                 <TouchableOpacity style={styles.pickDateTimeButton}  onPress={this.popupDatePicker}>
                 <Text style={{color:'black',fontWeight:'bold'}}>เลือกวัน</Text>
@@ -258,31 +268,18 @@ class Home extends Component {
                 <TouchableOpacity style={styles.pickDateTimeButton} onPress={this.popupTimePicker}>
                 <Text style={{color:'black',fontWeight:'bold'}}>เลือกเวลา</Text>
                 </TouchableOpacity>
-                {this.state.isDateShow && (
+                {this.state.show && (
                       <DateTimePicker
-                      testID="DatePicker"
+                      testID="dateTimePicker"
                       value={this.state.date}
-                      mode={'date'}
+                      mode={this.state.mode}
                       is24Hour={true}
                       display="default"
-                      onChange={this.onChangeDate}
+                      onChange={this.onChange}
                       />
-                    )}
-                  {this.state.isTimeShow &&(
-                    <View >
-          
-  
-                    <DateTimePicker
-                      testID="TimePicker"
-                      value={this.state.time}
-                      mode={'time'}
-                      is24Hour={true}
-                      display="default"
-                      onChange={this.onChangeTime}
-                    />
+                )}
+                 
                   
-                </View>
-                  )}
               </ScrollView>
             
           );
