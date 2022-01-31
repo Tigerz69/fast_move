@@ -1,4 +1,4 @@
-import {ADD_USER,ADD_REGION,EDIT_REGION,DELETE_REGION,SAVE_TIME_ORDER} from './Types'
+import {ADD_USER,ADD_REGION,EDIT_REGION,DELETE_REGION,SAVE_ORDER} from './Types'
 
 
 export const addUser=(item)=>(
@@ -42,9 +42,14 @@ export const deleteRegion=(item)=>(
   }
 )
 
-export const saveTimeOrder=(item)=>(
+export const saveOrder=(item)=>(
   {
-    type:SAVE_TIME_ORDER,
+    type:SAVE_ORDER,
+    getTime:item.date,
+    wayPointList:item.wayPointList,
+    details:item.details,
+    phone:item.phone,
     
   }
 )
+

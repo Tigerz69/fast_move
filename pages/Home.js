@@ -127,18 +127,7 @@ class Home extends Component {
       );
     };
 
-    renderLabel = () => {
-      let value=this.state.value
-      let isFocus=this.state.isFocus
-      if (value || isFocus) {
-        return (
-          <Text style={[styles.label, isFocus && { color: 'blue' }]}>
-            เลือกเวลา
-          </Text>
-        );
-      }
-      return null;
-    };
+    
 
     popupDatePicker = () =>{
       console.log('popupDate')
@@ -187,12 +176,16 @@ class Home extends Component {
     onChange = (event,selectedDate) => {
       const currentDate = selectedDate || this.state.date;
       
+      this.setState({show:setShow(Platform.OS === 'ios')})
+
       this.setState({date:currentDate});
      
       console.log('changed date',this.state.date)
     };
    
-     
+    goToAddDetails=()=>{
+      
+    }
     
     render(props) {
         const { navigation } = this.props;
@@ -225,11 +218,11 @@ class Home extends Component {
               <ScrollView contentContainerStyle={styles.container}>
                 {arr}
                 <TouchableOpacity onPress={this.addInput}
-                      styles={StyleSheet.buttonLogin}
+                      styles={StyleSheet.addButton}
                     >
                       <Text style={{color:'black',fontWeight:'bold'}}>+ Add New Waypoint</Text>
                 </TouchableOpacity>
-                {this.renderLabel()}
+               
                 <Dropdown
                   style={[styles.dropdown, this.state.isFocus && { borderColor: 'blue' }]}
                   placeholderStyle={styles.placeholderStyle}
@@ -262,26 +255,33 @@ class Home extends Component {
                       />
                       )}
                 />
-                <TouchableOpacity style={styles.pickDateTimeButton}  onPress={this.popupDatePicker}>
-                <Text style={{color:'black',fontWeight:'bold'}}>เลือกวัน</Text>
+                <View style={{flexDirection:'row',height:'10%',paddingVertical:'2%',}}>
+                    <TouchableOpacity style={styles.pickDateTimeButton}  onPress={this.popupDatePicker}>
+                    <Text style={{color:'black',fontWeight:'bold'}}>เลือกวัน</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.pickDateTimeButton} onPress={this.popupTimePicker}>
+                    <Text style={{color:'black',fontWeight:'bold'}}>เลือกเวลา</Text>
+                    </TouchableOpacity>
+                    {this.state.show && (
+                          <DateTimePicker
+                          testID="dateTimePicker"
+                          value={this.state.date}
+                          mode={this.state.mode}
+                          is24Hour={true}
+                          display="default"
+                          onChange={this.onChange}
+                          />
+                    )}
+
+                </View>
+                <TouchableOpacity style={styles.addButton} onPress={this.goToAddDetails}>
+                      <Text>เพิ่มรายละเอียด</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.pickDateTimeButton} onPress={this.popupTimePicker}>
-                <Text style={{color:'black',fontWeight:'bold'}}>เลือกเวลา</Text>
-                </TouchableOpacity>
-                {this.state.show && (
-                      <DateTimePicker
-                      testID="dateTimePicker"
-                      value={this.state.date}
-                      mode={this.state.mode}
-                      is24Hour={true}
-                      display="default"
-                      onChange={this.onChange}
-                      />
-                )}
+                
                  
                   
               </ScrollView>
-            
+              
           );
     }
 }
@@ -294,9 +294,16 @@ const styles = StyleSheet.create({
       justifyContent:"center",
       alignItems: "center",
       backgroundColor: "#6b4683",
-      marginBottom:8,
+      marginBottom:'50%',
       padding:8,
 
+    },
+    addButton:{
+      justifyContent:"center",
+      alignItems: "center",
+      backgroundColor: "pink",
+      borderColor:'black',
+      borderWidth:1,
     },
     container: {
         flex: 1,
@@ -305,8 +312,8 @@ const styles = StyleSheet.create({
         backgroundColor:'white',
     },
     dropdown: {
-      width:'90%',
-      height: '10%',
+      width:'60%',
+      height: '5%',
       borderColor: 'gray',
       borderWidth: 0.5,
       borderRadius: 8,
@@ -329,9 +336,12 @@ const styles = StyleSheet.create({
     pickDateTimeButton:{
       justifyContent:"center",
       alignItems: "center",
-      backgroundColor: "#6b4683",
-      marginBottom:8,
-      padding:8,
+      backgroundColor: "pink",
+      marginHorizontal:'5%',
+      paddingHorizontal:'5%',
+      height:'50%',
+      borderColor:'black',
+      borderWidth:1
     },
 });
 
