@@ -45,10 +45,12 @@ export const deleteRegion=(item)=>(
 export const saveOrder=(item)=>(
   {
     type:SAVE_ORDER,
-    getTime:item.date,
+    id:item.id,
+    getTime:item.getTime,
     wayPointList:item.wayPointList,
     details:item.details,
     phone:item.phone,
+    price:item.price
     
   }
 )

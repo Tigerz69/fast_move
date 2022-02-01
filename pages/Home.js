@@ -1,4 +1,4 @@
-import { Component, useRef } from "react";
+import { Component} from "react";
 import {
     View,
     Text,
@@ -16,7 +16,7 @@ import {AntDesign} from "@expo/vector-icons";
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
-import { addRegion,deleteRegion } from "../actions/Users";
+import { addRegion,deleteRegion, saveOrder } from "../actions/Users";
 import { Dropdown } from 'react-native-element-dropdown';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -45,7 +45,8 @@ class Home extends Component {
            date:new Date(),
            time:null,
            mode:null,
-           show:false
+           show:false,
+           showBtn:false
 
         };
         this.myRef = React.createRef();
@@ -85,7 +86,16 @@ class Home extends Component {
         ]  
     );  
 }  
-    
+  showAlert4() {  
+    Alert.alert(  
+        'Error',  
+        'Please Select time',  
+        [  
+            
+            {text: 'OK', onPress: () => console.log('OK Pressed')},  
+        ]  
+    );  
+  }  
     goToPickLocationPage=(i)=>{
         this.props.navigation.navigate('LocationView',{index:i})
         
@@ -125,6 +135,11 @@ class Home extends Component {
       this.setState({ selectedOption }, () =>
         console.log(`Option selected:`, this.state.selectedOption)
       );
+      if(selectedOption==='instanly'){
+        this.setState({showBtn:false})
+      }else{
+        this.setState({showBtn:true})
+      }
     };
 
     
@@ -176,7 +191,7 @@ class Home extends Component {
     onChange = (event,selectedDate) => {
       const currentDate = selectedDate || this.state.date;
       
-      this.setState({show:setShow(Platform.OS === 'ios')})
+      this.setState({show:Platform.OS === 'ios'})
 
       this.setState({date:currentDate});
      
@@ -184,7 +199,28 @@ class Home extends Component {
     };
    
     goToAddDetails=()=>{
+      let time=null
+      if(this.state.value==='instanly'){
+        time ='instanly'
+      }
+      if(this.state.value==='picktime'){
+        time = this.state.date
       
+      }if(this.state.value===null){
+        
+        this.showAlert4()
+      }
+      //let list = JSON.parse(JSON.stringify(this.props.pointList));
+      //console.log('waypointlist',this.state.waypointlist)
+      let list = this.props.pointList
+      let item ={
+        getTime:time,
+        wayPointList:list
+
+      }
+      this.props.saveOrder(item)
+      console.log(this.props.orderList)
+      this.props.navigation.navigate('AddDetails')
     }
     
     render(props) {
@@ -244,6 +280,7 @@ class Home extends Component {
                   onChange={item => {
                     this.setState({value:item.value});
                     this.setState({isFocus:false});
+                    this.handleChange(item.value)
                     console.log(this.state.value)
                   }}
                    renderLeftIcon={() => (
@@ -255,13 +292,14 @@ class Home extends Component {
                       />
                       )}
                 />
-                <View style={{flexDirection:'row',height:'10%',paddingVertical:'2%',}}>
-                    <TouchableOpacity style={styles.pickDateTimeButton}  onPress={this.popupDatePicker}>
+               <View style={{flexDirection:'row',height:'10%',paddingVertical:'2%',}}>
+               {this.state.showBtn&&( <TouchableOpacity style={styles.pickDateTimeButton}  onPress={this.popupDatePicker}>
                     <Text style={{color:'black',fontWeight:'bold'}}>เลือกวัน</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.pickDateTimeButton} onPress={this.popupTimePicker}>
+                    </TouchableOpacity>)}
+               {this.state.showBtn&&( <TouchableOpacity style={styles.pickDateTimeButton} onPress={this.popupTimePicker}>
                     <Text style={{color:'black',fontWeight:'bold'}}>เลือกเวลา</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity>)}
+
                     {this.state.show && (
                           <DateTimePicker
                           testID="dateTimePicker"
@@ -346,13 +384,18 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => (
-  {pointList:state.locationReducer.pointList}
+  
+    {pointList:state.locationReducer.pointList,orderList:state.orderReducer.orderList}
+  
+ 
 )
+
 
 const mapDispatchToProps = (dispatch)=>{
   return{
     addRegion:(item)=>dispatch(addRegion(item)),
-    deleteRegion:(item)=>dispatch(deleteRegion(item))
+    deleteRegion:(item)=>dispatch(deleteRegion(item)),
+    saveOrder:(item)=>dispatch(saveOrder(item))
   }
   
 }

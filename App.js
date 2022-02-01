@@ -12,7 +12,7 @@ import Account from './pages/Account'
 import Edit from './pages/Edit'
 import LocationView from './src/LocationView'
 import Home from './pages/Home'
-
+import AddDetails from './pages/AddDetails';
 
 import configureStore from './Store'
 import {Provider} from 'react-redux'
@@ -49,6 +49,9 @@ const LocationViewScreen=({navigation,route})=>(
   <LocationView navigation={navigation} route={route}/>
 )
 
+const AddDetailsScreen=({navigation})=>(
+  <AddDetails navigation={navigation}/>
+)
 
 LogBox.ignoreLogs(["AsyncStorage has been extracted from react-native core and will be removed in a future release. It can now be installed and imported from '@react-native-async-storage/async-storage' instead of 'react-native'. See https://github.com/react-native-async-storage/async-storage"]);
 LogBox.ignoreLogs(['Setting a timer']);
@@ -91,6 +94,7 @@ const MyStack = ()=>(
     <Stack.Screen name='DrawerTab' component={MyDrawer} options={{headerShown:false}}/>
     <Stack.Screen name='Login' component={LoginScreen} options={{headerShown:false}}/>
     <Stack.Screen name='LocationView' component={LocationViewScreen} options={{headerShown:false}}/>
+    <Stack.Screen name='AddDetails' component={AddDetailsScreen} options={{headerShown:false}}/>
   </Stack.Navigator>
 )
 
