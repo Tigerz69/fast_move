@@ -116,7 +116,7 @@ class Login extends Component {
             
             <View style={{flexDirection:'row',justifyContent:'flex-end'}}>
               <TouchableOpacity onPress={()=>this.props.navigation.navigate('Recover')}>
-                <Text style={{fontSize:15, color:'#6b4683'}}>ลืมรหัสผ่าน ?</Text>
+                <Text style={{fontSize:15, color:'pink'}}>ลืมรหัสผ่าน ?</Text>
               </TouchableOpacity>
           </View>
 
@@ -130,18 +130,18 @@ class Login extends Component {
     buttonLogin: {
       justifyContent:"center",
       alignItems: "center",
-      backgroundColor: "#6b4683",
+      backgroundColor: "pink",
       marginBottom:8,
       padding:8
     },
     textInput:{
-      borderColor: '#6b4683',
+      borderColor: 'pink',
       borderWidth: 1,
       paddingStart:20,
       marginBottom:8,
       padding:8,
       fontSize:16,
-      color:'#6b4683'
+      color:'pink'
     },
     content:{
       padding:16,

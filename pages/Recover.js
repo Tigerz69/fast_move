@@ -67,19 +67,19 @@ const styles = StyleSheet.create({
   buttonLogin: {
     justifyContent:"center",
     alignItems: "center",
-    backgroundColor: "#6b4683",
+    backgroundColor: "pink",
     marginBottom:8,
     padding:8
 
   },
   textInput:{
-    borderColor: '#6b4683',
+    borderColor: 'pink',
     borderWidth: 1,
     paddingStart:20,
     marginBottom:8,
     padding:8,
     fontSize:16,
-    color:'#6b4683'
+    color:'pink'
   },
   content:{
     padding:16,

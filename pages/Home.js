@@ -219,7 +219,7 @@ class Home extends Component {
 
       }
       this.props.saveOrder(item)
-      console.log(this.props.orderList)
+      console.log(this.props.order)
       this.props.navigation.navigate('AddDetails')
     }
     
@@ -331,7 +331,7 @@ const styles = StyleSheet.create({
     buttonLogin: {
       justifyContent:"center",
       alignItems: "center",
-      backgroundColor: "#6b4683",
+      backgroundColor: "pink",
       marginBottom:'50%',
       padding:8,
 
@@ -385,7 +385,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => (
   
-    {pointList:state.locationReducer.pointList,orderList:state.orderReducer.orderList}
+    {pointList:state.locationReducer.pointList,order:state.orderReducer.order}
   
  
 )

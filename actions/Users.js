@@ -1,4 +1,6 @@
-import {ADD_USER,ADD_REGION,EDIT_REGION,DELETE_REGION,SAVE_ORDER} from './Types'
+import {ADD_USER,ADD_REGION,EDIT_REGION,DELETE_REGION,
+  SAVE_ORDER,
+  EDIT_MORE_ORDER} from './Types'
 
 
 export const addUser=(item)=>(
@@ -52,6 +54,15 @@ export const saveOrder=(item)=>(
     phone:item.phone,
     price:item.price
     
+  }
+)
+
+export const editMoreOrder=(item)=>(
+  {
+    type:EDIT_MORE_ORDER,
+    lastDetails:item.details,
+    customerPhone:item.phone,
+    price:item.price
   }
 )
 

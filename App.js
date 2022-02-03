@@ -64,16 +64,16 @@ const MyDrawer=()=> (
     <Drawer.Screen  
         name="Show" 
         component={AccoountScreen}
-        options={{ headerStyle: {backgroundColor: '#6b4683'},headerTintColor: 'white'}}/>
+        options={{ headerStyle: {backgroundColor: 'pink'},headerTintColor: 'white'}}/>
 
-    <Drawer.Screen  
+   {/* <Drawer.Screen  
         name="Edit" 
         component={EditScreen} 
-        options={{ headerStyle: {backgroundColor: '#6b4683'},headerTintColor: 'white'}}/>
+    options={{ headerStyle: {backgroundColor: '#6b4683'},headerTintColor: 'white'}}/>*/}
     <Drawer.Screen
         name="Home"
         component={HomeScreen}
-        options={{ headerStyle: {backgroundColor: '#6b4683'},headerTintColor: 'white'}}/>
+        options={{ headerStyle: {backgroundColor: 'pink'},headerTintColor: 'white'}}/>
 
   </Drawer.Navigator>
   
@@ -86,11 +86,11 @@ const MyStack = ()=>(
     <Stack.Screen 
       name='Register' 
       component={RegisterScreen} 
-      options={{ headerStyle: {backgroundColor: '#6b4683'},headerTintColor: 'white'}}/>
+      options={{ headerStyle: {backgroundColor: 'pink'},headerTintColor: 'white'}}/>
     <Stack.Screen 
       name='Recover' 
       component={RecoverScreen} 
-      options={{ headerStyle: {backgroundColor: '#6b4683'},headerTintColor: 'white'}}/>
+      options={{ headerStyle: {backgroundColor: 'pink'},headerTintColor: 'white'}}/>
     <Stack.Screen name='DrawerTab' component={MyDrawer} options={{headerShown:false}}/>
     <Stack.Screen name='Login' component={LoginScreen} options={{headerShown:false}}/>
     <Stack.Screen name='LocationView' component={LocationViewScreen} options={{headerShown:false}}/>
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     paddingTop: Constants.statusBarHeight,
-    backgroundColor: '#ecf0f1',
+    backgroundColor: 'pink',
     padding: 8,
   }
 });
