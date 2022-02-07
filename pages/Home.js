@@ -202,16 +202,21 @@ class Home extends Component {
       let time=null
       if(this.state.value==='instanly'){
         time ='instanly'
+        this.goToAddDetails2(time)
       }
       if(this.state.value==='picktime'){
         time = this.state.date
-      
+        this.goToAddDetails2(time)
       }if(this.state.value===null){
         
         this.showAlert4()
       }
       //let list = JSON.parse(JSON.stringify(this.props.pointList));
       //console.log('waypointlist',this.state.waypointlist)
+      
+    }
+
+    goToAddDetails2=(time)=>{
       let list = this.props.pointList
       let item ={
         getTime:time,

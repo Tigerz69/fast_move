@@ -71,9 +71,9 @@ class LocationView extends Component {
     
     const {route} =this.props
     //let i = route.getParent("index")
-    console.log("route",route.params.index)
-    console.log('ph',this.state.phonenumber)
-    console.log('deta',this.state.details)
+    //console.log("route",route.params.index)
+   // console.log('ph',this.state.phonenumber)
+    //console.log('deta',this.state.details)
 
     let item ={ region:this.state.region,
                 address:this._input.getAddress(),
