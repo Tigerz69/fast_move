@@ -147,7 +147,14 @@ class LocationView extends Component {
     };
 
   render() {
+    const {route} =this.props
     let { inputScale } = this.state;
+    var textdetail =""
+    if(route.params.index===0){
+      textdetail="ไปรับของอะไรบ้าง"
+    }else{
+      textdetail="ไปส่งของอะไรบ้าง"
+    }
     return (
       <View style={styles.container}>
         <MapView
@@ -193,7 +200,7 @@ class LocationView extends Component {
           </View>
           <View style={{flexDirection:'row',paddingBottom:'5%'}}>
             <Ionicons name="document-text-outline" size={24} color="black" />
-            <TextInput style={styles.detailTextInput} placeholder=' รายละเอียดงานที่ต้องทำกับจุดนี้'
+            <TextInput style={styles.detailTextInput} placeholder= {textdetail}
             onChangeText={txt=>{this.setState({details:txt})}}></TextInput>
           </View>
           

@@ -27,7 +27,8 @@ const options = [
   { value: 'picktime', label: 'รับสินค้าล่วงหน้า' }
   
 ];
-const defaultOption = options[0];
+
+      
 
 class Home extends Component {
     constructor(props){
@@ -111,19 +112,21 @@ class Home extends Component {
     addInput =()=>{
       
       console.log(this.props.pointList)
-      this.setState({waypointlist : this.state.waypointlist.concat(["Select location"])});
-      let item ={
-        id:0,
-        region:{},
-        address:'',
-        phonenumber:'',
-        details:''
-        
-
-      }
-      this.props.addRegion(item)
+      
 
       if(this.state.waypointnum<10){
+        this.setState({waypointlist : this.state.waypointlist.concat(["Select location"])});
+        
+        let item ={
+          id:0,
+          region:{},
+          address:'',
+          phonenumber:'',
+          details:''
+          
+
+        }
+        this.props.addRegion(item)
         this.setState({waypointnum:this.state.waypointnum+1})
       }else{
         this.showAlert()
@@ -201,7 +204,7 @@ class Home extends Component {
     goToAddDetails=()=>{
       let time=null
       if(this.state.value==='instanly'){
-        time ='instanly'
+        time = new Date();
         this.goToAddDetails2(time)
       }
       if(this.state.value==='picktime'){
@@ -225,7 +228,12 @@ class Home extends Component {
       }
       this.props.saveOrder(item)
       console.log(this.props.order)
+      this.calculatewaypoint()
       this.props.navigation.navigate('AddDetails')
+    }
+
+    calculatewaypoint=()=>{
+      
     }
     
     render(props) {
@@ -234,24 +242,46 @@ class Home extends Component {
 
         let arr=[]
         for (let i=0;i<this.state.waypointnum;i++){
-        
-            arr.push(
-              <View key={i} style={{flexDirection:'row',alignItems:'center',padding:'2%'}}>
-                <Text> {i+1}.</Text>
-                <TextInput editable={false} selectTextOnFocus={false} style={{backgroundColor:'white',borderColor:'black',borderWidth:1,width:'80%'}} placeholder='select location'
-                value={this.props.pointList[i] ? this.props.pointList[i].address : "Select waypoint"}>
+            if(i===0){
+
+              arr.push(
                 
-                </TextInput>
-                <TouchableOpacity onPress={()=>this.goToPickLocationPage(i)}
-                  styles={StyleSheet.buttonLogin}>
-                  <MaterialIcons name="gps-fixed" size={24} color="black" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={()=>this.removeInput(i)}
-                  styles={StyleSheet.buttonLogin}>
-                  <AntDesign name="minuscircleo" size={20} color="red"></AntDesign>
-                </TouchableOpacity>
-              </View>
-            )
+                <View key={i} style={{flexDirection:'row',alignItems:'center',padding:'2%'}}>
+                  <Text> {i+1}.</Text>
+                  <TextInput editable={false} selectTextOnFocus={false} style={{backgroundColor:'white',borderColor:'black',borderWidth:1,width:'80%'}} placeholder='เลือกจุดรับของ'
+                  value={this.props.pointList[i] ? this.props.pointList[i].address : "เลือกจุดรับของ"}>
+                  
+                  </TextInput>
+                  <TouchableOpacity onPress={()=>this.goToPickLocationPage(i)}
+                    styles={StyleSheet.buttonLogin}>
+                    <MaterialIcons name="gps-fixed" size={24} color="black" />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={()=>this.removeInput(i)}
+                    styles={StyleSheet.buttonLogin}>
+                    <AntDesign name="minuscircleo" size={20} color="red"></AntDesign>
+                  </TouchableOpacity>
+                </View>
+              )
+            }else{
+              arr.push(
+                <View key={i} style={{flexDirection:'row',alignItems:'center',padding:'2%'}}>
+                  <Text> {i+1}.</Text>
+                  <TextInput editable={false} selectTextOnFocus={false} style={{backgroundColor:'white',borderColor:'black',borderWidth:1,width:'80%'}} placeholder='เลือกจุดส่งของ'
+                  value={this.props.pointList[i] ? this.props.pointList[i].address : "เลือกจุดส่งของ"}>
+                  
+                  </TextInput>
+                  <TouchableOpacity onPress={()=>this.goToPickLocationPage(i)}
+                    styles={StyleSheet.buttonLogin}>
+                    <MaterialIcons name="gps-fixed" size={24} color="black" />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={()=>this.removeInput(i)}
+                    styles={StyleSheet.buttonLogin}>
+                    <AntDesign name="minuscircleo" size={20} color="red"></AntDesign>
+                  </TouchableOpacity>
+                </View>
+              )
+            }
+            
           }
         return (
             
