@@ -19,7 +19,7 @@ import { connect } from 'react-redux';
 import { addRegion,deleteRegion, saveOrder } from "../actions/Users";
 import { Dropdown } from 'react-native-element-dropdown';
 import DateTimePicker from '@react-native-community/datetimepicker';
-
+import axios from 'axios';
 
 
 const options = [
@@ -27,7 +27,8 @@ const options = [
   { value: 'picktime', label: 'รับสินค้าล่วงหน้า' }
   
 ];
-
+const apiKey="AIzaSyCfjk1u2VcAvNfK31VMN581MMNePvR2J-k";
+const Distance_URL="https://maps.googleapis.com/maps/api/distancematrix/json"
       
 
 class Home extends Component {
@@ -64,6 +65,26 @@ class Home extends Component {
           ]  
       );  
   }  
+  showAlertNoneOfWayPoint() {  
+    Alert.alert(  
+        'Error',  
+        'waypoint is none,pls pick location',  
+        [  
+            
+            {text: 'OK', onPress: () => console.log('OK Pressed')},  
+        ]  
+    );  
+}  
+showAlertNoneOfSendPoint() {  
+  Alert.alert(  
+      'Error',  
+      'send point is none,pls pick send point',  
+      [  
+          
+          {text: 'OK', onPress: () => console.log('OK Pressed')},  
+      ]  
+  );  
+}  
 
     showAlert2() {  
       Alert.alert(  
@@ -111,7 +132,7 @@ class Home extends Component {
 
     addInput =()=>{
       
-      console.log(this.props.pointList)
+      
       
 
       if(this.state.waypointnum<10){
@@ -227,12 +248,113 @@ class Home extends Component {
 
       }
       this.props.saveOrder(item)
-      console.log(this.props.order)
+      console.log('this.props.order',this.props.order)
       this.calculatewaypoint()
       this.props.navigation.navigate('AddDetails')
     }
 
     calculatewaypoint=()=>{
+      let num = this.state.waypointnum
+      let orilat="40.6655101"
+      let orilng="-73.89188969999998"
+      let deslat="40.659569"
+      let deslng="-73.933783"
+      let Disarr = []
+      let Timearr = []
+      
+      switch(num){
+        case 0:
+          this.showAlertNoneOfWayPoint()
+          break;
+        case 1:
+          this.showAlertNoneOfSendPoint()
+          break;
+        default: 
+          
+          for(let i = 0 ; i<num; i++)
+          {
+            let arr=[]
+            let arr2=[]
+            for(let j = 0; j<num; j++ )
+            {
+              orilat=this.props.pointList[i].region.latitude
+              orilng=this.props.pointList[i].region.longitude
+              deslat=this.props.pointList[j].region.latitude
+              deslng=this.props.pointList[j].region.longitude
+              var config = {
+                method: 'get',
+                url: `${Distance_URL}?origins=${orilat}%2C${orilng}&destinations=${deslat}%2C${deslng}&key=${apiKey}`,
+                headers:{}
+              };
+
+                axios(config)
+              .then(function (response) {
+              
+              let data =response.data
+              console.log(data);
+              
+              arr.push(data.rows[0].elements[0].distance.value)
+              arr2.push(data.rows[0].elements[0].duration.value)
+              
+              if(i==num-1 && j==num-1){
+                Disarr.push(arr)
+                Timearr.push(arr2)
+                console.log('print disarr',Disarr)
+                console.log('print timearr',Timearr)
+                var sendParaToAPI = {
+                  method: 'post',
+                  url: `http://192.168.1.100:5002/send`,
+                  headers:{'Content-Type': 'application/json'},
+                  data: {
+                    num : num,
+                    distanceArray: Disarr,
+                    timeArray: Timearr
+                  }
+                };
+    
+                
+                  axios(sendParaToAPI)
+                .then(function (response) {
+                  
+                  let data =response
+                  console.log('status of sending api',data);
+                  },)
+                  .catch(function (error) {
+                    console.log(error);
+                  });
+                
+                    
+              }
+              
+              })
+                  
+              .catch(function (error) {
+                console.log(error);
+              });
+              
+              
+            
+              
+              
+            }
+            
+            
+              Disarr.push(arr)
+              Timearr.push(arr2)
+          
+          }
+            
+
+
+      }
+              
+
+     
+     
+    
+     
+        
+      
       
     }
     
