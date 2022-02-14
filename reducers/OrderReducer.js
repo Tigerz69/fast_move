@@ -1,5 +1,5 @@
 
-import {SAVE_ORDER,EDIT_MORE_ORDER} from '../actions/Types'
+import {SAVE_ORDER,EDIT_MORE_ORDER,ADD_DIST_DURA_PRICE_TO_ORDER} from '../actions/Types'
 
 const intialState = {
  order:{},
@@ -28,12 +28,22 @@ const orderReducer=(state = intialState,action)=>{
         }
     case EDIT_MORE_ORDER:
       let ordercopie = JSON.parse(JSON.stringify(state.order));
+
       order ={id:ordercopie.id,getTime:ordercopie.getTime,wayPointList:ordercopie.wayPointList
          ,details:action.lastDetails,phone
          :action.customerPhone,price:action.price}
        return{
         ...state,order:order
        }
+    case ADD_DIST_DURA_PRICE_TO_ORDER:
+      let ordercopie = JSON.parse(JSON.stringify(state.order));
+      
+      order ={id:ordercopie.id,getTime:ordercopie.getTime,wayPointList:ordercopie.wayPointList
+        ,details:ordercopie.details,phone
+        :ordercopie.phone,price:action.price,distance:action.distance,duration:action.duration}
+      return{
+          ...state,order:order
+        }
      default:
       return state
       

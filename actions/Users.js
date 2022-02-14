@@ -1,6 +1,6 @@
 import {ADD_USER,ADD_REGION,EDIT_REGION,DELETE_REGION,
   SAVE_ORDER,
-  EDIT_MORE_ORDER} from './Types'
+  EDIT_MORE_ORDER,ADD_DIST_DURA_PRICE_TO_ORDER} from './Types'
 
 
 export const addUser=(item)=>(
@@ -62,6 +62,15 @@ export const editMoreOrder=(item)=>(
     type:EDIT_MORE_ORDER,
     lastDetails:item.details,
     customerPhone:item.phone,
+    price:item.price
+  }
+)
+
+export const addDistanceDurationPriceToOrder=(item)=>(
+  {
+    type:ADD_DIST_DURA_PRICE_TO_ORDER,
+    distance:item.distance,
+    duration:item.duration,
     price:item.price
   }
 )

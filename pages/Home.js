@@ -48,7 +48,9 @@ class Home extends Component {
            time:null,
            mode:null,
            show:false,
-           showBtn:false
+           showBtn:false,
+           distance:0,
+           duration:0
 
         };
         this.myRef = React.createRef();
@@ -269,6 +271,33 @@ showAlertNoneOfSendPoint() {
         case 1:
           this.showAlertNoneOfSendPoint()
           break;
+
+        case 2:
+          orilat=this.props.pointList[0].region.latitude
+          orilng=this.props.pointList[0].region.longitude
+          deslat=this.props.pointList[1].region.latitude
+          deslng=this.props.pointList[1].region.longitude
+
+            let config = {
+              method: 'get',
+              url: `${Distance_URL}?origins=${orilat}%2C${orilng}&destinations=${deslat}%2C${deslng}&key=${apiKey}`,
+              headers:{}
+            };
+
+              axios(config)
+            .then( (response) => {
+            
+            let data =response.data
+            console.log(data);
+            this.setState({distance:response.data.rows[0].elements[0].distance.value})
+            this.setState({time:response.data.rows[0].elements[0].duration.value})
+            console.log('dis',this.state.distance)
+            console.log('time',this.state.duration)
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+          break;
         default: 
           
           for(let i = 0 ; i<num; i++)
@@ -281,7 +310,7 @@ showAlertNoneOfSendPoint() {
               orilng=this.props.pointList[i].region.longitude
               deslat=this.props.pointList[j].region.latitude
               deslng=this.props.pointList[j].region.longitude
-              var config = {
+              let config = {
                 method: 'get',
                 url: `${Distance_URL}?origins=${orilat}%2C${orilng}&destinations=${deslat}%2C${deslng}&key=${apiKey}`,
                 headers:{}
@@ -296,32 +325,37 @@ showAlertNoneOfSendPoint() {
               arr.push(data.rows[0].elements[0].distance.value)
               arr2.push(data.rows[0].elements[0].duration.value)
               
-              if(i==num-1 && j==num-1){
+              if(j==num-1){
                 Disarr.push(arr)
                 Timearr.push(arr2)
-                console.log('print disarr',Disarr)
-                console.log('print timearr',Timearr)
-                var sendParaToAPI = {
-                  method: 'post',
-                  url: `http://192.168.1.100:5002/send`,
-                  headers:{'Content-Type': 'application/json'},
-                  data: {
-                    num : num,
-                    distanceArray: Disarr,
-                    timeArray: Timearr
-                  }
-                };
-    
-                
-                  axios(sendParaToAPI)
-                .then(function (response) {
+                if(i==num-1){
+                  console.log('print disarr',Disarr)
+                  console.log('print timearr',Timearr)
+                  var sendParaToAPI = {
+                    method: 'post',
+                    url: `http://192.168.1.100:5002/send`,
+                    
+                   
+                    data: {
+                      num : num,
+                      distanceArray: Disarr,
+                      timeArray: Timearr
+                    }
+                  };
+      
                   
-                  let data =response
-                  console.log('status of sending api',data);
-                  },)
-                  .catch(function (error) {
-                    console.log(error);
-                  });
+                    axios(sendParaToAPI)
+                  .then(function (response) {
+                    
+                    let data =response
+                    console.log('status of sending api',data);
+                    },)
+                    .catch(function (error) {
+                      console.log(error);
+                    });
+                }
+                
+
                 
                     
               }
@@ -339,8 +373,7 @@ showAlertNoneOfSendPoint() {
             }
             
             
-              Disarr.push(arr)
-              Timearr.push(arr2)
+              
           
           }
             
