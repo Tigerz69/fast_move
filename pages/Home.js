@@ -257,13 +257,15 @@ showAlertNoneOfSendPoint() {
 
     calculatewaypoint=()=>{
       let num = this.state.waypointnum
-      let orilat="40.6655101"
-      let orilng="-73.89188969999998"
-      let deslat="40.659569"
-      let deslng="-73.933783"
+      let orilat=""
+      let orilng=""
+      let deslat=""
+      let deslng=""
       let Disarr = []
       let Timearr = []
       
+
+
       switch(num){
         case 0:
           this.showAlertNoneOfWayPoint()
@@ -273,75 +275,93 @@ showAlertNoneOfSendPoint() {
           break;
 
         case 2:
-          orilat=this.props.pointList[0].region.latitude
-          orilng=this.props.pointList[0].region.longitude
-          deslat=this.props.pointList[1].region.latitude
-          deslng=this.props.pointList[1].region.longitude
+          orilat=JSON.parse(JSON.stringify(this.props.pointList[0].region.latitude)) 
+          orilng=JSON.parse(JSON.stringify(this.props.pointList[0].region.longitude)) 
+          deslat=JSON.parse(JSON.stringify(this.props.pointList[1].region.latitude))
+          deslng=JSON.parse(JSON.stringify(this.props.pointList[1].region.longitude)) 
+
 
             let config = {
               method: 'get',
               url: `${Distance_URL}?origins=${orilat}%2C${orilng}&destinations=${deslat}%2C${deslng}&key=${apiKey}`,
               headers:{}
-            };
+              };
 
-              axios(config)
+            axios(config)
             .then( (response) => {
             
-            let data =response.data
+            let data =JSON.parse(JSON.stringify( response.data))
             console.log(data);
-            this.setState({distance:response.data.rows[0].elements[0].distance.value})
-            this.setState({time:response.data.rows[0].elements[0].duration.value})
+            
+            this.setState({distance:data.rows[0].elements[0].distance.value})
+            this.setState({time:data.rows[0].elements[0].duration.value})
             console.log('dis',this.state.distance)
-            console.log('time',this.state.duration)
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+            console.log('time',this.state.time)
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
           break;
         default: 
-          
+          for(let k = 0; k<num; k++)
+          {
+            for(let l = 0; l<num;l++)
+            {
+              Disarr[k][l]=0
+              Timearr[k][l]=0
+            }
+          }
+          console.log(Disarr)
+          console.log(Timearr)
+          console.log('default')
           for(let i = 0 ; i<num; i++)
           {
+            
             let arr=[]
             let arr2=[]
             for(let j = 0; j<num; j++ )
             {
-              orilat=this.props.pointList[i].region.latitude
-              orilng=this.props.pointList[i].region.longitude
-              deslat=this.props.pointList[j].region.latitude
-              deslng=this.props.pointList[j].region.longitude
+              
+              orilat=JSON.parse(JSON.stringify(this.props.pointList[i].region.latitude)) 
+              orilng=JSON.parse(JSON.stringify(this.props.pointList[i].region.longitude)) 
+              deslat=JSON.parse(JSON.stringify(this.props.pointList[j].region.latitude))
+              deslng=JSON.parse(JSON.stringify(this.props.pointList[j].region.longitude)) 
               let config = {
                 method: 'get',
                 url: `${Distance_URL}?origins=${orilat}%2C${orilng}&destinations=${deslat}%2C${deslng}&key=${apiKey}`,
                 headers:{}
               };
 
-                axios(config)
+              axios(config)
               .then(function (response) {
               
-              let data =response.data
-              console.log(data);
-              
-              arr.push(data.rows[0].elements[0].distance.value)
-              arr2.push(data.rows[0].elements[0].duration.value)
-              
-              if(j==num-1){
-                Disarr.push(arr)
-                Timearr.push(arr2)
-                if(i==num-1){
-                  console.log('print disarr',Disarr)
-                  console.log('print timearr',Timearr)
-                  var sendParaToAPI = {
-                    method: 'post',
-                    url: `http://192.168.1.100:5002/send`,
-                    
-                   
-                    data: {
-                      num : num,
-                      distanceArray: Disarr,
-                      timeArray: Timearr
-                    }
-                  };
+                      let data_temp = JSON.parse(JSON.stringify(response.data))
+                      console.log(data_temp);
+                      
+                      arr.push(data_temp.rows[0].elements[0].distance.value)
+                      arr2.push(data_temp.rows[0].elements[0].duration.value)
+                      
+                      if(j==num-1){
+                        Disarr.push(arr)
+                        Timearr.push(arr2)
+                        console.log('print num-1',num-1)
+                        console.log('print arr',arr)
+                        console.log('print arr2',arr2)
+                        
+                        if(i==num-1){
+                          console.log('print disarr',Disarr)
+                          console.log('print timearr',Timearr)
+                          var sendParaToAPI = {
+                            method: 'post',
+                            url: `http://192.168.1.100:5002/send`,
+                            
+                          
+                            data: {
+                              num : num,
+                              distanceArray: Disarr,
+                              timeArray: Timearr
+                            }
+                          };
       
                   
                     axios(sendParaToAPI)
@@ -358,7 +378,7 @@ showAlertNoneOfSendPoint() {
 
                 
                     
-              }
+                  }
               
               })
                   

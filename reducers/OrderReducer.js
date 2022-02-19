@@ -36,11 +36,11 @@ const orderReducer=(state = intialState,action)=>{
         ...state,order:order
        }
     case ADD_DIST_DURA_PRICE_TO_ORDER:
-      let ordercopie = JSON.parse(JSON.stringify(state.order));
+      let ordercopie2 = JSON.parse(JSON.stringify(state.order));
       
-      order ={id:ordercopie.id,getTime:ordercopie.getTime,wayPointList:ordercopie.wayPointList
-        ,details:ordercopie.details,phone
-        :ordercopie.phone,price:action.price,distance:action.distance,duration:action.duration}
+      order ={id:ordercopie2.id,getTime:ordercopie2.getTime,wayPointList:ordercopie2.wayPointList
+        ,details:ordercopie2.details,phone
+        :ordercopie2.phone,price:action.price,distance:action.distance,duration:action.duration}
       return{
           ...state,order:order
         }
