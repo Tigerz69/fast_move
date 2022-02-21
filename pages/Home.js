@@ -20,7 +20,7 @@ import { addRegion,deleteRegion, saveOrder } from "../actions/Users";
 import { Dropdown } from 'react-native-element-dropdown';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import axios from 'axios';
-
+import Loading from './Loading';
 
 const options = [
   { value: 'instanly', label: 'รับสินค้าทันที' },
@@ -50,8 +50,9 @@ class Home extends Component {
            show:false,
            showBtn:false,
            distance:0,
-           duration:0
-
+           duration:0,
+           loading:false,
+           promises:[]
         };
         this.myRef = React.createRef();
       
@@ -252,17 +253,20 @@ showAlertNoneOfSendPoint() {
       this.props.saveOrder(item)
       console.log('this.props.order',this.props.order)
       this.calculatewaypoint()
-      this.props.navigation.navigate('AddDetails')
+      if(this.state.loading==false){
+        this.props.navigation.navigate('AddDetails')
+      }
+      
     }
 
     calculatewaypoint=()=>{
-      let num = this.state.waypointnum
+      var num = this.state.waypointnum
       let orilat=""
       let orilng=""
       let deslat=""
       let deslng=""
-      let Disarr = []
-      let Timearr = []
+      var Disarr = []
+      var Timearr = []
       
 
 
@@ -305,11 +309,15 @@ showAlertNoneOfSendPoint() {
         default: 
           for(let k = 0; k<num; k++)
           {
+            let temp =[]
+            let temp2=[]
             for(let l = 0; l<num;l++)
             {
-              Disarr[k][l]=0
-              Timearr[k][l]=0
+              temp.push(0)
+              temp2.push(0)
             }
+            Disarr.push(temp)
+            Timearr.push(temp2)
           }
           console.log(Disarr)
           console.log(Timearr)
@@ -317,8 +325,6 @@ showAlertNoneOfSendPoint() {
           for(let i = 0 ; i<num; i++)
           {
             
-            let arr=[]
-            let arr2=[]
             for(let j = 0; j<num; j++ )
             {
               
@@ -326,89 +332,91 @@ showAlertNoneOfSendPoint() {
               orilng=JSON.parse(JSON.stringify(this.props.pointList[i].region.longitude)) 
               deslat=JSON.parse(JSON.stringify(this.props.pointList[j].region.latitude))
               deslng=JSON.parse(JSON.stringify(this.props.pointList[j].region.longitude)) 
+
+
               let config = {
                 method: 'get',
                 url: `${Distance_URL}?origins=${orilat}%2C${orilng}&destinations=${deslat}%2C${deslng}&key=${apiKey}`,
                 headers:{}
               };
 
-              axios(config)
-              .then(function (response) {
-              
-                      let data_temp = JSON.parse(JSON.stringify(response.data))
-                      console.log(data_temp);
+              this.setState({promises:this.state.promises.push((axios(config)
+                .then((response)=> {
                       
-                      arr.push(data_temp.rows[0].elements[0].distance.value)
-                      arr2.push(data_temp.rows[0].elements[0].duration.value)
-                      
-                      if(j==num-1){
-                        Disarr.push(arr)
-                        Timearr.push(arr2)
-                        console.log('print num-1',num-1)
-                        console.log('print arr',arr)
-                        console.log('print arr2',arr2)
-                        
-                        if(i==num-1){
-                          console.log('print disarr',Disarr)
-                          console.log('print timearr',Timearr)
-                          var sendParaToAPI = {
-                            method: 'post',
-                            url: `http://192.168.1.100:5002/send`,
-                            
-                          
-                            data: {
-                              num : num,
-                              distanceArray: Disarr,
-                              timeArray: Timearr
-                            }
-                          };
-      
-                  
-                    axios(sendParaToAPI)
-                  .then(function (response) {
+                    let data_temp = (JSON.parse(JSON.stringify(response.data)))
+                    console.log(data_temp);
                     
-                    let data =response
-                    console.log('status of sending api',data);
-                    },)
-                    .catch(function (error) {
-                      console.log(error);
-                    });
-                }
-                
-
-                
-                    
-                  }
-              
-              })
-                  
-              .catch(function (error) {
-                console.log(error);
-              });
-              
-              
-            
-              
-              
+                    Disarr[i][j]=data_temp.rows[0].elements[0].distance.value
+                    Timearr[i][j]=data_temp.rows[0].elements[0].duration.value
+                 
+                  })  
+                .catch(function (error) {
+                  console.log(error);
+                })))})
             }
             
+              
+              
+              
             
               
-          
+              
           }
+            
+            
+       
+          
+          
             
 
 
       }
               
 
-     
+      this.waitresponse(Disarr,Timearr,num)
      
     
      
         
       
       
+    }
+
+    waitresponse=(Disarr,Timearr,num)=>{
+      Promise.all(this.state.promises)
+      .then(function (data) {
+        // Log the data to the console
+        // You would do something with both sets of data here
+        console.log(data);
+        console.log('print disarr',Disarr)
+        console.log('print timearr',Timearr)
+        var sendParaToAPI = {
+          method: 'post',
+          url: `http://192.168.1.100:5002/send`,
+          
+        
+          data: {
+            num : num,
+            distanceArray: Disarr,
+            timeArray: Timearr
+          }
+        };
+
+
+          axios(sendParaToAPI)
+        .then(function (response) {
+          
+          let data =response
+          console.log('status of sending api',data);
+          },)
+          .catch(function (error) {
+            console.log(error);
+          });
+          
+      }).catch(function (error) {
+        // if there's an error, log it
+        console.log(error);
+      });
     }
     
     render(props) {
@@ -463,6 +471,7 @@ showAlertNoneOfSendPoint() {
       
               <ScrollView contentContainerStyle={styles.container}>
                 {arr}
+                
                 <TouchableOpacity onPress={this.addInput}
                       styles={StyleSheet.addButton}
                     >
@@ -525,7 +534,7 @@ showAlertNoneOfSendPoint() {
                 <TouchableOpacity style={styles.addButton} onPress={this.goToAddDetails}>
                       <Text>เพิ่มรายละเอียด</Text>
                 </TouchableOpacity>
-                
+                {this.loading&&(<Loading></Loading>)}
                  
                   
               </ScrollView>
