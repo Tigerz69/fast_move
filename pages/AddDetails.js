@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import {editMoreOrder} from '../actions/Users';
+import axios from "axios";
 
 class AddDetails extends Component{
     constructor(props){
@@ -27,7 +28,10 @@ class AddDetails extends Component{
             month:'',
             years:'',
             hour:'',
-            minute:''
+            minute:'',
+            distance:0,
+            duration:0,
+            waypoint:""
           };
         }
         calculate=()=>{
@@ -35,7 +39,7 @@ class AddDetails extends Component{
           phone:this.state.phonenumber,price:this.state.price}
           this.props.editMoreOrder(item)
           console.log('order',this.props.order)
-          
+          console.log('distance ',this.state.distance,' duration ',this.state.duration,' gnome ',this.state.waypoint)
         }
 
         componentDidMount=()=>{
@@ -57,6 +61,16 @@ class AddDetails extends Component{
           this.setState({years:years})
           this.setState({hour:hour})
           this.setState({minute:minute})
+
+          
+          axios.get(`http://192.168.1.100:5002/get`)  
+          .then(res => {  
+            let data = res.data; 
+            console.log('data',data) 
+            this.setState({distance:res.data["distance"]})
+            this.setState({duration:res.data["duration"]})
+            this.setState({waypoint:res.data["gnome"]})
+          })  
         }
 
         render(props){

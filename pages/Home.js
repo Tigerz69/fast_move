@@ -253,9 +253,9 @@ showAlertNoneOfSendPoint() {
       this.props.saveOrder(item)
       console.log('this.props.order',this.props.order)
       this.calculatewaypoint()
-      if(this.state.loading==false){
-        this.props.navigation.navigate('AddDetails')
-      }
+      this.setState({promises:[]})
+      this.props.navigation.navigate('AddDetails')
+      
       
     }
 
