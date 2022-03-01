@@ -49,8 +49,8 @@ const LocationViewScreen=({navigation,route})=>(
   <LocationView navigation={navigation} route={route}/>
 )
 
-const AddDetailsScreen=({navigation})=>(
-  <AddDetails navigation={navigation}/>
+const AddDetailsScreen=({navigation,route})=>(
+  <AddDetails navigation={navigation} route={route}/>
 )
 
 LogBox.ignoreLogs(["AsyncStorage has been extracted from react-native core and will be removed in a future release. It can now be installed and imported from '@react-native-async-storage/async-storage' instead of 'react-native'. See https://github.com/react-native-async-storage/async-storage"]);

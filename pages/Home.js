@@ -52,7 +52,8 @@ class Home extends Component {
            distance:0,
            duration:0,
            loading:false,
-           promises:[]
+           promises:[],
+           gnome:""
         };
         this.myRef = React.createRef();
       
@@ -254,7 +255,11 @@ showAlertNoneOfSendPoint() {
       console.log('this.props.order',this.props.order)
       this.calculatewaypoint()
       this.setState({promises:[]})
-      this.props.navigation.navigate('AddDetails')
+
+      this.props.navigation.navigate('AddDetails',{distance:this.state.distance,
+        duration:this.state.duration,gnome:this.state.gnome})
+      
+      
       
       
     }
@@ -279,6 +284,7 @@ showAlertNoneOfSendPoint() {
           break;
 
         case 2:
+          console.log('case 2 ')
           orilat=JSON.parse(JSON.stringify(this.props.pointList[0].region.latitude)) 
           orilng=JSON.parse(JSON.stringify(this.props.pointList[0].region.longitude)) 
           deslat=JSON.parse(JSON.stringify(this.props.pointList[1].region.latitude))
@@ -299,6 +305,7 @@ showAlertNoneOfSendPoint() {
             
             this.setState({distance:data.rows[0].elements[0].distance.value})
             this.setState({time:data.rows[0].elements[0].duration.value})
+            this.setState({gnome:"01"})
             console.log('dis',this.state.distance)
             console.log('time',this.state.time)
             })
@@ -306,7 +313,8 @@ showAlertNoneOfSendPoint() {
               console.log(error);
             });
           break;
-        default: 
+        default:
+          console.log('default case ') 
           for(let k = 0; k<num; k++)
           {
             let temp =[]
@@ -368,12 +376,12 @@ showAlertNoneOfSendPoint() {
           
           
             
-
+          this.waitresponse(Disarr,Timearr,num)
 
       }
               
 
-      this.waitresponse(Disarr,Timearr,num)
+      
      
     
      
