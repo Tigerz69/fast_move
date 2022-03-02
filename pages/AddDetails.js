@@ -1,4 +1,4 @@
-import { Component} from "react";
+import React,{Component} from "react";
 import {
     View,
     Text,
@@ -16,12 +16,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import {editMoreOrder} from '../actions/Users';
 import axios from "axios";
-
+import { BottomPopup } from './BottomPopup';
 const initailprice = 36 
 
 class AddDetails extends Component{
+
     constructor(props){
         super(props);
+        
           this.state = {
             details:'',
             phonenumber:'',
@@ -35,7 +37,8 @@ class AddDetails extends Component{
             duration:0,
             gnome:""
           };
-        }
+          this.popupRef = React.createRef()
+  }
         
         price_cal=(dist,num)=>{
           var upOnDistPrice = 0
@@ -55,26 +58,27 @@ class AddDetails extends Component{
           return totalPrice
         }
         
-        calculate_for_2_point=()=>{
-          const {route} =this.props
-          let dist = Math.round(route.params.distance/1000)
-          let dur = Math.round(route.params.duration/60)
-          let num = 2
-          let totalPrice = this.price_cal(dist,num)
-          let minute_dur = dur
-          this.setState({price:totalPrice})
+        // calculate_for_2_point=()=>{
+        //   //const {route}=this.props
+        //   let dist = Math.round(route.params.distance/1000)
+        //   let dur = Math.round(route.params.duration/60)
+        //   let num = 2
+        //   let totalPrice = this.price_cal(dist,num)
+        //   let minute_dur = dur
+        //   this.setState({price:totalPrice})
             
-          this.setState({duration:minute_dur})
-          this.setState({distance:dist})
-          this.setState({gnome:data["gnome"]})
-          let item ={details:this.state.details,
-            phone:this.state.phonenumber,price:this.state.price}
-            this.props.editMoreOrder(item)
-            console.log('order',this.props.order)
-            console.log('distance ',this.state.distance,' duration ',this.state.duration,' gnome ',this.state.gnome)
-        }
+        //   this.setState({duration:minute_dur})
+        //   this.setState({distance:dist})
+        //   this.setState({gnome:route.params.gnome})
+        //   let item ={details:this.state.details,
+        //     phone:this.state.phonenumber,price:this.state.price}
+        //     this.props.editMoreOrder(item)
+        //     console.log('order',this.props.order)
+        //     console.log('distance ',this.state.distance,' duration ',this.state.duration,' gnome ',this.state.gnome)
+        // }
 
         calculate=()=>{
+          
           axios.get(`http://192.168.1.100:5002/get`)  
           .then(res => {  
             let data = res.data; 
@@ -104,11 +108,13 @@ class AddDetails extends Component{
         }
 
         fake =()=>{
+          this.calculate()
           
         }
 
         componentDidMount=()=>{
-          const {route} =this.props
+          
+         
           var date =JSON.parse(JSON.stringify(this.props.order.getTime.getDate()))
           var month = JSON.parse(JSON.stringify(this.props.order.getTime.getMonth()+1))
           var years = JSON.parse(JSON.stringify(this.props.order.getTime.getFullYear()))
@@ -126,17 +132,18 @@ class AddDetails extends Component{
           this.setState({years:years})
           this.setState({hour:hour})
           this.setState({minute:minute})
-          console.log("route dist",route.params.distance)
-          if(route.params.distance>0)
-          {
-            this.calculate_for_2_point()
-          }else if(route.params.distance==0){
-            this.calculate()
-          }
           
           
+          this.calculate()
           
         }
+
+        onShowPopup=()=>{
+          this.popupRef.show()
+        }
+        onClosePopup =() => {
+          this.popupRef.close()
+      }
 
         render(){
           
@@ -169,6 +176,14 @@ class AddDetails extends Component{
                 <TouchableOpacity style={styles.button} onPress={this.fake}>
                   <Text>เรียกงานขนส่ง</Text>
                 </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={this.onShowPopup}>
+                  <Text>เรียก popup</Text>
+                </TouchableOpacity>
+                <BottomPopup
+                  title="รายละเอียดค่าบริการ"
+                  ref={(target)=>  this.popupRef = target} 
+                  onTouchOutside={this.onClosePopup}
+                />
             </View>
         );
         }

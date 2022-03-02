@@ -17,6 +17,8 @@ import AddDetails from './pages/AddDetails';
 import configureStore from './Store'
 import {Provider} from 'react-redux'
 
+import { navigationRef } from '../fast_move/src/RootNavigation.js';
+
 const SplashScreen=({navigation})=>(
   <Splash navigation={navigation}/>
 )
@@ -49,8 +51,8 @@ const LocationViewScreen=({navigation,route})=>(
   <LocationView navigation={navigation} route={route}/>
 )
 
-const AddDetailsScreen=({navigation,route})=>(
-  <AddDetails navigation={navigation} route={route}/>
+const AddDetailsScreen=({navigation})=>(
+  <AddDetails navigation={navigation}/>
 )
 
 LogBox.ignoreLogs(["AsyncStorage has been extracted from react-native core and will be removed in a future release. It can now be installed and imported from '@react-native-async-storage/async-storage' instead of 'react-native'. See https://github.com/react-native-async-storage/async-storage"]);
@@ -61,10 +63,10 @@ const Drawer = createDrawerNavigator();
 const MyDrawer=()=> (
   <Drawer.Navigator>
   
-    <Drawer.Screen  
+    {/* <Drawer.Screen  
         name="Show" 
         component={AccoountScreen}
-        options={{ headerStyle: {backgroundColor: 'pink'},headerTintColor: 'white'}}/>
+        options={{ headerStyle: {backgroundColor: 'pink'},headerTintColor: 'white'}}/> */}
 
    {/* <Drawer.Screen  
         name="Edit" 
@@ -102,7 +104,7 @@ const MyStack = ()=>(
 export default function App() {
   return (
     <Provider store={configureStore}>
-      <NavigationContainer>
+      <NavigationContainer ref={navigationRef}>
         {<MyStack />}
       </NavigationContainer>
     </Provider>

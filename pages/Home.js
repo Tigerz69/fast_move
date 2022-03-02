@@ -4,10 +4,8 @@ import {
     Text,
     TouchableOpacity,
     StyleSheet,
-    KeyboardAvoidingView,
     ScrollView,
     Alert,
-    
 }
 from 'react-native';
 import { TextInput } from "react-native-gesture-handler";
@@ -21,7 +19,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import axios from 'axios';
 import Loading from './Loading';
-
+import * as RootNavigation from '../src/RootNavigation.js';
 const options = [
   { value: 'instanly', label: 'รับสินค้าทันที' },
   { value: 'picktime', label: 'รับสินค้าล่วงหน้า' }
@@ -32,42 +30,42 @@ const Distance_URL="https://maps.googleapis.com/maps/api/distancematrix/json"
       
 
 class Home extends Component {
-    constructor(props){
-        super(props);
-          this.state = {
-           email:null,
-           username:null,
-           firstname:null,
-           lastname:null,
-           id:null,
-           waypointnum:0,
-           waypointlist:['Select location'],
-           value: null,
-           isFocus:false,
-           date:new Date(),
-           time:null,
-           mode:null,
-           show:false,
-           showBtn:false,
-           distance:0,
-           duration:0,
-           loading:false,
-           promises:[],
-           gnome:""
-        };
-        this.myRef = React.createRef();
+  constructor(props){
+    super(props);
+    this.state = {
+      email:null,
+      username:null,
+      firstname:null,
+      lastname:null,
+      id:null,
+      waypointnum:0,
+      waypointlist:['Select location'],
+      value: null,
+      isFocus:false,
+      date:new Date(),
+      time:null,
+      mode:null,
+      show:false,
+      showBtn:false,
+      distance:0,
+      duration:0,
+      loading:false,
+      promises:[],
+      gnome:""
+    };
+    this.myRef = React.createRef();
       
-    }
-    
-    showAlert() {  
-      Alert.alert(  
-          'Error',  
-          '10 waypoint is max',  
-          [  
+  }
+
+  showAlert() {  
+    Alert.alert(  
+      'Error',  
+        '10 waypoint is max',  
+        [  
               
               {text: 'OK', onPress: () => console.log('OK Pressed')},  
-          ]  
-      );  
+        ]  
+    );  
   }  
   showAlertNoneOfWayPoint() {  
     Alert.alert(  
@@ -78,27 +76,27 @@ class Home extends Component {
             {text: 'OK', onPress: () => console.log('OK Pressed')},  
         ]  
     );  
-}  
-showAlertNoneOfSendPoint() {  
-  Alert.alert(  
+  }  
+  showAlertNoneOfSendPoint() {  
+    Alert.alert(  
       'Error',  
       'send point is none,pls pick send point',  
       [  
           
           {text: 'OK', onPress: () => console.log('OK Pressed')},  
       ]  
-  );  
-}  
+    );  
+  }  
 
-    showAlert2() {  
-      Alert.alert(  
-          'Error',  
-          'You choose instanly no need to pick a time',  
-          [  
+  showAlert2() {  
+    Alert.alert(  
+        'Error',  
+        'You choose instanly no need to pick a time',  
+        [  
               
-              {text: 'OK', onPress: () => console.log('OK Pressed')},  
-          ]  
-      );  
+            {text: 'OK', onPress: () => console.log('OK Pressed')},  
+        ]  
+    );  
   }  
   
 
@@ -111,7 +109,7 @@ showAlertNoneOfSendPoint() {
             {text: 'OK', onPress: () => console.log('OK Pressed')},  
         ]  
     );  
-}  
+  }  
   showAlert4() {  
     Alert.alert(  
         'Error',  
@@ -122,314 +120,306 @@ showAlertNoneOfSendPoint() {
         ]  
     );  
   }  
-    goToPickLocationPage=(i)=>{
-        this.props.navigation.navigate('LocationView',{index:i})
-        
-    }
 
-    removeInput =(i)=>{
-      let item ={index:i}
-      this.props.deleteRegion(item)
-      console.log(this.props.pointList)
-      this.setState({waypointnum:this.state.waypointnum-1})
-    }
+  goToPickLocationPage=(i)=>{
+    this.props.navigation.navigate('LocationView',{index:i})
+  }
 
-    addInput =()=>{
-      
-      
-      
+  removeInput =(i)=>{
+    let item ={index:i}
+    this.props.deleteRegion(item)
+    console.log(this.props.pointList)
+    this.setState({waypointnum:this.state.waypointnum-1})
+  }
 
-      if(this.state.waypointnum<10){
-        this.setState({waypointlist : this.state.waypointlist.concat(["Select location"])});
-        
-        let item ={
-          id:0,
-          region:{},
-          address:'',
-          phonenumber:'',
-          details:''
-          
+  addInput =()=>{
+    if(this.state.waypointnum<10){
+      this.setState({waypointlist : this.state.waypointlist.concat(["Select location"])});
 
-        }
-        this.props.addRegion(item)
-        this.setState({waypointnum:this.state.waypointnum+1})
-      }else{
-        this.showAlert()
-      }
-      console.log('in point',this.props.pointList)
-    }
-
-    handleChange = (selectedOption) => {
-      this.setState({ selectedOption }, () =>
-        console.log(`Option selected:`, this.state.selectedOption)
-      );
-      if(selectedOption==='instanly'){
-        this.setState({showBtn:false})
-      }else{
-        this.setState({showBtn:true})
-      }
-    };
-
-    
-
-    popupDatePicker = () =>{
-      console.log('popupDate')
-      if(this.state.value==='instanly'){
-        this.showAlert2()
-      }
-      if(this.state.value==='picktime'){
-        console.log('เข้าเลือกวันที่นะ')
-        this.showDatepicker()
-      }if(this.state.value===null){
-        console.log('null kb')
-        this.showAlert3()
-      }
-    }
-
-
-    popupTimePicker = () =>{
-      
-      console.log('popupTime')
-      if(this.state.value==='instanly'){
-        this.showAlert2()
-      }
-      if(this.state.value==='picktime'){
-        console.log('เข้าเลือกเวลานะ')
-        this.showTimepicker()
-      }if(this.state.value===null){
-        console.log('null kb')
-        this.showAlert3()
-      }
-    }
-
-    showDatepicker = () => {
-      this.showMode('date')
-    };
-  
-    showTimepicker = () => {
-      this.showMode('time');
-    };
-
-    showMode = (currentMode) => {
-      this.setState({show:true})
-      this.setState({mode:currentMode})
-    };
-    
-
-    onChange = (event,selectedDate) => {
-      const currentDate = selectedDate || this.state.date;
-      
-      this.setState({show:Platform.OS === 'ios'})
-
-      this.setState({date:currentDate});
-     
-      console.log('changed date',this.state.date)
-    };
-   
-    goToAddDetails=()=>{
-      let time=null
-      if(this.state.value==='instanly'){
-        time = new Date();
-        this.goToAddDetails2(time)
-      }
-      if(this.state.value==='picktime'){
-        time = this.state.date
-        this.goToAddDetails2(time)
-      }if(this.state.value===null){
-        
-        this.showAlert4()
-      }
-      //let list = JSON.parse(JSON.stringify(this.props.pointList));
-      //console.log('waypointlist',this.state.waypointlist)
-      
-    }
-
-    goToAddDetails2=(time)=>{
-      let list = this.props.pointList
       let item ={
-        getTime:time,
-        wayPointList:list
+        id:0,
+        region:{},
+        address:'',
+        phonenumber:'',
+        details:''
+        }
 
-      }
-      this.props.saveOrder(item)
-      console.log('this.props.order',this.props.order)
-      this.calculatewaypoint()
-      this.setState({promises:[]})
+      this.props.addRegion(item)
+      this.setState({waypointnum:this.state.waypointnum+1})
 
-      this.props.navigation.navigate('AddDetails',{distance:this.state.distance,
-        duration:this.state.duration,gnome:this.state.gnome})
-      
-      
-      
-      
+    }else{
+
+        this.showAlert()
     }
+    console.log('in point',this.props.pointList)
+  }
 
-    calculatewaypoint=()=>{
-      var num = this.state.waypointnum
-      let orilat=""
-      let orilng=""
-      let deslat=""
-      let deslng=""
-      var Disarr = []
-      var Timearr = []
+  handleChange = (selectedOption) => {
+    this.setState({ selectedOption }, () =>
+      console.log(`Option selected:`, this.state.selectedOption));
+    if(selectedOption==='instanly'){
+      this.setState({showBtn:false})
+    }else{
+      this.setState({showBtn:true})
+    }
+  }
+
+  popupDatePicker = () =>{
+    console.log('popupDate')
+    if(this.state.value==='instanly'){
+      this.showAlert2()
+    }
+    if(this.state.value==='picktime'){
+      console.log('เข้าเลือกวันที่นะ')
+      this.showDatepicker()
+    }if(this.state.value===null){
+      console.log('null kb')
+      this.showAlert3()
+    }
+  }
+
+  popupTimePicker = () =>{
       
+    console.log('popupTime')
+    if(this.state.value==='instanly'){
+      this.showAlert2()
+    }
+    if(this.state.value==='picktime'){
+      console.log('เข้าเลือกเวลานะ')
+      this.showTimepicker()
+    }if(this.state.value===null){
+      console.log('null kb')
+      this.showAlert3()
+    }
+  }
+
+  showDatepicker = () => {
+    this.showMode('date')
+  }
+  
+  showTimepicker = () => {
+    this.showMode('time');
+  }
+
+  showMode = (currentMode) => {
+    this.setState({show:true})
+    this.setState({mode:currentMode})
+  }
+    
+
+  onChange = (event,selectedDate) => {
+    const currentDate = selectedDate || this.state.date;
+      
+    this.setState({show:Platform.OS === 'ios'})
+
+    this.setState({date:currentDate});
+     
+    console.log('changed date',this.state.date)
+  }
+   
+  goToAddDetails=()=>{
+    let time=null
+    if(this.state.value==='instanly'){
+      time = new Date();
+      this.goToAddDetails2(time)
+    }
+    if(this.state.value==='picktime'){
+      time = this.state.date
+      this.goToAddDetails2(time)
+    }if(this.state.value===null){
+      this.showAlert4()
+    }
+      //let list = JSON.parse(JSON.stringify(this.props.pointList));
+      //console.log('waypointlist',this.state.waypointlist) 
+  }
+
+  goToAddDetails2=(time)=>{
+    let list = this.props.pointList
+    let item ={
+      getTime:time,
+      wayPointList:list
+    }
+    this.props.saveOrder(item)
+    console.log('this.props.order',this.props.order)
+    this.calculatewaypoint()
+    this.setState({promises:[]})
+    //this.props.navigation.navigate('AddDetails')
+    
+  }
+
+  calculatewaypoint=()=>{
+    var num = this.state.waypointnum
+    let orilat=""
+    let orilng=""
+    let deslat=""
+    let deslng=""
+    var Disarr = []
+    var Timearr = []
+    var temp_dist=[]
+    var temp_dur=[]
 
 
-      switch(num){
-        case 0:
-          this.showAlertNoneOfWayPoint()
-          break;
-        case 1:
-          this.showAlertNoneOfSendPoint()
-          break;
+    switch(num){
+      case 0:
+        this.showAlertNoneOfWayPoint()
+        break;
+      case 1:
+        this.showAlertNoneOfSendPoint()
+        break;
+      case 2:
+        console.log('case 2 ')
+        orilat=JSON.parse(JSON.stringify(this.props.pointList[0].region.latitude)) 
+        orilng=JSON.parse(JSON.stringify(this.props.pointList[0].region.longitude)) 
+        deslat=JSON.parse(JSON.stringify(this.props.pointList[1].region.latitude))
+        deslng=JSON.parse(JSON.stringify(this.props.pointList[1].region.longitude)) 
 
-        case 2:
-          console.log('case 2 ')
-          orilat=JSON.parse(JSON.stringify(this.props.pointList[0].region.latitude)) 
-          orilng=JSON.parse(JSON.stringify(this.props.pointList[0].region.longitude)) 
-          deslat=JSON.parse(JSON.stringify(this.props.pointList[1].region.latitude))
-          deslng=JSON.parse(JSON.stringify(this.props.pointList[1].region.longitude)) 
+        let config = {
+          method: 'get',
+          url: `${Distance_URL}?origins=${orilat}%2C${orilng}&destinations=${deslat}%2C${deslng}&key=${apiKey}`,
+          headers:{}
+        };
 
+        this.setState({promises:this.state.promises.push((axios(config)
+        .then( (response) => {
+          let data =JSON.parse(JSON.stringify( response.data))
+          console.log(data);
+          
+          this.setState({distance:data.rows[0].elements[0].distance.value})
+          this.setState({time:data.rows[0].elements[0].duration.value})
+          this.setState({gnome:"01"})
+          console.log('dis',this.state.distance)
+          console.log('time',this.state.time)
+          temp_dist[0]=data.rows[0].elements[0].distance.value
+          temp_dur[0]=data.rows[0].elements[0].duration.value
+        })
+        .catch(function (error) {
+          console.log(error);
+        })))})
+        this.waitresponse2point(temp_dist,temp_dur)
+        break;
+      default:
+        console.log('default case ') 
+        for(let k = 0; k<num; k++)
+        {
+          let temp =[]
+          let temp2=[]
+          for(let l = 0; l<num;l++)
+          {
+            temp.push(0)
+            temp2.push(0)
+          }
+          Disarr.push(temp)
+          Timearr.push(temp2)
+        }
+        console.log(Disarr)
+        console.log(Timearr)
+        console.log('default')
+        for(let i = 0 ; i<num; i++)
+        {
+            
+          for(let j = 0; j<num; j++ )
+          {
+              
+            orilat=JSON.parse(JSON.stringify(this.props.pointList[i].region.latitude)) 
+            orilng=JSON.parse(JSON.stringify(this.props.pointList[i].region.longitude)) 
+            deslat=JSON.parse(JSON.stringify(this.props.pointList[j].region.latitude))
+            deslng=JSON.parse(JSON.stringify(this.props.pointList[j].region.longitude)) 
 
             let config = {
               method: 'get',
               url: `${Distance_URL}?origins=${orilat}%2C${orilng}&destinations=${deslat}%2C${deslng}&key=${apiKey}`,
               headers:{}
-              };
+            };
 
-            axios(config)
-            .then( (response) => {
-            
-            let data =JSON.parse(JSON.stringify( response.data))
-            console.log(data);
-            
-            this.setState({distance:data.rows[0].elements[0].distance.value})
-            this.setState({time:data.rows[0].elements[0].duration.value})
-            this.setState({gnome:"01"})
-            console.log('dis',this.state.distance)
-            console.log('time',this.state.time)
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
-          break;
-        default:
-          console.log('default case ') 
-          for(let k = 0; k<num; k++)
-          {
-            let temp =[]
-            let temp2=[]
-            for(let l = 0; l<num;l++)
-            {
-              temp.push(0)
-              temp2.push(0)
-            }
-            Disarr.push(temp)
-            Timearr.push(temp2)
-          }
-          console.log(Disarr)
-          console.log(Timearr)
-          console.log('default')
-          for(let i = 0 ; i<num; i++)
-          {
-            
-            for(let j = 0; j<num; j++ )
-            {
-              
-              orilat=JSON.parse(JSON.stringify(this.props.pointList[i].region.latitude)) 
-              orilng=JSON.parse(JSON.stringify(this.props.pointList[i].region.longitude)) 
-              deslat=JSON.parse(JSON.stringify(this.props.pointList[j].region.latitude))
-              deslng=JSON.parse(JSON.stringify(this.props.pointList[j].region.longitude)) 
-
-
-              let config = {
-                method: 'get',
-                url: `${Distance_URL}?origins=${orilat}%2C${orilng}&destinations=${deslat}%2C${deslng}&key=${apiKey}`,
-                headers:{}
-              };
-
-              this.setState({promises:this.state.promises.push((axios(config)
-                .then((response)=> {
+            this.setState({promises:this.state.promises.push((axios(config)
+            .then((response)=> {
                       
-                    let data_temp = (JSON.parse(JSON.stringify(response.data)))
-                    console.log(data_temp);
+              let data_temp = (JSON.parse(JSON.stringify(response.data)))
+              console.log(data_temp);
                     
-                    Disarr[i][j]=data_temp.rows[0].elements[0].distance.value
-                    Timearr[i][j]=data_temp.rows[0].elements[0].duration.value
+              Disarr[i][j]=data_temp.rows[0].elements[0].distance.value
+              Timearr[i][j]=data_temp.rows[0].elements[0].duration.value
                  
-                  })  
-                .catch(function (error) {
-                  console.log(error);
-                })))})
-            }
-            
-              
-              
-              
-            
-              
-              
-          }
-            
-            
-       
-          
-          
-            
-          this.waitresponse(Disarr,Timearr,num)
-
-      }
-              
-
-      
-     
-    
-     
+            }).catch(function (error) {
+              console.log(error);
+            })))})
+          }      
+        }
         
-      
-      
+        this.waitresponse(Disarr,Timearr,num) 
+        
     }
+  }
+  
+  waitresponse2point=(temp_dist,temp_dur)=>{
+    Promise.all(this.state.promises)
+    .then(function (data){
+      console.log(data);
+      console.log('print temp_dist',temp_dist[0])
+      console.log('print temp_dur',temp_dur[0])
+      var sendParaToAPI2 = {
+        method: 'post',
+        url: `http://192.168.1.100:5002/send2point`,
 
-    waitresponse=(Disarr,Timearr,num)=>{
-      Promise.all(this.state.promises)
-      .then(function (data) {
-        // Log the data to the console
-        // You would do something with both sets of data here
-        console.log(data);
-        console.log('print disarr',Disarr)
-        console.log('print timearr',Timearr)
-        var sendParaToAPI = {
-          method: 'post',
-          url: `http://192.168.1.100:5002/send`,
+        data: {
           
-        
-          data: {
-            num : num,
-            distanceArray: Disarr,
-            timeArray: Timearr
-          }
-        };
+          distance: temp_dist[0],
+          duration : temp_dur[0]
+        }
+      };
+      axios(sendParaToAPI2)
+      .then(function (response) {
+        let data =response
+        console.log('status of sending 2 point api',data);
+        RootNavigation.navigate('AddDetails');
+      }).catch(function (error) {
+        console.log(error);
+      });
+    })
+  }
+     
+      
+    
+  
 
-
-          axios(sendParaToAPI)
-        .then(function (response) {
-          
-          let data =response
-          console.log('status of sending api',data);
-          },)
-          .catch(function (error) {
-            console.log(error);
-          });
-          
+  waitresponse=(Disarr,Timearr,num)=>{
+    
+    console.log(this.state.promises)
+    Promise.all(this.state.promises)
+    .then(function (data) {
+      // Log the data to the console
+      // You would do something with both sets of data here
+      console.log(data);
+      console.log('print disarr',Disarr)
+      console.log('print timearr',Timearr)
+      
+      var sendParaToAPI = {
+        method: 'post',
+        url: `http://192.168.1.100:5002/send`,
+ 
+        data: {
+          num : num,
+          distanceArray: Disarr,
+          timeArray: Timearr
+        }
+      };
+      axios(sendParaToAPI)
+      .then(function (response) {
+        let data =response
+        console.log('status of sending api',data);
+        RootNavigation.navigate('AddDetails');
+        }).catch(function (error) {
+          console.log(error);
+        });
       }).catch(function (error) {
         // if there's an error, log it
         console.log(error);
       });
-    }
+      
     
-    render(props) {
-        const { navigation } = this.props;
-        const { selectedOption } = this.state;
+  }
+    render() {
+        
 
         let arr=[]
         for (let i=0;i<this.state.waypointnum;i++){
@@ -547,8 +537,9 @@ showAlertNoneOfSendPoint() {
                   
               </ScrollView>
               
-          );
-    }
+          )
+  }
+
 }
 
 const styles = StyleSheet.create({
