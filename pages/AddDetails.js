@@ -16,7 +16,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import {editMoreOrder} from '../actions/Users';
 import axios from "axios";
-import { BottomPopup } from './BottomPopup';
+//import { BottomPopup } from './BottomPopup';
 const initailprice = 36 
 
 class AddDetails extends Component{
@@ -179,11 +179,7 @@ class AddDetails extends Component{
                 <TouchableOpacity style={styles.button} onPress={this.onShowPopup}>
                   <Text>เรียก popup</Text>
                 </TouchableOpacity>
-                {/* <BottomPopup
-                  title="รายละเอียดค่าบริการ"
-                  ref={(target)=>  this.popupRef = target} 
-                  onTouchOutside={this.onClosePopup}
-                /> */}
+                
             </View>
         );
         }

@@ -35,7 +35,7 @@ const RegisterScreen=({navigation})=>(
   <Register navigation={navigation}/>
 )
 
-const AccoountScreen=({navigation})=>(
+const AccountScreen=({navigation})=>(
   <Account navigation={navigation}/>
 )
 
