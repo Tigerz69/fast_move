@@ -44,7 +44,7 @@ class AddDetails extends Component{
           var upOnDistPrice = 0
           var upOnNumPrice = 0
           var totalPrice = 0
-          if(dist<=20){
+          if(dist>=1&&dist<=20){
             upOnDistPrice= dist*7
           }else if(dist>20&&dist<=30){
             upOnDistPrice= dist*8
@@ -55,7 +55,9 @@ class AddDetails extends Component{
             upOnNumPrice = (num-2)*20
           }
           totalPrice = upOnDistPrice+upOnNumPrice+initailprice
-          return totalPrice
+          trantotalPrice=(Math.round(totalPrice * 100) / 100)
+          //if use .toFixed(2) u will get string type
+          return trantotalPrice
         }
         
         // calculate_for_2_point=()=>{
@@ -87,8 +89,8 @@ class AddDetails extends Component{
             // this.setState({duration:data["duration"]})
             // this.setState({gnome:data["gnome"]})
             
-            let dist = Math.round (data["distance"]/1000)
-            let dur = Math.round (data["duration"]/60)
+            let dist = (data["distance"]/1000)
+            let dur = Math.round(data["duration"]/60)
             let num = data["gnome"].length
             let totalPrice = this.price_cal(dist,num)
             let minute_dur = dur
@@ -176,9 +178,9 @@ class AddDetails extends Component{
                 <TouchableOpacity style={styles.button} onPress={this.fake}>
                   <Text>เรียกงานขนส่ง</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={this.onShowPopup}>
+                {/*<TouchableOpacity style={styles.button} onPress={this.onShowPopup}>
                   <Text>เรียก popup</Text>
-                </TouchableOpacity>
+              </TouchableOpacity>*/}
                 
             </View>
         );
