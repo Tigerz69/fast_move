@@ -165,22 +165,22 @@ class Home extends Component {
   }
 
   popupDatePicker = () =>{
-    console.log('popupDate')
+    //console.log('popupDate')
     if(this.state.value==='instanly'){
       this.showAlert2()
     }
     if(this.state.value==='picktime'){
-      console.log('เข้าเลือกวันที่นะ')
+      //console.log('เข้าเลือกวันที่นะ')
       this.showDatepicker()
     }if(this.state.value===null){
-      console.log('null kb')
+      //console.log('null kb')
       this.showAlert3()
     }
   }
 
   popupTimePicker = () =>{
       
-    console.log('popupTime')
+    //console.log('popupTime')
     if(this.state.value==='instanly'){
       this.showAlert2()
     }
@@ -214,7 +214,7 @@ class Home extends Component {
 
     this.setState({date:currentDate});
      
-    console.log('changed date',this.state.date)
+    //console.log('changed date',this.state.date)
   }
    
   goToAddDetails=()=>{
@@ -498,7 +498,7 @@ class Home extends Component {
                     this.setState({value:item.value});
                     this.setState({isFocus:false});
                     this.handleChange(item.value)
-                    console.log(this.state.value)
+                    //console.log(this.state.value)
                   }}
                    renderLeftIcon={() => (
                       <MaterialCommunityIcons

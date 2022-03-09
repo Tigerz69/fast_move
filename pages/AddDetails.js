@@ -82,7 +82,7 @@ class AddDetails extends Component{
           axios.get(`http://192.168.1.100:5002/get`)  
           .then(res => {  
             let data = res.data; 
-            console.log('calculate data',data) 
+            console.log('data from api that calculated',data) 
             // this.setState({distance:data["distance"]})
             // this.setState({duration:data["duration"]})
             // this.setState({gnome:data["gnome"]})
@@ -179,11 +179,11 @@ class AddDetails extends Component{
                 <TouchableOpacity style={styles.button} onPress={this.onShowPopup}>
                   <Text>เรียก popup</Text>
                 </TouchableOpacity>
-                <BottomPopup
+                {/* <BottomPopup
                   title="รายละเอียดค่าบริการ"
                   ref={(target)=>  this.popupRef = target} 
                   onTouchOutside={this.onClosePopup}
-                />
+                /> */}
             </View>
         );
         }

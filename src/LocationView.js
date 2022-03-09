@@ -19,10 +19,10 @@ const PLACE_DETAIL_URL = 'https://maps.googleapis.com/maps/api/place/details/jso
 const DEFAULT_DELTA = { latitudeDelta: 0.015, longitudeDelta: 0.0121 };
 const apiKey="AIzaSyCfjk1u2VcAvNfK31VMN581MMNePvR2J-k";
 const initialLocation={
-            latitude: 15.870032,
-            longitude: 100.992541,
+            latitude: 13.120938398049654,
+            longitude: 100.91920675927467,
           };
-          
+// KU SRC Location
 const actionText 
             ='add';
 const markerColor='red';
@@ -116,7 +116,7 @@ class LocationView extends Component {
 
   _setRegion = (region, animate = true) => {
     this.state.region = { ...this.state.region, ...region };
-    console.log(this.state.region)
+    //console.log(this.state.region)
     
     if (animate) this._map.animateToRegion(this.state.region);
   };
