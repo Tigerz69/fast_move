@@ -352,7 +352,9 @@ class Home extends Component {
   }
   
   waitresponse2point=(temp_dist,temp_dur)=>{
+    this.setState({loading:true})
     Promise.all(this.state.promises)
+    
     .then(function (data){
       console.log(data);
       console.log('print temp_dist',temp_dist[0])
@@ -369,6 +371,7 @@ class Home extends Component {
       };
       axios(sendParaToAPI2)
       .then(function (response) {
+       
         let data =response
         console.log('status of sending 2 point api',data);
         RootNavigation.navigate('AddDetails');
@@ -383,8 +386,8 @@ class Home extends Component {
   
 
   waitresponse=(Disarr,Timearr,num)=>{
-    
-    console.log(this.state.promises)
+    this.setState({loading:true})
+    //console.log(this.state.promises)
     Promise.all(this.state.promises)
     .then(function (data) {
       // Log the data to the console
@@ -403,8 +406,10 @@ class Home extends Component {
           timeArray: Timearr
         }
       };
+      
       axios(sendParaToAPI)
       .then(function (response) {
+        
         let data =response
         console.log('status of sending api',data);
         RootNavigation.navigate('AddDetails');
@@ -466,8 +471,11 @@ class Home extends Component {
           }
         return (
             
-      
+              this.state.loading ? (<Loading></Loading>) : (
+                
               <ScrollView contentContainerStyle={styles.container}>
+                
+                
                 {arr}
                 
                 <TouchableOpacity onPress={this.addInput}
@@ -532,10 +540,13 @@ class Home extends Component {
                 <TouchableOpacity style={styles.addButton} onPress={this.goToAddDetails}>
                       <Text>เพิ่มรายละเอียด</Text>
                 </TouchableOpacity>
-                {this.loading&&(<Loading></Loading>)}
+                
+                
                  
                   
-              </ScrollView>
+              </ScrollView>)
+            
+              
               
           )
   }

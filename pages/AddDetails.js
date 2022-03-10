@@ -16,14 +16,17 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import {editMoreOrder} from '../actions/Users';
 import axios from "axios";
+import Loading from "./Loading";
 //import { BottomPopup } from './BottomPopup';
 const initailprice = 36 
+var upOnDistPrice = 0
+var upOnNumPrice = 0
 
 class AddDetails extends Component{
 
     constructor(props){
         super(props);
-        
+
           this.state = {
             details:'',
             phonenumber:'',
@@ -35,14 +38,14 @@ class AddDetails extends Component{
             minute:'',
             distance:0,
             duration:0,
-            gnome:""
+            gnome:"",
+            loading:false
           };
           this.popupRef = React.createRef()
   }
-        
+  
         price_cal=(dist,num)=>{
-          var upOnDistPrice = 0
-          var upOnNumPrice = 0
+         
           var totalPrice = 0
           if(dist>=1&&dist<=20){
             upOnDistPrice= dist*7
@@ -100,23 +103,30 @@ class AddDetails extends Component{
             this.setState({duration:minute_dur})
             this.setState({distance:dist})
             this.setState({gnome:data["gnome"]})
-            let item ={details:this.state.details,
-              phone:this.state.phonenumber,price:this.state.price}
-              this.props.editMoreOrder(item)
-              console.log('order',this.props.order)
-              console.log('distance ',this.state.distance,' duration ',this.state.duration,' gnome ',this.state.gnome)
+            
           })
           
         }
 
-        fake =()=>{
-          this.calculate()
-          
-        }
+  saveLastNum=()=>{
+    console.log('saveLastNum',this.state.phonenumber) 
+    
+    let item ={details:this.state.details,
+      phone:this.state.phonenumber,price:this.state.price}
+      this.props.editMoreOrder(item)
+      console.log('order',this.props.order)
+      console.log('distance ',this.state.distance,' duration ',this.state.duration,' gnome ',this.state.gnome)
+  }
+
+
+  save =()=>{
+    console.log('order',this.props.order)
+    
+  }
 
         componentDidMount=()=>{
           
-         
+          
           var date =JSON.parse(JSON.stringify(this.props.order.getTime.getDate()))
           var month = JSON.parse(JSON.stringify(this.props.order.getTime.getMonth()+1))
           var years = JSON.parse(JSON.stringify(this.props.order.getTime.getFullYear()))
@@ -139,17 +149,25 @@ class AddDetails extends Component{
           this.calculate()
           
         }
-
-        onShowPopup=()=>{
-          this.popupRef.show()
+      
+        componentDidUpdate(prevProps, prevState) {
+          if (prevState.details !== this.state.details||prevState.phonenumber !== this.state.phonenumber) {
+            let item ={details:this.state.details,
+              phone:this.state.phonenumber,price:this.state.price}
+              this.props.editMoreOrder(item)
+              console.log('order',this.props.order)
+              console.log('distance ',this.state.distance,' duration ',this.state.duration,' gnome ',this.state.gnome)
+              
+          }
         }
-        onClosePopup =() => {
-          this.popupRef.close()
-      }
 
-        render(){
+        
+
+      render(){
           
         return(
+            this.state.loading ? (<Loading></Loading>):
+            (
             <View style={styles.container}>
                 <View style={{alignItems:'center'}}>
                     <Text style={styles.Header}>เพิ่มรายละเอียด</Text>
@@ -165,26 +183,53 @@ class AddDetails extends Component{
                 <View style={styles.detailView}>
                 <MaterialCommunityIcons name="comment-text-outline" size={24} color="black" />
                   <TextInput style={styles.detailTextInput} placeholder='กรอกรายละเอียดเพิ่มเติม' 
-                  onChangeText={txt=>{this.setState({details:txt})}}></TextInput>
+                  onChangeText={txt=>{this.setState({details:txt},()=>{
+                    
+                    console.log('detail state in callback',this.state.details)
+                  })}}></TextInput>
                 </View>
                 <View style={styles.detailView}>
                 <AntDesign name="phone" size={24} color="black" />
                   <TextInput style={styles.detailTextInput} placeholder='เบอร์ติดต่อของลูกค้า' 
-                  onChangeText={txt=>{this.setState({phonenumber:txt})}}></TextInput>
+                  onChangeText={txt=>{this.setState({phonenumber:txt},()=>{
+                    
+                    console.log('phone state in callback',this.state.phonenumber)
+                    this.saveLastNum() 
+                  })}}></TextInput>
                 </View>
                 {/*<View>
                   <Text>ราคา</Text>
                 </View>*/}
-                <TouchableOpacity style={styles.button} onPress={this.fake}>
-                  <Text>เรียกงานขนส่ง</Text>
-                </TouchableOpacity>
+                
                 {/*<TouchableOpacity style={styles.button} onPress={this.onShowPopup}>
                   <Text>เรียก popup</Text>
               </TouchableOpacity>*/}
-                
-            </View>
-        );
-        }
+              <View style={styles.bottomView}>
+                <Text style={{alignItems:'flex-end',fontSize:20}}>
+                      รายละเอียดค่าบริการ
+                </Text>
+                <Text >
+                  ระยะทาง {this.state.distance} กม.
+                </Text>
+                <Text  >
+                  ราคาเริ่มต้น 36 บาท 
+                </Text>
+                <Text  >
+                  ราคาระยะทาง {Math.round(upOnDistPrice * 100) / 100} บาท
+                </Text>
+                <Text  >
+                  ราคาต่อจำนวนจุด {upOnNumPrice} บาท
+                </Text>
+                <Text  >
+                  ทั้งหมด {this.state.price} บาท
+                </Text>
+              </View> 
+              <TouchableOpacity style={styles.button} onPress={this.save}>
+                  <Text style={{color:'white'}}>เรียกงานขนส่ง</Text>
+                </TouchableOpacity>
+            </View>)
+        )
+      }
 }
 
 const styles = StyleSheet.create({
@@ -217,10 +262,20 @@ const styles = StyleSheet.create({
         flexDirection:'row',paddingBottom:'5%',
         width:'90%'  ,paddingLeft:'5%',alignItems:'center',paddingTop:'5%'    },
       button:{
-        backgroundColor:'purple',
+        backgroundColor:'black',
         alignItems:'center',
         justifyContent: 'center',
-      }
+        margin:100,
+        height:50
+
+      },
+      bottomView:{
+        
+        justifyContent: 'flex-end',
+        alignItems:'flex-start',
+        paddingLeft:20 
+      },
+      
 });
 
 const mapStateToProps = (state) => (
