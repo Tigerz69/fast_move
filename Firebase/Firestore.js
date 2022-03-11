@@ -39,6 +39,19 @@ class Firestore{
 
   }
 
+  saveOrder=(item,success,unsuccess)=>{ 
+    
+    console.log(item)
+    
+    this.db
+      .collection('orders')
+      .add(item) 
+      .then(success())
+      .catch(function (error) {
+        unsuccess(error);
+      });
+  }
+
 }
 
 const firestore = new Firestore()

@@ -17,7 +17,8 @@ import { AntDesign } from '@expo/vector-icons';
 import {editMoreOrder} from '../actions/Users';
 import axios from "axios";
 import Loading from "./Loading";
-//import { BottomPopup } from './BottomPopup';
+import auth from "../Firebase/Auth"
+import firestore from '../Firebase/Firestore'
 const initailprice = 36 
 var upOnDistPrice = 0
 var upOnNumPrice = 0
@@ -41,7 +42,7 @@ class AddDetails extends Component{
             gnome:"",
             loading:false
           };
-          this.popupRef = React.createRef()
+         
   }
   
         price_cal=(dist,num)=>{
@@ -58,7 +59,7 @@ class AddDetails extends Component{
             upOnNumPrice = (num-2)*20
           }
           totalPrice = upOnDistPrice+upOnNumPrice+initailprice
-          trantotalPrice=(Math.round(totalPrice * 100) / 100)
+          let trantotalPrice=(Math.round(totalPrice * 100) / 100)
           //if use .toFixed(2) u will get string type
           return trantotalPrice
         }
@@ -120,8 +121,30 @@ class AddDetails extends Component{
 
 
   save =()=>{
-    console.log('order',this.props.order)
-    
+    console.log('order',this.props.order) 
+    let user = auth.getCurrentUser() 
+    console.log('user state' ,user)
+    let order = this.props.order
+    let id = user.uid
+    let item={
+      distance:this.state.distance,
+      getTime:order.getTime,
+      wayPointList:order.wayPointList, 
+      gnome:this.state.gnome,
+      customerID:id
+      
+
+    }
+    firestore.saveOrder(item,this.saveSuccess,this.saveUncsuccess)
+  }
+
+
+  saveSuccess=()=>{
+    this.props.navigation.navigate('Matching')
+  }
+
+  saveUncsuccess=(error)=>{
+    console.log(error)
   }
 
         componentDidMount=()=>{
@@ -289,5 +312,5 @@ const mapStateToProps = (state) => (
     }
     
   }
-  
+
   export default connect(mapStateToProps,mapDispatchToProps) (AddDetails)  
