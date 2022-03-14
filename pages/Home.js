@@ -133,7 +133,7 @@ class Home extends Component {
   }
 
   addInput =()=>{
-    if(this.state.waypointnum<12){
+    if(this.state.waypointnum<10){
       this.setState({waypointlist : this.state.waypointlist.concat(["Select location"])});
 
       let item ={
@@ -473,84 +473,78 @@ class Home extends Component {
             
               this.state.loading ? (<Loading></Loading>) : (
                 
-              <View styles={styles.container}>
-                <View style={{flex:1}}>
-                <ScrollView styles={styles.scrollcontainer}>
-                  {arr}
-                </ScrollView>
-                </View>
-                <View style={{flex:1,}}>
-                  
+              <ScrollView contentContainerStyle={styles.container}>
                 
-                  
-                    <View style={{flexDirection:'row',height:'10%',paddingVertical:'2%',flex:1}}>
-                      {this.state.showBtn&&( <TouchableOpacity style={styles.pickDateTimeButton}  onPress={this.popupDatePicker}>
-                            <Text style={{color:'black',fontWeight:'bold'}}>เลือกวัน</Text>
-                            </TouchableOpacity>)}
-                      {this.state.showBtn&&( <TouchableOpacity style={styles.pickDateTimeButton} onPress={this.popupTimePicker}>
-                          <Text style={{color:'black',fontWeight:'bold'}}>เลือกเวลา</Text>
-                          </TouchableOpacity>)}
-
-                          {this.state.show && (
-                                <DateTimePicker
-                                testID="dateTimePicker"
-                                value={this.state.date}
-                                mode={this.state.mode}
-                                is24Hour={true}
-                                display="default"
-                                onChange={this.onChange}
-                                />
-                          )}
-
-                    </View>
-                  
-                </View>
-                <Dropdown
-                    style={[styles.dropdown, this.state.isFocus && { borderColor: 'blue' }]}
-                    placeholderStyle={styles.placeholderStyle}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    inputSearchStyle={styles.inputSearchStyle}
-                    iconStyle={styles.iconStyle}
-                    data={options}
-                    //search
-                    dropdownPosition='auto'
-                    maxHeight={120}
-
-                    labelField="label"
-                    valueField="value"
-                    placeholder={!this.state.isFocus ? 'เลือกเวลา' : '...'}
-                    searchPlaceholder="Search..."
-                    value={this.state.value}
-                    onFocus={() => this.setState({isFocus:true})}
-                    onBlur={() =>this.setState({isFocus:false})}
-                    onChange={item => {
-                      this.setState({value:item.value});
-                      this.setState({isFocus:false});
-                      this.handleChange(item.value)
-                      //console.log(this.state.value)
-                    }}
-                    renderLeftIcon={() => (
-                        <MaterialCommunityIcons
-                          style={styles.icon}
-                          color={this.state.isFocus ? 'blue' : 'black'}
-                          name="timetable"
-                          size={20}
-                        />
-                        )}
-                  />
+                
+                {arr}
+                
                 <TouchableOpacity onPress={this.addInput}
-                        styles={StyleSheet.addButton}
-                      >
-                        <Text style={{color:'black',fontWeight:'bold'}}>+ Add New Waypoint</Text>
-                  </TouchableOpacity>
+                      styles={StyleSheet.addButton}
+                    >
+                      <Text style={{color:'black',fontWeight:'bold'}}>+ Add New Waypoint</Text>
+                </TouchableOpacity>
+               
+                <Dropdown
+                  style={[styles.dropdown, this.state.isFocus && { borderColor: 'blue' }]}
+                  placeholderStyle={styles.placeholderStyle}
+                  selectedTextStyle={styles.selectedTextStyle}
+                  inputSearchStyle={styles.inputSearchStyle}
+                  iconStyle={styles.iconStyle}
+                  data={options}
+                  //search
+                  dropdownPosition='auto'
+                  maxHeight={120}
+
+                  labelField="label"
+                  valueField="value"
+                  placeholder={!this.state.isFocus ? 'เลือกเวลา' : '...'}
+                  searchPlaceholder="Search..."
+                  value={this.state.value}
+                  onFocus={() => this.setState({isFocus:true})}
+                  onBlur={() =>this.setState({isFocus:false})}
+                  onChange={item => {
+                    this.setState({value:item.value});
+                    this.setState({isFocus:false});
+                    this.handleChange(item.value)
+                    //console.log(this.state.value)
+                  }}
+                   renderLeftIcon={() => (
+                      <MaterialCommunityIcons
+                        style={styles.icon}
+                        color={this.state.isFocus ? 'blue' : 'black'}
+                        name="timetable"
+                        size={20}
+                      />
+                      )}
+                />
+               <View style={{flexDirection:'row',height:'10%',paddingVertical:'2%',}}>
+               {this.state.showBtn&&( <TouchableOpacity style={styles.pickDateTimeButton}  onPress={this.popupDatePicker}>
+                    <Text style={{color:'black',fontWeight:'bold'}}>เลือกวัน</Text>
+                    </TouchableOpacity>)}
+               {this.state.showBtn&&( <TouchableOpacity style={styles.pickDateTimeButton} onPress={this.popupTimePicker}>
+                    <Text style={{color:'black',fontWeight:'bold'}}>เลือกเวลา</Text>
+                    </TouchableOpacity>)}
+
+                    {this.state.show && (
+                          <DateTimePicker
+                          testID="dateTimePicker"
+                          value={this.state.date}
+                          mode={this.state.mode}
+                          is24Hour={true}
+                          display="default"
+                          onChange={this.onChange}
+                          />
+                    )}
+
+                </View>
                 <TouchableOpacity style={styles.addButton} onPress={this.goToAddDetails}>
-                        <Text>เพิ่มรายละเอียด</Text>
-                  </TouchableOpacity>
-                            
+                      <Text>เพิ่มรายละเอียด</Text>
+                </TouchableOpacity>
+                
                 
                  
                   
-              </View>)
+              </ScrollView>)
             
               
               
@@ -563,13 +557,6 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 5,
   },
-  scrollcontainer:{
-    flex: 1,
-    justifyContent:"center",
-    alignItems: "center",
-    backgroundColor:'white',
-  }
-  ,
     buttonLogin: {
       justifyContent:"center",
       alignItems: "center",
