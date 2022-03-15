@@ -95,7 +95,7 @@ class AddDetails extends Component{
             
             let dist = (data["distance"]/1000)
             let dur = Math.round(data["duration"]/60)
-            let num = data["gnome"].length
+            let num = data["gnome"].length 
             let totalPrice = this.price_cal(dist,num)
             let minute_dur = dur
             
@@ -119,20 +119,36 @@ class AddDetails extends Component{
       console.log('distance ',this.state.distance,' duration ',this.state.duration,' gnome ',this.state.gnome)
   }
 
+  
+
+  reArrangeSequence=()=>{
+    let gnome=this.state.gnome
+    console.log('gnome in reArrange',gnome)
+    let wayPointList=[]
+    let order = this.props.order
+    for (let i=0;i<gnome.length;i++)
+    {
+      let temp=gnome.charCodeAt(i)-48+1
+      wayPointList.push(order.wayPointList.find(obj=>obj.id ==temp))
+    }
+    return wayPointList
+  }
 
   save =()=>{
     console.log('order',this.props.order) 
     let user = auth.getCurrentUser() 
     console.log('user state' ,user)
     let order = this.props.order
+    let wayPointList=this.reArrangeSequence()
     let id = user.uid
     let item={
       distance:this.state.distance,
       getTime:order.getTime,
-      wayPointList:order.wayPointList, 
+      wayPointList:wayPointList, 
       gnome:this.state.gnome,
-      customerID:id
-      
+      customerID:id,
+      price:this.state.price,
+      status:"unmatch", 
 
     }
     firestore.saveOrder(item,this.saveSuccess,this.saveUncsuccess)

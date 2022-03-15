@@ -9,7 +9,7 @@ class Firestore{
   addUser=(id,item,success,unsuccess)=>{
     item.time = firebase.firestore.FieldValue.serverTimestamp();
 
-    item.role = 0
+    item.role = "customer"
     item.profileimage= ''
     item.status = 1
     item.carid = ''

@@ -182,7 +182,7 @@ class Home extends Component {
       
     //console.log('popupTime')
     if(this.state.value==='instanly'){
-      this.showAlert2()
+      this.showAlert2() 
     }
     if(this.state.value==='picktime'){
       console.log('เข้าเลือกเวลานะ')

@@ -68,10 +68,10 @@ const Drawer = createDrawerNavigator();
 const MyDrawer=()=> (
   <Drawer.Navigator>
   
-    {/* <Drawer.Screen  
+     <Drawer.Screen  
         name="Show" 
-        component={AccoountScreen}
-        options={{ headerStyle: {backgroundColor: 'pink'},headerTintColor: 'white'}}/> */}
+        component={AccountScreen}
+        options={{ headerStyle: {backgroundColor: 'pink'},headerTintColor: 'white'}}/> 
 
    {/* <Drawer.Screen  
         name="Edit" 
