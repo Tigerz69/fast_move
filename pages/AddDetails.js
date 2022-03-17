@@ -149,8 +149,9 @@ class AddDetails extends Component{
       customerID:id,
       price:this.state.price,
       status:"unmatch", 
-
+      detail:this.state.details
     }
+    console.log('here is save ')
     firestore.saveOrder(item,this.saveSuccess,this.saveUncsuccess)
   }
 
@@ -165,12 +166,12 @@ class AddDetails extends Component{
 
         componentDidMount=()=>{
           
-          
-          var date =JSON.parse(JSON.stringify(this.props.order.getTime.getDate()))
-          var month = JSON.parse(JSON.stringify(this.props.order.getTime.getMonth()+1))
-          var years = JSON.parse(JSON.stringify(this.props.order.getTime.getFullYear()))
-          var hour = JSON.parse(JSON.stringify(this.props.order.getTime.getHours()))
-          var minute =JSON.parse(JSON.stringify(this.props.order.getTime.getMinutes()))
+          let temptime = new Date(this.props.order.getTime)
+          var date =temptime.getDate()
+          var month = temptime.getMonth()+1
+          var years = temptime.getFullYear()
+          var hour = temptime.getHours()
+          var minute =temptime.getMinutes()
           if (hour < 10){
             hour = '0'+hour
           }
