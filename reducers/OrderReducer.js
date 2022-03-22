@@ -1,5 +1,5 @@
 
-import {SAVE_ORDER,EDIT_MORE_ORDER,ADD_DIST_DURA_PRICE_TO_ORDER} from '../actions/Types'
+import {SAVE_ORDER,EDIT_MORE_ORDER,ADD_DIST_DURA_PRICE_TO_ORDER,ADD_GNOME_ORDER} from '../actions/Types'
 
 const intialState = {
  order:{},
@@ -14,7 +14,11 @@ const orderReducer=(state = intialState,action)=>{
    
      case SAVE_ORDER:
          console.log('come save_order')
-         const order_number2=++order_number;
+         var order_number2=++order_number;
+         if(order_number2>10)
+         {
+          order_number2=10
+         }
       return{
         
           ...state,order:{
@@ -34,7 +38,7 @@ const orderReducer=(state = intialState,action)=>{
          :action.customerPhone,price:action.price}
        return{
         ...state,order:order
-       }
+        }
     case ADD_DIST_DURA_PRICE_TO_ORDER:
       let ordercopie2 = JSON.parse(JSON.stringify(state.order));
       
@@ -44,10 +48,18 @@ const orderReducer=(state = intialState,action)=>{
       return{
           ...state,order:order
         }
+        case ADD_GNOME_ORDER:
+      let ordercopie3 = JSON.parse(JSON.stringify(state.order));
+      order ={id:ordercopie3.id,getTime:ordercopie3.getTime,wayPointList:ordercopie3.wayPointList,gnome:action.gnome
+        ,details:ordercopie3.details,phone
+        :ordercopie3.phone,price:ordercopie3.price,distance:ordercopie3.distance,duration:ordercopie3.duration}
+        return{
+          ...state,order:order
+        }
      default:
       return state
-      
-   }
+    
+  }
    
  }
 

@@ -1,6 +1,6 @@
 import {ADD_USER,ADD_REGION,EDIT_REGION,DELETE_REGION,
   SAVE_ORDER,
-  EDIT_MORE_ORDER,ADD_DIST_DURA_PRICE_TO_ORDER} from './Types'
+  EDIT_MORE_ORDER,ADD_DIST_DURA_PRICE_TO_ORDER,ADD_GNOME_ORDER} from './Types'
 
 
 export const addUser=(item)=>(
@@ -72,6 +72,13 @@ export const addDistanceDurationPriceToOrder=(item)=>(
     distance:item.distance,
     duration:item.duration,
     price:item.price
+  }
+)
+
+export const addGnomeOrder=(gnome)=>(
+  {
+    type:ADD_GNOME_ORDER,
+    gnome:gnome
   }
 )
 

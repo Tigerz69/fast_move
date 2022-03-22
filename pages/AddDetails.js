@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import {editMoreOrder} from '../actions/Users';
+import {editMoreOrder,addGnomeOrder} from '../actions/Users';
 import axios from "axios";
 import Loading from "./Loading";
 import auth from "../Firebase/Auth"
@@ -152,6 +152,8 @@ class AddDetails extends Component{
       detail:this.state.details
     }
     console.log('here is save ')
+    let gnome=this.state.gnome
+    this.props.addGnomeOrder(gnome)
     firestore.saveOrder(item,this.saveSuccess,this.saveUncsuccess)
   }
 
@@ -325,8 +327,8 @@ const mapStateToProps = (state) => (
   const mapDispatchToProps = (dispatch)=>{
     return{
       editMoreOrder:(item)=>dispatch(editMoreOrder(item)),
-      
-    }
+      addGnomeOrder:(gnome)=>dispatch(addGnomeOrder(gnome))
+    } 
     
   }
 
