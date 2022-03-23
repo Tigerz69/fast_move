@@ -129,7 +129,7 @@ class Home extends Component {
   removeInput =(i)=>{
     let item ={index:i}
     this.props.deleteRegion(item)
-    console.log(this.props.pointList)
+    //console.log(this.props.pointList)
     this.setState({waypointnum:this.state.waypointnum-1})
   }
 
@@ -152,12 +152,12 @@ class Home extends Component {
 
         this.showAlert()
     }
-    console.log('in point',this.props.pointList)
+    //console.log('in point',this.props.pointList)
   }
 
   handleChange = (selectedOption) => {
-    this.setState({ selectedOption }, () =>
-      console.log(`Option selected:`, this.state.selectedOption));
+    this.setState({ selectedOption }, {/*() =>
+  console.log(`Option selected:`, this.state.selectedOption)*/});
     if(selectedOption==='instanly'){
       this.setState({showBtn:false})
     }else{
@@ -186,10 +186,10 @@ class Home extends Component {
       this.showAlert2() 
     }
     if(this.state.value==='picktime'){
-      console.log('เข้าเลือกเวลานะ')
+      //console.log('เข้าเลือกเวลานะ')
       this.showTimepicker()
     }if(this.state.value===null){
-      console.log('null kb')
+      //console.log('null kb')
       this.showAlert3()
     }
   }
@@ -241,7 +241,7 @@ class Home extends Component {
       wayPointList:list
     }
     this.props.saveOrder(item)
-    console.log('this.props.order',this.props.order)
+    //console.log('this.props.order',this.props.order)
     this.calculatewaypoint()
     this.setState({promises:[]})
     //this.props.navigation.navigate('AddDetails')
@@ -268,7 +268,7 @@ class Home extends Component {
         this.showAlertNoneOfSendPoint()
         break;
       case 2:
-        console.log('case 2 ')
+        //console.log('case 2 ')
         orilat=JSON.parse(JSON.stringify(this.props.pointList[0].region.latitude)) 
         orilng=JSON.parse(JSON.stringify(this.props.pointList[0].region.longitude)) 
         deslat=JSON.parse(JSON.stringify(this.props.pointList[1].region.latitude))
@@ -283,13 +283,13 @@ class Home extends Component {
         this.setState({promises:this.state.promises.push((axios(config)
         .then( (response) => {
           let data =JSON.parse(JSON.stringify( response.data))
-          console.log(data);
+          //console.log(data);
           
           this.setState({distance:data.rows[0].elements[0].distance.value})
           this.setState({time:data.rows[0].elements[0].duration.value})
           this.setState({gnome:"01"})
-          console.log('dis',this.state.distance)
-          console.log('time',this.state.time)
+          // console.log('dis',this.state.distance)
+          // console.log('time',this.state.time)
           temp_dist[0]=data.rows[0].elements[0].distance.value
           temp_dur[0]=data.rows[0].elements[0].duration.value
         })
@@ -299,7 +299,7 @@ class Home extends Component {
         this.waitresponse2point(temp_dist,temp_dur)
         break;
       default:
-        console.log('default case ') 
+        //console.log('default case ') 
         for(let k = 0; k<num; k++)
         {
           let temp =[]
@@ -312,9 +312,9 @@ class Home extends Component {
           Disarr.push(temp)
           Timearr.push(temp2)
         }
-        console.log(Disarr)
-        console.log(Timearr)
-        console.log('default')
+        // console.log(Disarr)
+        // console.log(Timearr)
+        // console.log('default')
         for(let i = 0 ; i<num; i++)
         {
             
@@ -336,7 +336,7 @@ class Home extends Component {
             .then((response)=> {
                       
               let data_temp = (JSON.parse(JSON.stringify(response.data)))
-              console.log(data_temp);
+              //console.log(data_temp);
                     
               Disarr[i][j]=data_temp.rows[0].elements[0].distance.value
               Timearr[i][j]=data_temp.rows[0].elements[0].duration.value
@@ -357,9 +357,9 @@ class Home extends Component {
     Promise.all(this.state.promises)
     
     .then(function (data){
-      console.log(data);
-      console.log('print temp_dist',temp_dist[0])
-      console.log('print temp_dur',temp_dur[0])
+      // console.log(data);
+      // console.log('print temp_dist',temp_dist[0])
+      // console.log('print temp_dur',temp_dur[0])
       var sendParaToAPI2 = {
         method: 'post',
         url: `http://192.168.1.100:5002/send2point`,
@@ -374,7 +374,7 @@ class Home extends Component {
       .then(function (response) {
        
         let data =response
-        console.log('status of sending 2 point api',data);
+        //console.log('status of sending 2 point api',data);
         RootNavigation.navigate('AddDetails');
       }).catch(function (error) {
         console.log(error);
@@ -394,9 +394,9 @@ class Home extends Component {
     .then(function (data) {
       // Log the data to the console
       // You would do something with both sets of data here
-      console.log(data);
-      console.log('print disarr',Disarr)
-      console.log('print timearr',Timearr)
+      // console.log(data);
+      // console.log('print disarr',Disarr)
+      // console.log('print timearr',Timearr)
       
       var sendParaToAPI = {
         method: 'post',
@@ -413,7 +413,7 @@ class Home extends Component {
       .then(function (response) {
         
         let data =response
-        console.log('status of sending api',data);
+        //console.log('status of sending api',data);
         RootNavigation.navigate('AddDetails');
         }).catch(function (error) {
           console.log(error);

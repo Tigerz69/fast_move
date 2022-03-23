@@ -77,6 +77,7 @@ export const addDistanceDurationPriceToOrder=(item)=>(
 
 export const addGnomeOrder=(gnome)=>(
   {
+    
     type:ADD_GNOME_ORDER,
     gnome:gnome
   }

@@ -3,7 +3,7 @@ import {SAVE_ORDER,EDIT_MORE_ORDER,ADD_DIST_DURA_PRICE_TO_ORDER,ADD_GNOME_ORDER}
 
 const intialState = {
  order:{},
- orderList:[]
+ 
 }
 
 let order_number =0;
@@ -25,6 +25,7 @@ const orderReducer=(state = intialState,action)=>{
             id:order_number2,
             getTime: action.getTime,
             wayPointList:action.wayPointList,
+            gnome:'',
             details:'',
             phone:'',
             price:0
@@ -35,7 +36,8 @@ const orderReducer=(state = intialState,action)=>{
 
       order ={id:ordercopie.id,getTime:ordercopie.getTime,wayPointList:ordercopie.wayPointList
          ,details:action.lastDetails,phone
-         :action.customerPhone,price:action.price}
+         :action.customerPhone,price:action.price,
+        gnome:ordercopie.gnome}
        return{
         ...state,order:order
         }
@@ -48,14 +50,15 @@ const orderReducer=(state = intialState,action)=>{
       return{
           ...state,order:order
         }
-        case ADD_GNOME_ORDER:
+    case ADD_GNOME_ORDER:
+      console.log('come case add_gnome_order')
           let ordercopie3 = JSON.parse(JSON.stringify(state.order));
           order ={id:ordercopie3.id,getTime:ordercopie3.getTime,wayPointList:ordercopie3.wayPointList,gnome:action.gnome
             ,details:ordercopie3.details,phone
             :ordercopie3.phone,price:ordercopie3.price,distance:ordercopie3.distance,duration:ordercopie3.duration}
-        return{
+      return{
           ...state,order:order
-        }
+          }
      default:
       return state
     

@@ -90,7 +90,7 @@ class AddDetails extends Component{
           axios.get(`http://192.168.1.100:5002/get`)  
           .then(res => {  
             let data = res.data; 
-            console.log('data from api that calculated',data) 
+            //console.log('data from api that calculated',data) 
             // this.setState({distance:data["distance"]})
             // this.setState({duration:data["duration"]})
             // this.setState({gnome:data["gnome"]})
@@ -112,20 +112,20 @@ class AddDetails extends Component{
         }
 
   saveLastNum=()=>{
-    console.log('saveLastNum',this.state.phonenumber) 
+    //console.log('saveLastNum',this.state.phonenumber) 
     
     let item ={details:this.state.details,
       phone:this.state.phonenumber,price:this.state.price}
       this.props.editMoreOrder(item)
-      console.log('order',this.props.order)
-      console.log('distance ',this.state.distance,' duration ',this.state.duration,' gnome ',this.state.gnome)
+      // console.log('order',this.props.order)
+      // console.log('distance ',this.state.distance,' duration ',this.state.duration,' gnome ',this.state.gnome)
   }
 
   
 
   reArrangeSequence=()=>{
     let gnome=this.state.gnome
-    console.log('gnome in reArrange',gnome)
+    //console.log('gnome in reArrange',gnome)
     let wayPointList=[]
     let order = this.props.order
     for (let i=0;i<gnome.length;i++)
@@ -137,9 +137,9 @@ class AddDetails extends Component{
   }
 
   save =()=>{
-    console.log('order',this.props.order) 
+    //console.log('order',this.props.order) 
     let user = auth.getCurrentUser() 
-    console.log('user state' ,user)
+    //console.log('user state' ,user)
     let order = this.props.order
     let wayPointList=this.reArrangeSequence()
     let id = user.uid
@@ -154,10 +154,11 @@ class AddDetails extends Component{
       detail:this.state.details
     }
     console.log('here is save ')
-    let gnome=this.state.gnome
-    this.props.addGnomeOrder(gnome)
+    let item2=this.state.gnome
+    this.props.addGnomeOrder(item2)
+    
+    firestore.saveOrder(item,this.saveSuccess,this.saveUnsuccess)
     console.log('order after add gnome ',this.props.order)
-    firestore.saveOrder(item,this.saveSuccess,this.saveUncsuccess)
   }
 
 
@@ -168,7 +169,7 @@ class AddDetails extends Component{
     .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
               // doc.data() is never undefined for query doc snapshots
-              console.log(doc.id, " => ", doc.data());
+              //console.log(doc.id, " => ", doc.data());
               this.props.navigation.navigate('Matching',{orderid:doc.id})
               
           });
@@ -183,7 +184,7 @@ class AddDetails extends Component{
    
   }
 
-  saveUncsuccess=(error)=>{
+  saveUnsuccess=(error)=>{
     console.log(error)
   }
 
@@ -218,8 +219,8 @@ class AddDetails extends Component{
             let item ={details:this.state.details,
               phone:this.state.phonenumber,price:this.state.price}
               this.props.editMoreOrder(item)
-              console.log('order',this.props.order)
-              console.log('distance ',this.state.distance,' duration ',this.state.duration,' gnome ',this.state.gnome)
+              // console.log('order',this.props.order)
+              // console.log('distance ',this.state.distance,' duration ',this.state.duration,' gnome ',this.state.gnome)
               
           }
         }
@@ -248,7 +249,7 @@ class AddDetails extends Component{
                   <TextInput style={styles.detailTextInput} placeholder='กรอกรายละเอียดเพิ่มเติม' 
                   onChangeText={txt=>{this.setState({details:txt},()=>{
                     
-                    console.log('detail state in callback',this.state.details)
+                    // console.log('detail state in callback',this.state.details)
                   })}}></TextInput>
                 </View>
                 <View style={styles.detailView}>
@@ -256,7 +257,7 @@ class AddDetails extends Component{
                   <TextInput style={styles.detailTextInput} placeholder='เบอร์ติดต่อของลูกค้า' 
                   onChangeText={txt=>{this.setState({phonenumber:txt},()=>{
                     
-                    console.log('phone state in callback',this.state.phonenumber)
+                    // console.log('phone state in callback',this.state.phonenumber)
                     this.saveLastNum() 
                   })}}></TextInput>
                 </View>
@@ -348,7 +349,7 @@ const mapStateToProps = (state) => (
   const mapDispatchToProps = (dispatch)=>{
     return{
       editMoreOrder:(item)=>dispatch(editMoreOrder(item)),
-      addGnomeOrder:(gnome)=>dispatch(addGnomeOrder(gnome))
+      addGnomeOrder:(item2)=>dispatch(addGnomeOrder(item2))
     } 
     
   }
