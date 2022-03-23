@@ -122,6 +122,7 @@ class Home extends Component {
   }  
 
   goToPickLocationPage=(i)=>{
+
     this.props.navigation.navigate('LocationView',{index:i})
   }
 
@@ -379,6 +380,7 @@ class Home extends Component {
         console.log(error);
       });
     })
+    this.setState({loading:false})
   }
      
       
@@ -419,8 +421,8 @@ class Home extends Component {
       }).catch(function (error) {
         // if there's an error, log it
         console.log(error);
-      });
-      
+      })
+      this.setState({loading:false})
     
   }
     render() {

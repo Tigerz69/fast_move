@@ -49,10 +49,10 @@ const orderReducer=(state = intialState,action)=>{
           ...state,order:order
         }
         case ADD_GNOME_ORDER:
-      let ordercopie3 = JSON.parse(JSON.stringify(state.order));
-      order ={id:ordercopie3.id,getTime:ordercopie3.getTime,wayPointList:ordercopie3.wayPointList,gnome:action.gnome
-        ,details:ordercopie3.details,phone
-        :ordercopie3.phone,price:ordercopie3.price,distance:ordercopie3.distance,duration:ordercopie3.duration}
+          let ordercopie3 = JSON.parse(JSON.stringify(state.order));
+          order ={id:ordercopie3.id,getTime:ordercopie3.getTime,wayPointList:ordercopie3.wayPointList,gnome:action.gnome
+            ,details:ordercopie3.details,phone
+            :ordercopie3.phone,price:ordercopie3.price,distance:ordercopie3.distance,duration:ordercopie3.duration}
         return{
           ...state,order:order
         }

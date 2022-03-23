@@ -19,6 +19,8 @@ import axios from "axios";
 import Loading from "./Loading";
 import auth from "../Firebase/Auth"
 import firestore from '../Firebase/Firestore'
+import firebase from "../Firebase/Initial";
+import 'firebase/firestore';
 const initailprice = 36 
 var upOnDistPrice = 0
 var upOnNumPrice = 0
@@ -27,7 +29,7 @@ class AddDetails extends Component{
 
     constructor(props){
         super(props);
-
+          this.db=firebase.firestore()
           this.state = {
             details:'',
             phonenumber:'',
@@ -154,12 +156,31 @@ class AddDetails extends Component{
     console.log('here is save ')
     let gnome=this.state.gnome
     this.props.addGnomeOrder(gnome)
+    console.log('order after add gnome ',this.props.order)
     firestore.saveOrder(item,this.saveSuccess,this.saveUncsuccess)
   }
 
 
   saveSuccess=()=>{
-    this.props.navigation.navigate('Matching')
+    var orderRef = this.db.collection("orders");
+    var query = orderRef.orderBy("time","desc").limit(1)
+    query.get()
+    .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              // doc.data() is never undefined for query doc snapshots
+              console.log(doc.id, " => ", doc.data());
+              this.props.navigation.navigate('Matching',{orderid:doc.id})
+              
+          });
+            
+          
+          
+    })
+    .catch((error) => {
+        console.log("Error getting documents: ", error);
+    });
+    
+   
   }
 
   saveUncsuccess=(error)=>{
