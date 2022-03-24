@@ -15,11 +15,12 @@ import { TextInput } from 'react-native-gesture-handler';
 class Matching extends Component{
     constructor(props){
         super(props);
+       
         this.db = firebase.firestore()
+        //this.matchListen=this.db.collection("orders").where("id", "==", this.id)
         this.state = {
             loading:false,
             modalVisible: false,
-            
             other:null,
             check1:false,
             check1data:null,
@@ -27,11 +28,12 @@ class Matching extends Component{
             check3data:null,
             check4data:null,
             check5data:null,
-            
             check2:false,
             check3:false,
             check4:false,
             check5:false,
+            markerArr:[],
+            order:null
         };
          
     }
@@ -59,9 +61,9 @@ class Matching extends Component{
         var result=allrns.filter(this.checkNull)
         console.log(allrns)
         
+        
         const {route} =this.props
         const id=route.params.orderid
-        console.log(id)
         
         var docRef = this.db.collection("orders").doc(id);
 
@@ -84,7 +86,7 @@ class Matching extends Component{
                         //this.Unsuccess()
                         console.error("Error writing document: ", error);
                     });
-                    console.log("Document data:", doc.data());
+                    //console.log("Document data:", doc.data());
                 } else {
                     // doc.data() will be undefined in this case
                     console.log("No such document!");
@@ -107,13 +109,15 @@ class Matching extends Component{
             ]  
         );  
       } 
+      componentWillUnmount=()=>{
+        
+      }
     componentDidMount=()=>{
+        
         const {route} =this.props
         const id=route.params.orderid
-        
-        console.log(id)
-        this.db.collection("orders").where("id", "==", id)
-    .onSnapshot((querySnapshot) => {
+        console.log('this id',id)
+        this.db.collection("orders").where("id", "==", id).onSnapshot((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             console.log('tumrai')
             if(doc.data().status=="matched")
@@ -122,10 +126,53 @@ class Matching extends Component{
                 
                 
                 this.props.navigation.navigate('Matched')
+                
             }
         });
         
     });
+        var num =null
+        let arr=[]
+        
+       // console.log('order from matching',this.props.order)
+        var docRef = this.db.collection("orders").doc(id);
+
+        docRef.get().then((doc) => {
+            if (doc.exists) {
+                num= doc.data().gnome.length
+                console.log('num',num)
+                let order = doc.data()
+               
+                this.setState({order:order})
+                //console.log(num)
+                //console.log(order.wayPointList[0].region)
+                for(let i=0 ;i<num;i++)
+                {
+                    arr.push(
+                      {
+                        latlng:{latitude:order.wayPointList[i].region.latitude,
+                          longitude:order.wayPointList[i].region.longitude},
+                        title:`จุดที่ ${i+1}`
+                      }
+
+                    
+                        
+                    )
+                }
+                this.setState({ markerArr: this.state.markerArr.concat(arr)})
+                let a =this.state.markerArr
+                var uniqe = a.filter(this.onlyUnique)
+                this.setState({ markerArr: uniqe} )
+                console.log('')
+                console.log('init region',order.wayPointList[0].region)
+//console.log("Document data:", doc.data());
+            } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+            }
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
     }
     cancel=()=>{
         console.log('cancel press')
@@ -136,28 +183,16 @@ class Matching extends Component{
     setModalVisible = (visible) => {
         this.setState({ modalVisible: visible });
       }
-
+    onlyUnique=(value, index, self) =>{
+        return self.indexOf(value) === index;
+     }
     
     render(){
-        console.log('order from matching',this.props.order)
-        let order = this.props.order
-        let num = this.props.order.gnome.length
-        let markerArr=[]
-        console.log(num)
-        console.log(order.wayPointList[0].region)
-        for(let i=0 ;i<num;i++)
-        {
-            markerArr.push(
-                <MapView.Marker 
-                    key={`${order.wayPointList[i].id}`}
-                    coordinate={{latitude:order.wayPointList[i].region.latitude,
-                                 longitude:order.wayPointList[i].region.longitude}}
-                    title={`จุดที่ ${i+1} `}
-                      
-                      
-                />
-            )
-        }
+       
+        
+        
+        
+        
         const { modalVisible ,check1,check2,check3,check4,check5} = this.state;
         return(
             <View style={styles.container}>
@@ -166,7 +201,15 @@ class Matching extends Component{
                     <MapView  style={styles.map} 
                         region={order.wayPointList[0].region}
                     >
-                            {markerArr}
+                           {this.state.markerArr.map((marker, index) => (
+                            <MapView.Marker
+                              key={`${index}`}
+                              coordinate={marker.latlng}
+                              title={marker.title}
+                              
+                            />
+                          ))}
+                      
                         
                     </MapView>
                     <View style={{ position: 'absolute', top: 50, left: 0 ,right:0,alignItems: 'center',}}>

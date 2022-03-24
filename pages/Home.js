@@ -51,7 +51,8 @@ class Home extends Component {
       duration:0,
       loading:false,
       promises:[],
-      gnome:""
+      gnome:"",
+      
     };
     this.myRef = React.createRef();
       
@@ -64,6 +65,16 @@ class Home extends Component {
         [  
               
               {text: 'OK', onPress: () => console.log('OK Pressed')},  
+        ]  
+    );  
+  }  
+  showAlertNoAddWayPoint() {  
+    Alert.alert(  
+        'Error',  
+        'waypoint is none,pls add waypoint and pick location',  
+        [  
+            
+            {text: 'OK', onPress: () => console.log('OK Pressed')},  
         ]  
     );  
   }  
@@ -99,7 +110,9 @@ class Home extends Component {
     );  
   }  
   
-
+  componentWillUnmount=()=>{
+    
+  }
   showAlert3() {  
     Alert.alert(  
         'Error',  
@@ -156,8 +169,8 @@ class Home extends Component {
   }
 
   handleChange = (selectedOption) => {
-    this.setState({ selectedOption }, {/*() =>
-  console.log(`Option selected:`, this.state.selectedOption)*/});
+    this.setState({ selectedOption }, () =>
+  console.log(`Option selected:`, this.state.selectedOption));
     if(selectedOption==='instanly'){
       this.setState({showBtn:false})
     }else{
@@ -258,16 +271,22 @@ class Home extends Component {
     var Timearr = []
     var temp_dist=[]
     var temp_dur=[]
-
-
+    let check =this.props.pointList[0].region.latitude
+    console.log('check value',check)
+    
     switch(num){
       case 0:
-        this.showAlertNoneOfWayPoint()
+        this.showAlertNoAddWayPoint()
         break;
       case 1:
         this.showAlertNoneOfSendPoint()
         break;
       case 2:
+        console.log('case 2')
+        if(check==null){
+          this.showAlertNoneOfWayPoint()
+          break;
+        }
         //console.log('case 2 ')
         orilat=JSON.parse(JSON.stringify(this.props.pointList[0].region.latitude)) 
         orilng=JSON.parse(JSON.stringify(this.props.pointList[0].region.longitude)) 
@@ -299,6 +318,10 @@ class Home extends Component {
         this.waitresponse2point(temp_dist,temp_dur)
         break;
       default:
+        if(check==null){
+          this.showAlertNoneOfWayPoint()
+          break;
+        }
         //console.log('default case ') 
         for(let k = 0; k<num; k++)
         {
@@ -362,7 +385,7 @@ class Home extends Component {
       // console.log('print temp_dur',temp_dur[0])
       var sendParaToAPI2 = {
         method: 'post',
-        url: `http://192.168.1.100:5002/send2point`,
+        url: `http://192.168.1.102:5002/send2point`,
 
         data: {
           
@@ -400,7 +423,7 @@ class Home extends Component {
       
       var sendParaToAPI = {
         method: 'post',
-        url: `http://192.168.1.100:5002/send`,
+        url: `http://192.168.1.102:5002/send`,
  
         data: {
           num : num,
@@ -471,6 +494,7 @@ class Home extends Component {
             }
             
           }
+          
         return (
             
               this.state.loading ? (<Loading></Loading>) : (

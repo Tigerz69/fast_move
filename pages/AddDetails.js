@@ -87,7 +87,7 @@ class AddDetails extends Component{
 
         calculate=()=>{
           
-          axios.get(`http://192.168.1.100:5002/get`)  
+          axios.get(`http://192.168.1.102:5002/get`)  
           .then(res => {  
             let data = res.data; 
             //console.log('data from api that calculated',data) 
@@ -349,7 +349,8 @@ const mapStateToProps = (state) => (
   const mapDispatchToProps = (dispatch)=>{
     return{
       editMoreOrder:(item)=>dispatch(editMoreOrder(item)),
-      addGnomeOrder:(item2)=>dispatch(addGnomeOrder(item2))
+      addGnomeOrder:(item2)=>dispatch(addGnomeOrder(item2)),
+      
     } 
     
   }
