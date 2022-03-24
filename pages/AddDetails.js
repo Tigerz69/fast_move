@@ -170,7 +170,7 @@ class AddDetails extends Component{
             querySnapshot.forEach((doc) => {
               // doc.data() is never undefined for query doc snapshots
               //console.log(doc.id, " => ", doc.data());
-              this.props.navigation.navigate('Matching',{orderid:doc.id})
+              this.props.navigation.navigate('Matching',{orderid:doc.id,fieldid:doc.data().id})
               
           });
             

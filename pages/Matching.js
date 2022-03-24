@@ -116,8 +116,10 @@ class Matching extends Component{
         
         const {route} =this.props
         const id=route.params.orderid
+        const fieldid=route.params.fieldid
         console.log('this id',id)
-        this.db.collection("orders").where("id", "==", id).onSnapshot((querySnapshot) => {
+        this.db.collection("orders").where("id","==",fieldid)
+        .onSnapshot((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             console.log('tumrai')
             if(doc.data().status=="matched")
@@ -125,7 +127,7 @@ class Matching extends Component{
                 console.log('driver id:' ,doc.data().driverID)
                 
                 
-                this.props.navigation.navigate('Matched')
+                this.props.navigation.navigate('Matched',{orderid:id,fieldid:fieldid,driverid:doc.data().driverID})
                 
             }
         });

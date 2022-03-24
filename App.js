@@ -62,8 +62,8 @@ const MatchingScreen=({navigation,route})=>(
 )
 
 
-const MatchedScreen=({navigation})=>(
-  <Matched navigation={navigation}/>
+const MatchedScreen=({navigation,route})=>(
+  <Matched navigation={navigation}route={route}/>
 )
 
 // const ChatScreen=({navigation})=>(
