@@ -43,7 +43,8 @@ export default class Matched extends Component {
             bankno:'loading',
             carid:'loading',
             gettime:'loading',
-            price:'loading'
+            price:'loading',
+            uid:null
     };
   }
   call=()=>{
@@ -114,7 +115,7 @@ export default class Matched extends Component {
   onPressChat=()=>{
    
         
-        this.props.navigation.navigate('Chat');
+        this.props.navigation.navigate('Chat',{uid:this.state.uid});
       
   }
     cancel=()=>{
@@ -179,6 +180,7 @@ export default class Matched extends Component {
                 num= doc.data().gnome.length
                 console.log('num',num)
                 let order = doc.data()
+                this.setState({uid:order.customerID})
                 this.setState({gettime:order.getTime})
                 this.setState({order:order})
                 this.setState({price:order.price})
@@ -209,7 +211,8 @@ export default class Matched extends Component {
             console.log("Error getting document:", error);
         });
         let name=''
-        var driverRef=this.db.collection("users").doc(driverid).get().then((doc) => {
+        var driverRef=this.db.collection("users").doc(driverid)
+        driverRef.get().then((doc) => {
           if (doc.exists) {
               console.log('tumaiiiii')
               let first = doc.data().firstname
