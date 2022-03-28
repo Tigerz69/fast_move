@@ -82,7 +82,7 @@ class LocationView extends Component {
                 details:this.state.details
     } 
     this.props.editRegion(item)
-    this.props.navigation.navigate('DrawerTab')
+    this.props.navigation.navigate('MyTabs')
   }
 
   _animateInput = () => {

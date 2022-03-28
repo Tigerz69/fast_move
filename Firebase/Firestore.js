@@ -55,7 +55,7 @@ class Firestore{
               this.db
               .collection('orders')
               .add(item)  
-              .then(success())
+              .then(success(item.id))
               .catch(function (error) { 
                 unsuccess(error);
               });

@@ -162,9 +162,9 @@ class AddDetails extends Component{
   }
 
 
-  saveSuccess=()=>{
+  saveSuccess=(id)=>{
     var orderRef = this.db.collection("orders");
-    var query = orderRef.orderBy("time","desc").limit(1)
+    var query = orderRef.where("id","==",id)
     query.get()
     .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
