@@ -9,7 +9,8 @@ import firebase from "../Firebase/Initial";
 import 'firebase/firestore';
 import { CheckBox } from 'react-native-elements';
 import { TextInput } from 'react-native-gesture-handler';
-
+import firestore from '../Firebase/Firestore';
+import {startChat} from '../actions/Users'
 
 
 class Matching extends Component{
@@ -125,8 +126,29 @@ class Matching extends Component{
             if(doc.data().status=="matched")
             {
                 console.log('driver id:' ,doc.data().driverID)
-                
-                
+                firestore.addMessageRoom(
+                  (id) => {
+                    this.props.chat(id)
+                    console.log('id in redux',this.props.user.id)
+                    firestore.addChat(
+                      doc.data().driverID,
+                      id,
+                      () => {},
+                      (error) => {}
+                    );
+                    firestore.addChat(
+                      this.props.user.id,
+                      id,
+                      () => {},
+                      (error) => {}
+                    );
+                    this.props.chat
+                    
+                  },
+                  (error) => {
+                    console.log(error);
+                  }
+                )
                 this.props.navigation.navigate('Matched',{orderid:id,fieldid:fieldid,driverid:doc.data().driverID})
                 
             }
@@ -343,11 +365,13 @@ const styles = StyleSheet.create({
   });
 
   const mapStateToProps = (state) => (
-    {order:state.orderReducer.order},
-    {chat:state.userReducer.chatid}
+    
+    {user:state.userReducer.user}
   )
-  
-  
-  const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => {
+  return{
+  chat: (id) => dispatch(startChat(id)),
+  }
+}
 
   export default connect(mapStateToProps,mapDispatchToProps) (Matching)

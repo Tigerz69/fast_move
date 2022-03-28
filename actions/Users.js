@@ -85,8 +85,9 @@ export const addGnomeOrder=(gnome)=>(
 
 
 export const startChat = (id) => (
-{
-  type:START_CHAT,
-  id:id
-  
-})
+  {
+    type:START_CHAT,
+    id:id
+    
+  }
+)

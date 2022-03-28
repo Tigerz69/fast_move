@@ -1,41 +1,106 @@
-import React from "react";
-import { Platform,KeyboardAvoidingView,SafeAreaView } from "react-native";
-import { GiftedChat } from "react-native-gifted-chat";
-import firestore from "../Firebase/Firestore";
+import * as React from 'react';
+import {
+  Alert,
+  KeyboardAvoidingView,
+  FlatList,
+  Image,
+  Platform,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import styles from './Components/Style';
+import Header from './Header/Chatter';
+import { connect } from 'react-redux';
+import firestore from '../Firebase/Firestore';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default class Chat extends React.Component {
-    state={
-        messages:[]
+class Chat extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      message: '',
+      messages: [],
+    };
+    firestore.listeningMessage(this.props.chat, this.listeningPass);
+  }
+
+  listeningPass = (data) => {
+    this.setState({ messages: this.state.messages.concat(data) });
+  };
+
+  sendPass = (docRef) => {};
+
+  sendFail = (error) => {
+    console.log(error);
+  };
+
+  onSend = () => {
+    if (this.state.message) {
+        firestore.sendMessage(this.props.chat, this.props.id, this.state.message, this.sendPass, this.sendFail);
+      this.setState({message:''})
     }
-    get user () {
-        return {
-            _id: firestore.uid,
-            name: this.props.navigation.state.params.uid
-        }
-   }
-   componentDidMount() {
-    firestore.get(message =>
-       this.setState (previous => ({
-            messages: GiftedChat.append (previous.messages, message)
-        }))
+    else {
+      console.log('Enter the message.');
+    }
+  };
+
+  renderItem = ({ item }) => {
+    return (
+      <View>
+        {item.sender === this.props.id && (
+          <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+            <Text style={styles.txtSender}>{item.message}</Text>
+          </View>
+        )}
+        {item.sender !== this.props.id && (
+          <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+            <Text style={styles.txtReceiver}>{item.message}</Text>
+          </View>
+        )}
+      </View>
     );
-   }
+  };
 
+  renderSeparator = () => <View style={{ height: 5, width: '100%' }} />;
 
-   componentWillUnmount(){
-       firestore.off()
-   }
-
-    render () {
-                              I
-        const chat = <GiftedChat messages={this.state.messages} onSend= {firestore.send} user={this.user} />;
-            if (Platform.OS === 'android') {
-                return (
-                    <KeyboardAvoidingView style={{flex: 1}} behavior="padding" keyboardVerticalOffset={30} enabled>
-                        {chat}
-                    </KeyboardAvoidingView>
-                    )
-            }
-            return <SafeAreaView style={{flex:1}}>{chat}</SafeAreaView>
-    }
+  render(props) {
+    return (
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}>
+        <Header />
+        <FlatList
+          data={this.state.messages}
+          renderItem={this.renderItem}
+          keyExtractor={(item) => item.date}
+          ItemSeparatorComponent={this.renderSeparator}
+          ref={(ref) => {
+            this.flatListRef = ref;
+          }}
+          onContentSizeChange={() => this.flatListRef.scrollToEnd()}
+        />
+        <View style={{ flex: 1 }}></View>
+        <View style={styles.chatContent}>
+          <TextInput
+            style={{ flex: 1, paddingLeft: 10 }}
+            value={this.state.message}
+            placeholder="Message"
+            onChangeText={(text) => this.setState({ message: text })}
+          />
+          <TouchableOpacity onPress={() => this.onSend()}>
+            <MaterialCommunityIcons name="send-circle" size={40} color="grey" />
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+    );
+  }
 }
+
+const mapStoreToProps = (store) => ({
+  id: store.userReducer.user.id,
+  chat: store.userReducer.chatid,
+});
+
+export default connect(mapStoreToProps)(Chat);

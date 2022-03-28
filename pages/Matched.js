@@ -15,8 +15,11 @@ import * as RootNavigation from '../src/RootNavigation.js';
 import auth from '../Firebase/Auth'
 import { Ionicons } from "@expo/vector-icons"
 import MapView from 'react-native-maps'
+import { connect } from 'react-redux';
+import {startChat} from '../actions/Users'
 
-export default class Matched extends Component {
+
+class Matched extends Component {
   constructor(props){
     super(props);
      this.db = firebase.firestore()
@@ -44,7 +47,8 @@ export default class Matched extends Component {
             carid:'loading',
             gettime:'loading',
             price:'loading',
-            uid:null
+            uid:null,
+            driverID:null
     };
   }
   call=()=>{
@@ -113,9 +117,9 @@ export default class Matched extends Component {
   }
 
   onPressChat=()=>{
-   
+
         
-        this.props.navigation.navigate('Chat',{uid:this.state.uid});
+        this.props.navigation.navigate('Chat');
       
   }
     cancel=()=>{
@@ -229,7 +233,7 @@ export default class Matched extends Component {
               this.setState({bank:doc.data().bank})
               this.setState({bankno:doc.data().bankno})
               this.setState({carid:doc.data().carid})
-              
+              this.setState({driverID:doc.id})
           } else {
               // doc.data() will be undefined in this case
               console.log("No such document!");
@@ -502,3 +506,13 @@ const styles = StyleSheet.create({
       fontSize:30
     }
 });
+
+
+const mapStateToProps = (state) => ({});
+const mapDispatchToProps = (dispatch) => {
+  return{
+  chat: (id) => dispatch(startChat(id)),
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Matched);
