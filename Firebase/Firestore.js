@@ -49,7 +49,7 @@ class Firestore{
     .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
               // doc.data() is never undefined for query doc snapshots
-              console.log(doc.id, " => ", doc.data());
+              //console.log(doc.id, " => ", doc.data());
               item.id = doc.data().id+1
               console.log(item)
               this.db

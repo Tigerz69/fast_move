@@ -117,8 +117,9 @@ class Matched extends Component {
   }
 
   onPressChat=()=>{
-
-        
+        const {route} =this.props
+        const order=route.params.order
+        this.props.chat(order.chat)
         this.props.navigation.navigate('Chat');
       
   }
@@ -149,12 +150,12 @@ class Matched extends Component {
     } 
     componentDidMount=()=>{
       const {route} =this.props
-        const order=route.params.order
+        
         const id=route.params.orderid
         const fieldid=route.params.fieldid
         const driverid=route.params.driverid
         console.log('this id',id)
-        this.props.chat(order.chat)
+        
         this.db.collection("orders").where("id","==",fieldid)
         .onSnapshot((querySnapshot) => {
         querySnapshot.forEach((doc) => {
