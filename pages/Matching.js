@@ -126,30 +126,8 @@ class Matching extends Component{
             if(doc.data().status=="matched")
             {
                 console.log('driver id:' ,doc.data().driverID)
-                firestore.addMessageRoom(
-                  (id) => {
-                    this.props.chat(id)
-                    console.log('id in redux',this.props.user.id)
-                    firestore.addChat(
-                      doc.data().driverID,
-                      id,
-                      () => {},
-                      (error) => {}
-                    );
-                    firestore.addChat(
-                      this.props.user.id,
-                      id,
-                      () => {},
-                      (error) => {}
-                    );
-                    this.props.chat
-                    
-                  },
-                  (error) => {
-                    console.log(error);
-                  }
-                )
-                this.props.navigation.navigate('Matched',{orderid:id,fieldid:fieldid,driverid:doc.data().driverID})
+                
+                this.props.navigation.navigate('Matched',{order:doc.data(),orderid:id,fieldid:fieldid,driverid:doc.data().driverID})
                 
             }
         });

@@ -87,7 +87,7 @@ class AddDetails extends Component{
 
         calculate=()=>{
           
-          axios.get(`http://192.168.1.104:5002/get`)  
+          axios.get(`https://fast-move-or-something-diff.as.r.appspot.com/get`)  
           .then(res => {  
             let data = res.data; 
             //console.log('data from api that calculated',data) 

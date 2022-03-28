@@ -17,7 +17,7 @@ import { Ionicons } from "@expo/vector-icons"
 import MapView from 'react-native-maps'
 import { connect } from 'react-redux';
 import {startChat} from '../actions/Users'
-
+import firestore from '../Firebase/Firestore'
 
 class Matched extends Component {
   constructor(props){
@@ -149,10 +149,12 @@ class Matched extends Component {
     } 
     componentDidMount=()=>{
       const {route} =this.props
+        const order=route.params.order
         const id=route.params.orderid
         const fieldid=route.params.fieldid
         const driverid=route.params.driverid
         console.log('this id',id)
+        this.props.chat(order.chat)
         this.db.collection("orders").where("id","==",fieldid)
         .onSnapshot((querySnapshot) => {
         querySnapshot.forEach((doc) => {
@@ -241,7 +243,24 @@ class Matched extends Component {
       }).catch((error) => {
           console.log("Error getting document:", error);
       });
-    }
+    //   firestore.addMessageRoom(
+    //     (id) => {
+    //       this.props.chat(id)
+    //       console.log('id in redux',this.props.user.id)
+    //       firestore.addChat(
+    //         doc.id,
+    //         id,
+    //         () => {},
+    //         (error) => {}
+    //       );
+
+          
+    //     },
+    //     (error) => {
+    //       console.log(error);
+    //     }
+    //   )
+     }
     renderTime=(time)=>{
       console.log('time',time)
       

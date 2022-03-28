@@ -82,7 +82,7 @@ class Firestore{
   addChat = (id, data, pass, fail) => {
     console.log(data);
     var docRef = this.db
-      .collection('users')
+      .collection('orders')
       .doc(id)
       .update({ chat:data  })
       .then(() => {pass()})
