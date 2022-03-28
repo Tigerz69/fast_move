@@ -385,7 +385,7 @@ class Home extends Component {
       // console.log('print temp_dur',temp_dur[0])
       var sendParaToAPI2 = {
         method: 'post',
-        url: `http://192.168.1.102:5002/send2point`,
+        url: `http://192.168.1.104:5002/send2point`,
 
         data: {
           
@@ -423,7 +423,7 @@ class Home extends Component {
       
       var sendParaToAPI = {
         method: 'post',
-        url: `http://192.168.1.102:5002/send`,
+        url: `http://192.168.1.104:5002/send`,
  
         data: {
           num : num,
