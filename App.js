@@ -164,9 +164,10 @@ const MyStack = ()=>(
     <Stack.Screen name='LocationView' component={LocationViewScreen} options={{headerShown:false}}/>
     <Stack.Screen name='AddDetails' component={AddDetailsScreen} options={{headerShown:false}}/>
     <Stack.Screen name='Matching' component={MatchingScreen} options={{headerShown:false}}/>
+    <Stack.Screen name='Full' component={FullScreen}options={{headerShown:false}}/>
     <Stack.Screen name='Matched' component={MatchedScreen} options={{headerShown:false}}/>
     <Stack.Screen name='Chat' component={ChatScreen}options={{headerShown:false}}/>
-    <Stack.Screen name='Full' component={FullScreen}options={{headerShown:false}}/>
+    
   </Stack.Navigator>
 )
 

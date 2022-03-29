@@ -118,10 +118,10 @@ class Full extends Component {
 
   onPressChat=()=>{
         const {route} =this.props
-        console.log('here i come',route.params.order)
-        const order=route.params.order
+        console.log('here i come',route.params.chatorder)
+        const chatorder=route.params.chatorder
 
-        this.props.chat(order.chat)
+        this.props.chat(chatorder)
         this.props.navigation.navigate('Chat');
       
   }
@@ -286,6 +286,7 @@ class Full extends Component {
   render(props) {
     const {route} =this.props
       const id=route.params.orderid
+      const order=route.params.order
     const { navigation } = this.props;
     const { modalVisible ,check1,check2,check3,check4,check5} = this.state;
     return (
