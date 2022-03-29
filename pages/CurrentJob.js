@@ -119,17 +119,19 @@ class CurrentJob extends Component {
 
   onPressDetail=(item)=>{
     let num=item.gnome.length
-    
+    let order=item
     this.props.chat(item.chat)
     console.log(item.chat,'item.chat')
-    var orderRef = this.db.collection("orders");
-    var query = orderRef.where("id","==",item.id)
-    query.get()
+    console.log('item' , item)
+    console.log('')
+    var docRef=this.db.collection("orders").where("id","==",item.id);
+    docRef.get()
     .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
               // doc.data() is never undefined for query doc snapshots
               //console.log(doc.id, " => ", doc.data());
-              this.props.navigation.navigate('Matched',{order:item,orderid:doc.id,fieldid:item.id,driverid:item.driverID})
+              console.log(doc.id)
+              this.props.navigation.navigate('Full',{order:order,orderid:doc.id,fieldid:item.id,driverid:item.driverID})
               
           });
             
@@ -137,7 +139,7 @@ class CurrentJob extends Component {
           
     })
     .catch((error) => {
-        console.log("Error getting documents: ", error);
+        console.log("Current jon Error getting documents: ", error);
     });
     
     
@@ -219,7 +221,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => (
     
-  {order:state.orderReducer.order}
+  {}
 )
 const mapDispatchToProps = (dispatch) => {
 return{

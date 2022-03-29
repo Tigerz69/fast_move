@@ -22,6 +22,7 @@ import { navigationRef } from '../fast_move/src/RootNavigation.js';
 import CurrentJob from './pages/CurrentJob';
 import SuccessJob from './pages/SuccessJob';
 import CancelJob from './pages/CancelJob';
+import Full from './pages/Full'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { AntDesign } from '@expo/vector-icons';
@@ -89,6 +90,10 @@ const SuccessJobScreen=({navigation})=>(
 
 const CancelJobScreen=({navigation})=>(
   <CancelJob navigation={navigation}/>
+)
+
+const FullScreen=({navigation,route})=>(
+  <Full navigation={navigation}route={route}/>
 )
 
 
@@ -161,7 +166,7 @@ const MyStack = ()=>(
     <Stack.Screen name='Matching' component={MatchingScreen} options={{headerShown:false}}/>
     <Stack.Screen name='Matched' component={MatchedScreen} options={{headerShown:false}}/>
     <Stack.Screen name='Chat' component={ChatScreen}options={{headerShown:false}}/>
-   
+    <Stack.Screen name='Full' component={FullScreen}options={{headerShown:false}}/>
   </Stack.Navigator>
 )
 

@@ -19,7 +19,7 @@ import { connect } from 'react-redux';
 import {startChat} from '../actions/Users'
 import firestore from '../Firebase/Firestore'
 
-class Matched extends Component {
+class Full extends Component {
   constructor(props){
     super(props);
      this.db = firebase.firestore()
@@ -537,4 +537,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(Matched);
+export default connect(mapStateToProps,mapDispatchToProps)(Full);
