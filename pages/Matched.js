@@ -18,6 +18,10 @@ import MapView from 'react-native-maps'
 import { connect } from 'react-redux';
 import {startChat} from '../actions/Users'
 import firestore from '../Firebase/Firestore'
+import storage from '../Firebase/Storage'
+import * as ImagePicker from 'expo-image-picker'; 
+
+
 
 class Matched extends Component {
   constructor(props){
@@ -48,8 +52,14 @@ class Matched extends Component {
             gettime:'loading',
             price:'loading',
             uid:null,
-            driverID:null
+            driverID:null,
+            imageBill:null,
+            uploadURI:null,
+            orderID:null,
+            modalVisible2:false
+            
     };
+    this._isMounted=false;
   }
   call=()=>{
     const { phoneNumber } = this.state
@@ -134,6 +144,9 @@ class Matched extends Component {
     setModalVisible = (visible) => {
         this.setState({ modalVisible: visible });
       }
+      setModalVisible2=(visible)=>{
+        this.setState({ modalVisible2: visible });
+      }
     onlyUnique=(value, index, self) =>{
         return self.indexOf(value) === index;
     }
@@ -150,10 +163,18 @@ class Matched extends Component {
           ]  
       );  
     } 
+    componentWillUnmount=()=>{
+     this._isMounted=false;
+    }
     componentDidMount=()=>{
+      this._isMounted=true;
       const {route} =this.props
         
         const id=route.params.orderid
+        if(this._isMounted===true){
+          this.setState({orderID:id})
+        }
+        
         const fieldid=route.params.fieldid
         const driverid=route.params.driverid
         console.log('this id',id)
@@ -164,15 +185,20 @@ class Matched extends Component {
             console.log('tumrai')
             if(doc.data().status=="matched")
             {
-                
+              if(this._isMounted===true){
                 this.setState({statusOrder:"รับงานเรียบร้อย"})  
+              }
             }
             else if(doc.data().status=="success"){
+              if(this._isMounted===true){
               this.setState({statusOrder:"เสร็จสิ้น"})
+              }
               RootNavigation.navigate('Home');
             }
             else if(doc.data().status=="cancel"){
+              if(this._isMounted===true){
               this.setState({statusOrder:"ยกเลิก"})
+              }
               RootNavigation.navigate('Home');
             }
         });
@@ -189,10 +215,12 @@ class Matched extends Component {
                 num= doc.data().gnome.length
                 console.log('num',num)
                 let order = doc.data()
+                if(this._isMounted===true){
                 this.setState({uid:order.customerID})
                 this.setState({gettime:order.getTime})
                 this.setState({order:order})
                 this.setState({price:order.price})
+                }
                 //console.log(num)
                 //console.log(order.wayPointList[0].region)
                 for(let i=0 ;i<num;i++)
@@ -208,10 +236,13 @@ class Matched extends Component {
                         
                     )
                 }
-                this.setState({ markerArr: this.state.markerArr.concat(arr)})
+                if(this._isMounted===true){
+                this.setState({ markerArr: this.state.markerArr.concat(arr)})}
                 let a =this.state.markerArr
                 var uniqe = a.filter(this.onlyUnique)
+                if(this._isMounted===true){
                 this.setState({ markerArr: uniqe} )
+                }
               } else {
                 // doc.data() will be undefined in this case
                 console.log("No such document!");
@@ -232,13 +263,14 @@ class Matched extends Component {
               
               name=first+"    "+last
               console.log('name',name)
+              if(this._isMounted===true){
               this.setState({phoneNumber:doc.data().phone})
               this.setState({driverName:name})
               this.setState({image:img})
               this.setState({bank:doc.data().bank})
               this.setState({bankno:doc.data().bankno})
               this.setState({carid:doc.data().carid})
-              this.setState({driverID:doc.id})
+              this.setState({driverID:doc.id})}
           } else {
               // doc.data() will be undefined in this case
               console.log("No such document!");
@@ -264,6 +296,57 @@ class Matched extends Component {
     //     }
     //   )
      }
+     showImage=()=>{
+      this.setModalVisible2(!this.state.modalVisible2)
+     }
+     
+    storageUpload=()=>{
+          
+      storage.upload(this.state.imageBill,this.state.orderID,this.running,this.uploadSuccess,this.uploadUnsuccess)
+    }
+    pickImage=async()=>{
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes:ImagePicker.MediaTypeOptions.All,
+        allowsEditing:true,
+        quality:1
+      });
+
+      if(!result.cancelled){
+        this.setState({imageBill:result.uri});
+        this.storageUpload()
+      }
+    }
+    running=(progress)=>{
+      console.log(progress);
+    }
+
+    uploadSuccess=(url)=>{
+      
+      console.log(url)
+      this.setState({uploadURI:url})
+      
+      this.uploadImage()
+    }
+
+    uploadUnsuccess=(error)=>{
+      console.log(error)
+    }
+    uploadImage=()=>{
+      console.log('id from state and uploadImage',this.state.id)
+      
+      console.log('state  : ',this.state.uploadURI)
+      firestore.uploadImage(this.state.orderID,this.state.uploadURI,this.updateSuccess,this.updateUnsuccess)
+    }
+    updateSuccess=()=>{
+      console.log('successful upload image')
+      
+    }
+
+    updateUnsuccess=(error)=>{
+      console.log(error)
+    }
+
+
     renderTime=(time)=>{
       console.log('time',time)
       
@@ -286,9 +369,11 @@ class Matched extends Component {
   render(props) {
     const {route} =this.props
       const id=route.params.orderid
+     
       const order=route.params.order
+      var imgBill=route.params.order.imageBill
           const { navigation } = this.props;
-    const { modalVisible ,check1,check2,check3,check4,check5} = this.state;
+    const { modalVisible2,modalVisible ,check1,check2,check3,check4,check5} = this.state;
     return (
       <KeyboardAvoidingView 
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -351,14 +436,25 @@ class Matched extends Component {
                     
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <View style={styles.content}>
-          
+                            
           
                     
                     
                     <View style={styles.centeredView}>
                     <Modal
                       animationType="slide"
-                      transparent={true}
+                      transparent={false}
+                      visible={modalVisible2}
+                      onRequestClose={() => {
+                        
+                        this.setModalVisible2(!modalVisible2)
+                      }}
+                    >
+                        <Image source={{ uri:(this.state.uploadURI ? this.state.uploadURI:imgBill )}} style={styles.imageBill} />
+                    </Modal>
+                    <Modal
+                      animationType="slide"
+                      transparent={false}
                       visible={modalVisible}
                       onRequestClose={() => {
                         
@@ -393,7 +489,7 @@ class Matched extends Component {
                         <TextInput style={styles.textInput}  placeholder="เหตุผลอื่น ๆ"  onChangeText={txt=>{this.setState({other:txt})}}>
                             
                         </TextInput>
-                        <TouchableOpacity onPress={()=>this.cancelWork()}>
+                        <TouchableOpacity style={{justifyContent:'center',alignItems:'center'}} onPress={()=>this.cancelWork()}>
                             <Text>ยืนยัน</Text>
                         </TouchableOpacity>
                     </Modal>
@@ -401,11 +497,19 @@ class Matched extends Component {
                     </View>
               <Text>เวลารับสินค้า  {this.renderTime(this.state.gettime)}</Text>
               <Text>ราคารวม   {this.state.price}    บาท</Text>
-              <TouchableOpacity 
-                style={styles.buttonLogin} 
-                onPress={this.onChangePress}>
-                  <Text style={{fontSize:16, color:'white'}}>แนบรูปสลิป</Text>
-              </TouchableOpacity>
+              <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+                    <TouchableOpacity 
+                      style={styles.buttonLogin} 
+                      onPress={this.pickImage}>
+                        <Text style={{fontSize:16, color:'white'}}>แนบรูปสลิป</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                      style={styles.buttonLogin} 
+                      onPress={this.showImage}>
+                        <Text style={{fontSize:16, color:'white'}}>แสดงรูปชำระเงิน</Text>
+                    </TouchableOpacity>
+              </View>
+              
 
               
 
@@ -423,8 +527,8 @@ const styles = StyleSheet.create({
    justifyContent:"center",
     alignItems: "center",
     backgroundColor: "#6b4683",
-    marginBottom:8,
-    padding:8
+    padding:8,
+    margin:8
   },
   textInput:{
     borderColor: '#6b4683',
@@ -502,11 +606,12 @@ const styles = StyleSheet.create({
       textAlign: "center"
     },
     textInput:{
-      borderColor: 'pink',
+      borderColor: 'black',
       borderWidth: 1,
       paddingStart:20,
       marginBottom:8,
       padding:8,
+      marginHorizontal:8,
       fontSize:16,
       color:'pink'
     },
@@ -527,7 +632,15 @@ const styles = StyleSheet.create({
       textAlign:"center",
       color:"#fff",
       fontSize:30
-    }
+    },
+    imageBill: {
+      borderColor: '#6b4683',
+      borderWidth: 1,
+      flex:1
+     
+      
+  
+    },
 });
 
 

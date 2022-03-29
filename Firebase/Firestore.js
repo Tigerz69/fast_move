@@ -42,7 +42,7 @@ class Firestore{
 
   saveOrder=(item,success,unsuccess)=>{ 
     item.time = firebase.firestore.FieldValue.serverTimestamp();
-    
+    item.imageBill =""
     var orderRef = this.db.collection("orders");
     var query = orderRef.orderBy("time","desc").limit(1)
     query.get()
@@ -120,6 +120,21 @@ class Firestore{
       });
     });
   };
+  uploadImage=(id,data,success,unsuccess)=>{
+    console.log(id)
+    var ref = this.db.collection('orders').doc(id);
+    ref
+    .update({
+      imageBill:data
+    })
+    .then(()=>{
+      success();
+    })
+    .catch((error)=>{
+      unsuccess(error)
+    });
+  }
+
 
 }
 
