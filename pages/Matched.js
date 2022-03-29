@@ -286,7 +286,8 @@ class Matched extends Component {
   render(props) {
     const {route} =this.props
       const id=route.params.orderid
-    const { navigation } = this.props;
+      const order=route.params.order
+          const { navigation } = this.props;
     const { modalVisible ,check1,check2,check3,check4,check5} = this.state;
     return (
       <KeyboardAvoidingView 

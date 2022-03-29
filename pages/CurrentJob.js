@@ -131,7 +131,7 @@ class CurrentJob extends Component {
               // doc.data() is never undefined for query doc snapshots
               //console.log(doc.id, " => ", doc.data());
               console.log(doc.id)
-               this.props.navigation.navigate('Full',{order:doc.data(),orderid:doc.id,fieldid:item.id,driverid:item.driverID})
+               this.props.navigation.navigate('Matched',{order:doc.data(),orderid:doc.id,fieldid:item.id,driverid:item.driverID})
               //this.props.navigation.navigate('Full')
           });
             
