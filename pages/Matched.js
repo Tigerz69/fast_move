@@ -384,8 +384,8 @@ class Matched extends Component {
                           <
                               Text>ยกเลิก</Text>
           </TouchableOpacity>
-          <Text>คำสั่ง :{id}</Text>
-          <Text>สถานะ :{this.state.statusOrder}</Text>
+          <Text style={{paddingLeft:10}}>คำสั่ง :{id}</Text>
+          <Text style={{paddingLeft:10}}>สถานะ :{this.state.statusOrder}</Text>
                 <View style={{flex:1 ,flexDirection:'row',alignItems:'center',marginTop:30,marginLeft:20}}>
                   
                       
@@ -636,11 +636,12 @@ const styles = StyleSheet.create({
     imageBill: {
       borderColor: '#6b4683',
       borderWidth: 1,
-      flex:1
+      flex:1,
      
       
   
     },
+    
 });
 
 
