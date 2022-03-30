@@ -6,7 +6,7 @@ import {
   TextInput,
   StyleSheet,
   KeyboardAvoidingView,
-  Platform,Modal,Alert,ScrollView,Linking,Image
+  Platform,Modal,Alert,ScrollView,Linking,Image,LogBox
 } from 'react-native';
 import firebase from "../Firebase/Initial";
 import 'firebase/firestore';
@@ -20,6 +20,7 @@ import {startChat} from '../actions/Users'
 import firestore from '../Firebase/Firestore'
 import storage from '../Firebase/Storage'
 import * as ImagePicker from 'expo-image-picker'; 
+LogBox.ignoreLogs(['source.uri should not be an empty string']);
 
 
 
@@ -69,6 +70,7 @@ class Matched extends Component {
   checkNull=(list)=>{
     return list!=null
   }
+  
   cancelWork(){
     const{
         other,
