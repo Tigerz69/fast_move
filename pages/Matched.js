@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component } from 'react';
 import {
   View,
   Text,
@@ -57,10 +57,18 @@ class Matched extends Component {
             imageBill:null,
             uploadURI:null,
             orderID:null,
-            modalVisible2:false
+            modalVisible2:false,
+            realLocation:{
+              latitude:0,longitude:0
+            },
+            medLoc:{
+              latitude:0,longitude:0,latitudeDelta:0,
+              longitudeDelta:0
+            },
             
     };
     this._isMounted=false;
+    
   }
   call=()=>{
     const { phoneNumber } = this.state
@@ -165,6 +173,22 @@ class Matched extends Component {
           ]  
       );  
     } 
+
+    showAlertSuccess(){  
+      
+      console.log('alert come')
+      Alert.alert(  
+        'Your Order has success',  
+          'Do u want to go back home ?',  
+          [  
+                
+                {text: 'Yes', onPress: () => RootNavigation.navigate('Home')}, 
+                {text: 'No', onPress: () => console.log('No Pressed')} 
+          ]  
+      );  
+    } 
+
+
     componentWillUnmount=()=>{
      this._isMounted=false;
     }
@@ -195,7 +219,7 @@ class Matched extends Component {
               if(this._isMounted===true){
               this.setState({statusOrder:"เสร็จสิ้น"})
               }
-              RootNavigation.navigate('Home');
+              this.showAlertSuccess()
             }
             else if(doc.data().status=="cancel"){
               if(this._isMounted===true){
@@ -206,8 +230,34 @@ class Matched extends Component {
         });
         
     });
+    
+    setInterval(()=>{
+      console.log('interval 6 s')
+      const dbRef = firebase.database().ref();
+          dbRef.child("users").child(driverid).get().then((snapshot) => {
+            if (snapshot.exists()) {
+              console.log(snapshot.val());
+              let data = snapshot.val()
+              if(this._isMounted===true)
+              {
+
+                this.setState({realLocation:data})
+                console.log('state realLocation',this.state.realLocation)
+              }
+            } else {
+              console.log("No data available");
+            }
+          }).catch((error) => {
+            console.error(error);
+          });
+    },6000)
+          
         var num =null
         let arr=[]
+        let medLatitude=0
+        let medLongitude =0 
+        let medLatitudeDelta=0
+        let medLongitudeDelta=0
 
        // console.log('order from matching',this.props.order)
         var docRef = this.db.collection("orders").doc(id);
@@ -233,10 +283,20 @@ class Matched extends Component {
                           longitude:order.wayPointList[i].region.longitude},
                         title:`จุดที่ ${i+1}`
                       }
-
+                      
                     
                         
                     )
+                    medLatitude=medLatitude+order.wayPointList[i].region.latitude
+                    medLongitude=medLongitude+order.wayPointList[i].region.longitude
+                    medLatitudeDelta=medLatitudeDelta+order.wayPointList[i].region.latitudeDelta
+                    medLongitudeDelta=medLongitudeDelta+order.wayPointList[i].region.longitudeDelta
+                }
+                let medLoc={
+                  latitude:medLatitude/num,longitude:medLongitude/num,latitudeDelta:0.01,longitudeDelta:0.01
+                }
+                if(this._isMounted===true){
+                  this.setState({ medLoc: medLoc} )
                 }
                 if(this._isMounted===true){
                 this.setState({ markerArr: this.state.markerArr.concat(arr)})}
@@ -350,7 +410,7 @@ class Matched extends Component {
 
 
     renderTime=(time)=>{
-      console.log('time',time)
+      //console.log('time',time)
       
         let tempdate = new Date(time.seconds*1000+ time.nanoseconds / 1000000)
          var date =tempdate.getDate()
@@ -419,8 +479,8 @@ class Matched extends Component {
                 
         </View>
         <View style={{flex:1}}>
-        <MapView  style={{width:'100%', height:'100%'}}
-                        region={order.wayPointList[0].region}
+        <MapView key={this.state.realLocation.longitude.length}  style={{width:'100%', height:'100%'}}
+                        region={this.state.medLoc}
                     >
                            {this.state.markerArr.map((marker, index) => (
                             <MapView.Marker
@@ -430,6 +490,14 @@ class Matched extends Component {
                               
                             />
                           ))}
+                          <MapView.Marker
+                           
+                            key={this.state.realLocation.latitude.length}
+                            coordinate={this.state.realLocation}
+                            title={"คนขับ"}
+                          >
+
+                          </MapView.Marker>
                       
                         
           </MapView>

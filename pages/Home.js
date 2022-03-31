@@ -52,6 +52,7 @@ class Home extends Component {
       loading:false,
       promises:[],
       gnome:"",
+     
       
     };
     this.myRef = React.createRef();
@@ -110,9 +111,9 @@ class Home extends Component {
     );  
   }  
   
-  componentWillUnmount=()=>{
-    
-  }
+  // componentWillUnmount=()=>{
+  //   this.setState({arr:[]})
+  // }
   showAlert3() {  
     Alert.alert(  
         'Error',  
@@ -494,7 +495,7 @@ class Home extends Component {
             }
             
           }
-          
+                   
         return (
             
               this.state.loading ? (<Loading></Loading>) : (

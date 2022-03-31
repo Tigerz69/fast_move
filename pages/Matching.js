@@ -11,7 +11,7 @@ import { CheckBox } from 'react-native-elements';
 import { TextInput } from 'react-native-gesture-handler';
 import firestore from '../Firebase/Firestore';
 import {startChat} from '../actions/Users'
-
+import Loading from './Loading'
 
 class Matching extends Component{
     constructor(props){
@@ -20,7 +20,7 @@ class Matching extends Component{
         this.db = firebase.firestore()
         //this.matchListen=this.db.collection("orders").where("id", "==", this.id)
         this.state = {
-            loading:false,
+            loading:true,
             modalVisible: false,
             other:null,
             check1:false,
@@ -36,7 +36,7 @@ class Matching extends Component{
             markerArr:[],
             order:null
         };
-         
+      this._isMounted=false;   
     }
     checkNull=(list)=>{
         return list!=null
@@ -114,7 +114,7 @@ class Matching extends Component{
         
       }
     componentDidMount=()=>{
-        
+      this._isMounted=true;
         const {route} =this.props
         const id=route.params.orderid
         const fieldid=route.params.fieldid
@@ -124,7 +124,11 @@ class Matching extends Component{
         querySnapshot.forEach((doc) => {
             console.log('tumrai')
             if(doc.data().status=="matched")
-            {
+
+            {  if(this._isMounted===true){
+              this.setState({loading:false})
+              }
+               
                 console.log('driver id:' ,doc.data().driverID)
                 
                 this.props.navigation.navigate('Matched',{order:doc.data(),orderid:id,fieldid:fieldid,driverid:doc.data().driverID})
@@ -144,8 +148,9 @@ class Matching extends Component{
                 num= doc.data().gnome.length
                 console.log('num',num)
                 let order = doc.data()
-               
+                if(this._isMounted===true){
                 this.setState({order:order})
+                 }
                 //console.log(num)
                 //console.log(order.wayPointList[0].region)
                 for(let i=0 ;i<num;i++)
@@ -161,10 +166,12 @@ class Matching extends Component{
                         
                     )
                 }
+                if(this._isMounted===true){
                 this.setState({ markerArr: this.state.markerArr.concat(arr)})
                 let a =this.state.markerArr
                 var uniqe = a.filter(this.onlyUnique)
-                this.setState({ markerArr: uniqe} )
+               
+                this.setState({ markerArr: uniqe} )}
                 console.log('')
                 console.log('init region',order.wayPointList[0].region)
 //console.log("Document data:", doc.data());
@@ -195,10 +202,12 @@ class Matching extends Component{
         
         
         
-        const { modalVisible ,check1,check2,check3,check4,check5} = this.state;
+        const { loading,modalVisible ,check1,check2,check3,check4,check5} = this.state;
         return(
             <View style={styles.container}>
                 
+                   
+                    
                     
                     <MapView  style={styles.map} 
                         region={order.wayPointList[0].region}
@@ -214,8 +223,11 @@ class Matching extends Component{
                       
                         
                     </MapView>
+                    
                     <View style={{ position: 'absolute', top: 50, left: 0 ,right:0,alignItems: 'center',}}>
-                        <Text>กำลังค้นหาคนขับ</Text>
+                            
+                        <Text style={{marginLeft:20}}>กำลังค้นหาคนขับ</Text>
+                        {loading&&(<Loading></Loading>)}
                     </View>
                     <View style={{backgroundColor:'pink',position: 'absolute', top: 20, left: 300 ,right:0,alignItems: 'center' }}>
                         <TouchableOpacity onPress={()=>this.cancel()}>
@@ -225,9 +237,9 @@ class Matching extends Component{
                         
                     </View>
                     <View style={styles.centeredView}>
-                    <Modal
+                   <Modal
                       animationType="slide"
-                      transparent={true}
+                      transparent={false}
                       visible={modalVisible}
                       onRequestClose={() => {
                         
@@ -262,7 +274,7 @@ class Matching extends Component{
                         <TextInput style={styles.textInput}  placeholder="เหตุผลอื่น ๆ"  onChangeText={txt=>{this.setState({other:txt})}}>
                             
                         </TextInput>
-                        <TouchableOpacity onPress={()=>this.cancelWork()}>
+                        <TouchableOpacity style={{justifyContent:'center',alignItems:'center'}} onPress={()=>this.cancelWork()}>
                             <Text>ยืนยัน</Text>
                         </TouchableOpacity>
                     </Modal>
