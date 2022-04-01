@@ -459,37 +459,42 @@ class Home extends Component {
               arr.push(
                 
                 <View key={i} style={{flexDirection:'row',alignItems:'center',padding:'2%'}}>
-                  <Text> {i+1}.</Text>
-                  <TextInput editable={false} selectTextOnFocus={false} style={{backgroundColor:'white',borderColor:'black',borderWidth:1,width:'80%'}} placeholder='เลือกจุดรับของ'
+                  <Text style={{paddingRight:5}}>{i+1}.</Text>
+                  <TextInput editable={false} selectTextOnFocus={false} style={{paddingLeft:10,backgroundColor:'white',borderColor:'black',borderWidth:1,width:'75%',borderRadius:20,color:'#1D3557'}} placeholder='เลือกจุดรับของ'
                   value={this.props.pointList[i] ? this.props.pointList[i].address : "เลือกจุดรับของ"}>
                   
                   </TextInput>
-                  <TouchableOpacity onPress={()=>this.goToPickLocationPage(i)}
-                    styles={StyleSheet.buttonLogin}>
-                    <MaterialIcons name="gps-fixed" size={24} color="black" />
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={()=>this.removeInput(i)}
-                    styles={StyleSheet.buttonLogin}>
-                    <AntDesign name="minuscircleo" size={20} color="red"></AntDesign>
-                  </TouchableOpacity>
+                  <View style={{paddingLeft:5,flexDirection:'row',alignItems:'center'}}>
+                      <TouchableOpacity onPress={()=>this.goToPickLocationPage(i)}
+                        styles={styles.buttonLogin}>
+                        <MaterialIcons name="gps-fixed" size={24} color="black" />
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={()=>this.removeInput(i)}
+                        styles={styles.buttonLogin}>
+                        <AntDesign name="minuscircleo" size={20} color="red"></AntDesign>
+                      </TouchableOpacity>
+                  </View>
                 </View>
               )
             }else{
               arr.push(
                 <View key={i} style={{flexDirection:'row',alignItems:'center',padding:'2%'}}>
-                  <Text> {i+1}.</Text>
-                  <TextInput editable={false} selectTextOnFocus={false} style={{backgroundColor:'white',borderColor:'black',borderWidth:1,width:'80%'}} placeholder='เลือกจุดส่งของ'
+                  <Text style={{paddingRight:5}}>{i+1}.</Text>
+                  <TextInput editable={false} selectTextOnFocus={false} style={{paddingLeft:10,backgroundColor:'white',borderColor:'black',borderWidth:1,width:'75%',borderRadius:20,color:'#1D3557'}} placeholder='เลือกจุดส่งของ'
                   value={this.props.pointList[i] ? this.props.pointList[i].address : "เลือกจุดส่งของ"}>
                   
                   </TextInput>
-                  <TouchableOpacity onPress={()=>this.goToPickLocationPage(i)}
-                    styles={StyleSheet.buttonLogin}>
-                    <MaterialIcons name="gps-fixed" size={24} color="black" />
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={()=>this.removeInput(i)}
-                    styles={StyleSheet.buttonLogin}>
-                    <AntDesign name="minuscircleo" size={20} color="red"></AntDesign>
-                  </TouchableOpacity>
+                  <View style={{paddingLeft:5,flexDirection:'row',alignItems:'center'}}>
+                      <TouchableOpacity onPress={()=>this.goToPickLocationPage(i)}
+                        styles={styles.buttonLogin}>
+                        <MaterialIcons name="gps-fixed" size={24} color="black" />
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={()=>this.removeInput(i)}
+                        styles={styles.buttonLogin}>
+                        <AntDesign name="minuscircleo" size={20} color="red"></AntDesign>
+                      </TouchableOpacity>
+                  </View>
+                  
                 </View>
               )
             }
@@ -506,7 +511,7 @@ class Home extends Component {
                 {arr}
                 
                 <TouchableOpacity onPress={this.addInput}
-                      styles={StyleSheet.addButton}
+                      
                     >
                       <Text style={{color:'black',fontWeight:'bold'}}>+ Add New Waypoint</Text>
                 </TouchableOpacity>
@@ -519,7 +524,7 @@ class Home extends Component {
                   iconStyle={styles.iconStyle}
                   data={options}
                   //search
-                  dropdownPosition='auto'
+                  dropdownPosition='down'
                   maxHeight={120}
 
                   labelField="label"
@@ -544,12 +549,12 @@ class Home extends Component {
                       />
                       )}
                 />
-               <View style={{flexDirection:'row',height:'10%',paddingVertical:'2%',}}>
+               <View style={{flexDirection:'row',height:'10%',paddingVertical:'5%',}}>
                {this.state.showBtn&&( <TouchableOpacity style={styles.pickDateTimeButton}  onPress={this.popupDatePicker}>
-                    <Text style={{color:'black',fontWeight:'bold'}}>เลือกวัน</Text>
+                    <Text style={{color:'white'}}>เลือกวัน</Text>
                     </TouchableOpacity>)}
                {this.state.showBtn&&( <TouchableOpacity style={styles.pickDateTimeButton} onPress={this.popupTimePicker}>
-                    <Text style={{color:'black',fontWeight:'bold'}}>เลือกเวลา</Text>
+                    <Text style={{color:'white'}}>เลือกเวลา</Text>
                     </TouchableOpacity>)}
 
                     {this.state.show && (
@@ -565,7 +570,7 @@ class Home extends Component {
 
                 </View>
                 <TouchableOpacity style={styles.addButton} onPress={this.goToAddDetails}>
-                      <Text>เพิ่มรายละเอียด</Text>
+                      <Text style={{color:'white'}}>เพิ่มรายละเอียด</Text>
                 </TouchableOpacity>
                 
                 
@@ -585,33 +590,36 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
     buttonLogin: {
-      justifyContent:"center",
-      alignItems: "center",
-      backgroundColor: "pink",
-      marginBottom:'50%',
-      padding:8,
-
+      
+      
+      marginLeft:100,
+      backgroundColor:'red'
     },
     addButton:{
       justifyContent:"center",
       alignItems: "center",
-      backgroundColor: "pink",
-      borderColor:'black',
-      borderWidth:1,
+      backgroundColor: "#457B9D",
+      width:150,
+      height:30,
+      borderRadius: 20,
+      marginTop:10
+      
     },
     container: {
-        flex: 1,
+        flexGrow: 1,
         justifyContent:"center",
         alignItems: "center",
-        backgroundColor:'white',
+        backgroundColor:'#F1FAEE',
     },
     dropdown: {
       width:'60%',
       height: '5%',
       borderColor: 'gray',
-      borderWidth: 0.5,
-      borderRadius: 8,
+      borderWidth: 1,
+      borderRadius: 20,
       paddingHorizontal: 8,
+      backgroundColor:'white'
+      
     },
     placeholderStyle: {
       fontSize: 16,
@@ -630,12 +638,13 @@ const styles = StyleSheet.create({
     pickDateTimeButton:{
       justifyContent:"center",
       alignItems: "center",
-      backgroundColor: "pink",
+      backgroundColor: "#457B9D",
       marginHorizontal:'5%',
       paddingHorizontal:'5%',
-      height:'50%',
-      borderColor:'black',
-      borderWidth:1
+      height:30,
+      width:120,
+      borderRadius:20
+      
     },
 });
 

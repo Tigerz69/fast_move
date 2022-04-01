@@ -40,7 +40,7 @@ class Recover extends Component {
   render(props) {
     const { navigation } = this.props;
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center',backgroundColor:'#F1FAEE' }}>
 
           <View style={styles.content}>
 
@@ -67,24 +67,25 @@ const styles = StyleSheet.create({
   buttonLogin: {
     justifyContent:"center",
     alignItems: "center",
-    backgroundColor: "pink",
+    backgroundColor: "#457B9D",
     marginBottom:8,
     padding:8
 
   },
   textInput:{
-    borderColor: 'pink',
+    borderColor: '#457B9D',
     borderWidth: 1,
     paddingStart:20,
     marginBottom:8,
     padding:8,
     fontSize:16,
-    color:'pink'
+    color:'#1D3557'
   },
   content:{
     padding:16,
     margin:16,
-    width:"90%"
+    width:"90%",
+    backgroundColor:'#F1FAEE'
   }
   
 });

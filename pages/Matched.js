@@ -21,8 +21,12 @@ import firestore from '../Firebase/Firestore'
 import storage from '../Firebase/Storage'
 import * as ImagePicker from 'expo-image-picker'; 
 LogBox.ignoreLogs(['source.uri should not be an empty string']);
+import { NavigationActions,StackActions  } from 'react-navigation';
 
-
+// const resetAction = StackActions .reset({
+//   index: 0,
+//   actions: [NavigationActions.navigate({ routeName: 'Home' })],
+// });
 
 class Matched extends Component {
   constructor(props){
@@ -61,15 +65,20 @@ class Matched extends Component {
             realLocation:{
               latitude:0,longitude:0
             },
-            medLoc:{
-              latitude:0,longitude:0,latitudeDelta:0,
-              longitudeDelta:0
-            },
+            
+            medLoc: {
+              latitude: 0,
+              longitude: 0,
+              latitudeDelta: 0,
+              longitudeDelta: 0,
+            }
             
     };
     this._isMounted=false;
     
   }
+
+  
   call=()=>{
     const { phoneNumber } = this.state
 
@@ -118,7 +127,7 @@ class Matched extends Component {
                     //this.CancelSuccess()
                     this.setModalVisible(!modalVisible);
                     console.log("Document successfully written!");
-                    this.props.navigation.navigate('Home')
+                    this.props.navigation.navigate('Home');
                     result=null
                 })
                 .catch((error) => {
@@ -151,6 +160,13 @@ class Matched extends Component {
 
 
     }
+    // onRegionChange=(region)=> {
+    //   var{medLoc}=this.state;
+    //   medLoc.timing({
+    //     latitude:  region.latitude, // selected marker lat
+    //     longitude: region.longitude, // selected marker lng
+    //   }).start();
+    // }
     setModalVisible = (visible) => {
         this.setState({ modalVisible: visible });
       }
@@ -182,7 +198,7 @@ class Matched extends Component {
           'Do u want to go back home ?',  
           [  
                 
-                {text: 'Yes', onPress: () => RootNavigation.navigate('Home')}, 
+                {text: 'Yes', onPress: () => this.props.navigation.navigate("Home")}, 
                 {text: 'No', onPress: () => console.log('No Pressed')} 
           ]  
       );  
@@ -225,7 +241,7 @@ class Matched extends Component {
               if(this._isMounted===true){
               this.setState({statusOrder:"ยกเลิก"})
               }
-              RootNavigation.navigate('Home');
+              //RootNavigation.navigate('Home');
             }
         });
         
@@ -479,8 +495,11 @@ class Matched extends Component {
                 
         </View>
         <View style={{flex:1}}>
-        <MapView key={this.state.realLocation.longitude.length}  style={{width:'100%', height:'100%'}}
+        <MapView  key={this.state.realLocation.longitude+this.state.realLocation.latitude}  style={{width:'100%', height:'100%'}}
                         region={this.state.medLoc}
+                        
+                        
+                        
                     >
                            {this.state.markerArr.map((marker, index) => (
                             <MapView.Marker
@@ -488,19 +507,27 @@ class Matched extends Component {
                               coordinate={marker.latlng}
                               title={marker.title}
                               
-                            />
+                              >
+                              <Text>{marker.title}</Text>
+                              <Image source={{uri:"https://cdn-icons.flaticon.com/png/512/819/premium/819814.png?token=exp=1648839960~hmac=11703d38a26292a6f9c66f433b2e5d93"}}
+                              style={{width: 30, height: 30}}></Image>
+                              </MapView.Marker>
+                              
+                           
                           ))}
                           <MapView.Marker
-                           
-                            key={this.state.realLocation.latitude.length}
+                            pinColor={'green'}
+                            key={this.state.realLocation.longitude+this.state.realLocation.latitude}
                             coordinate={this.state.realLocation}
                             title={"คนขับ"}
                           >
-
+                            <Text>คนขับ</Text>
+                            <Image source={{uri:"https://cdn-icons.flaticon.com/png/512/1365/premium/1365700.png?token=exp=1648836382~hmac=d191c39ccad0d2832b5a4f4650960424"}}
+                              style={{width: 30, height: 30}}></Image>
                           </MapView.Marker>
                       
                         
-          </MapView>
+          </MapView >
         </View>
           
                     

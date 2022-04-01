@@ -1,5 +1,5 @@
 //Matching.js
-import {View,Text,StyleSheet,ScrollView,TouchableOpacity,Modal,Alert} from 'react-native';
+import {View,Text,StyleSheet,ScrollView,TouchableOpacity,Modal,Alert,Image} from 'react-native';
 import React,{Component} from "react";
 import Marker from 'react-native-maps';
 import MapView from 'react-native-maps'
@@ -218,7 +218,11 @@ class Matching extends Component{
                               coordinate={marker.latlng}
                               title={marker.title}
                               
-                            />
+                            >
+                              <Text>{marker.title}</Text>
+                              <Image source={{uri:"https://cdn-icons.flaticon.com/png/512/819/premium/819814.png?token=exp=1648839960~hmac=11703d38a26292a6f9c66f433b2e5d93"}}
+                              style={{width: 30, height: 30}}></Image>
+                            </MapView.Marker>
                           ))}
                       
                         

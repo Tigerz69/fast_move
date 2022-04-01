@@ -61,13 +61,13 @@ class Splash extends Component {
     render(props) {
       const { navigation } = this.props;
       return (
-        <View style={{ flex: 1, backgroundColor: '#FF84E4' }}>
+        <View style={{ flex: 1, backgroundColor: '#F1FAEE' }}>
           <View
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Text style={{ color: 'black', fontSize: 32 }}>Fast Move</Text>
                 <Image 
-                    style={{width:'50%',height:'25%',marginTop:'10%'}}
-                    source={{uri:'https://cdn-icons-png.flaticon.com/512/1585/1585176.png'}}>
+                    style={{width:'50%',height:'30%',marginTop:'10%'}}
+                    source={{uri:'https://cdn-icons-png.flaticon.com/512/679/679821.png'}}>
                 </Image>
           </View>
           

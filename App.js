@@ -124,13 +124,13 @@ const MyTabs=()=> {
     
       <Tab.Navigator>
         <Tab.Screen name="Home"
-        component={HomeScreen} options={{tabBarLabel: 'Home',
+        component={HomeScreen} options={{headerStyle:{backgroundColor: '#457B9D'},tabBarLabel: 'Home',headerTitleStyle: { color: 'white' },
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="border-color" size={24} color="black" />
+            <MaterialIcons name="border-color" size={22} color="black" />
           ),}} />
         <Tab.Screen name="History" component={MyTopTabs} options={{tabBarLabel: 'History',
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="history" size={24} color="black" />
+            <MaterialIcons name="history" size={28} color="black" />
           ),}} />
         
         
@@ -153,11 +153,11 @@ const MyStack = ()=>(
     <Stack.Screen 
       name='Register' 
       component={RegisterScreen} 
-      options={{ headerStyle: {backgroundColor: 'pink'},headerTintColor: 'white'}}/>
+      options={{ headerStyle: {backgroundColor: '#457B9D'},headerTintColor: 'white'}}/>
     <Stack.Screen 
       name='Recover' 
       component={RecoverScreen} 
-      options={{ headerStyle: {backgroundColor: 'pink'},headerTintColor: 'white'}}/>
+      options={{ headerStyle: {backgroundColor: '#457B9D'},headerTintColor: 'white'}}/>
     
     <Stack.Screen name='Login' component={LoginScreen} options={{headerShown:false}}/>
     <Stack.Screen name='MyTabs' component={MyTabs} options={{headerShown:false}}/>
