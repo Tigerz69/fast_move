@@ -108,11 +108,11 @@ const TopTab = createMaterialTopTabNavigator();
 const MyTopTabs=()=>{
   return(
     <TopTab.Navigator>
-        <TopTab.Screen name="CurrentJob" component={CurrentJobScreen} />
-        <TopTab.Screen name="SuccessJob" component={SuccessJobScreen} />
+        <TopTab.Screen name="Current Order" component={CurrentJobScreen} />
+        <TopTab.Screen name="Success Order" component={SuccessJobScreen} />
         
         
-        <TopTab.Screen name="CancelJob" component={CancelJobScreen} />
+        <TopTab.Screen name="Cancel Order" component={CancelJobScreen} />
     </TopTab.Navigator>
   )
 }
@@ -128,7 +128,7 @@ const MyTabs=()=> {
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="border-color" size={22} color="black" />
           ),}} />
-        <Tab.Screen name="History" component={MyTopTabs} options={{tabBarLabel: 'History',
+        <Tab.Screen name="History" component={MyTopTabs} options={{headerStyle:{backgroundColor: '#457B9D'},tabBarLabel: 'History',headerTitleStyle: { color: 'white' },
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="history" size={28} color="black" />
           ),}} />
@@ -162,7 +162,7 @@ const MyStack = ()=>(
     <Stack.Screen name='Login' component={LoginScreen} options={{headerShown:false}}/>
     <Stack.Screen name='MyTabs' component={MyTabs} options={{headerShown:false}}/>
     <Stack.Screen name='LocationView' component={LocationViewScreen} options={{headerShown:false}}/>
-    <Stack.Screen name='AddDetails' component={AddDetailsScreen} options={{headerShown:false}}/>
+    <Stack.Screen name='AddDetails' component={AddDetailsScreen} options={{headerShown:true,title:'AddDetails',headerStyle: { backgroundColor: '#457B9D' },headerTintColor: 'white',}}/>
     <Stack.Screen name='Matching' component={MatchingScreen} options={{headerShown:false}}/>
     <Stack.Screen name='Full' component={FullScreen}options={{headerShown:false}}/>
     <Stack.Screen name='Matched' component={MatchedScreen} options={{headerShown:false}}/>

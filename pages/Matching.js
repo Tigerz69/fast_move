@@ -227,61 +227,80 @@ class Matching extends Component{
                       
                         
                     </MapView>
+                    <View style={{flex:1,flexDirection:'row',paddingTop:25}}>
                     
-                    <View style={{ position: 'absolute', top: 50, left: 0 ,right:0,alignItems: 'center',}}>
-                            
-                        <Text style={{marginLeft:20}}>กำลังค้นหาคนขับ</Text>
-                        {loading&&(<Loading></Loading>)}
+                      <View style={{marginLeft:'70%',justifyContent:'flex-start' }}>
+                              <TouchableOpacity style={{backgroundColor:'#E63946',width:100,height:25,alignItems:'center',borderRadius:20}} onPress={()=>this.cancel()}>
+                              
+                                <Text style={{color:'white'}}>ยกเลิก</Text>
+                              </TouchableOpacity>
+                              
+                      </View>
+
                     </View>
-                    <View style={{backgroundColor:'pink',position: 'absolute', top: 20, left: 300 ,right:0,alignItems: 'center' }}>
-                        <TouchableOpacity onPress={()=>this.cancel()}>
-                        <
-                            Text>ยกเลิก</Text>
-                        </TouchableOpacity>
-                        
+
+                    <View style={{marginBottom:'130%' 
+                    ,alignItems: 'flex-start',flexDirection:'column'}}>
+                              
+                             
+                              
+                                   
+                              <View>
+                                <Text style={{}}>กำลังค้นหาคนขับ</Text>
+                              </View>
+                              
+                              
                     </View>
+                    
+                    
                     <View style={styles.centeredView}>
-                   <Modal
-                      animationType="slide"
-                      transparent={false}
-                      visible={modalVisible}
-                      onRequestClose={() => {
-                        
-                        this.setModalVisible(!modalVisible);
-                      }}
-                    >
-                        <CheckBox
-                        title='รอนานเกินไป'
-                        checked={check1}
-                        onPress={()=>{this.setState({check1data:'รอนานเกินไป'}),this.setState({check1:!check1})}}
-                        />
-                        <CheckBox
-                        title='ต้องการแก้ไขคำสั่ง'
-                        checked={check2}
-                        onPress={()=>{this.setState({check2data:'ต้องการแก้ไขคำสั่ง'}),this.setState({check2:!check2})}}
-                        />
-                        <CheckBox
-                        title='ไม่ต้องการสั่งอีกต่อไป'
-                        checked={check3}
-                        onPress={()=>{this.setState({check3data:'ไม่ต้องการสั่งอีกต่อไป'}),this.setState({check3:!check3})}}
-                        />
-                        <CheckBox
-                        title='คนขับบอกให้ยกเลิก'
-                        checked={check4}
-                        onPress={()=>{this.setState({check4data:'คนขับบอกให้ยกเลิก'}),this.setState({check4:!check4})}}
-                        />
-                        <CheckBox
-                        title='ไม่สามารถติดต่อคนขับได้'
-                        checked={check5}
-                        onPress={()=>{this.setState({check5data:'ไม่สามารถติดต่อคนขับได้'}),this.setState({check5:!check5})}}
-                        />
-                        <TextInput style={styles.textInput}  placeholder="เหตุผลอื่น ๆ"  onChangeText={txt=>{this.setState({other:txt})}}>
-                            
-                        </TextInput>
-                        <TouchableOpacity style={{justifyContent:'center',alignItems:'center'}} onPress={()=>this.cancelWork()}>
-                            <Text>ยืนยัน</Text>
-                        </TouchableOpacity>
-                    </Modal>
+                      
+                        <Modal
+                            animationType="slide"
+                            transparent={false}
+                            visible={modalVisible}
+                            onRequestClose={() => {
+                              
+                              this.setModalVisible(!modalVisible);
+                            }}
+                          >
+                              <CheckBox 
+                              containerStyle={styles.checkBox}
+                              title='รอนานเกินไป'
+                              checked={check1}
+                              onPress={()=>{this.setState({check1data:'รอนานเกินไป'}),this.setState({check1:!check1})}}
+                              />
+                              <CheckBox
+                              containerStyle={styles.checkBox}
+                              title='ต้องการแก้ไขคำสั่ง'
+                              checked={check2}
+                              onPress={()=>{this.setState({check2data:'ต้องการแก้ไขคำสั่ง'}),this.setState({check2:!check2})}}
+                              />
+                              <CheckBox
+                              containerStyle={styles.checkBox}
+                              title='ไม่ต้องการสั่งอีกต่อไป'
+                              checked={check3}
+                              onPress={()=>{this.setState({check3data:'ไม่ต้องการสั่งอีกต่อไป'}),this.setState({check3:!check3})}}
+                              />
+                              <CheckBox
+                              containerStyle={styles.checkBox}
+                              title='คนขับบอกให้ยกเลิก'
+                              checked={check4}
+                              onPress={()=>{this.setState({check4data:'คนขับบอกให้ยกเลิก'}),this.setState({check4:!check4})}}
+                              />
+                              <CheckBox
+                              containerStyle={styles.checkBox}
+                              title='ไม่สามารถติดต่อคนขับได้'
+                              checked={check5}
+                              onPress={()=>{this.setState({check5data:'ไม่สามารถติดต่อคนขับได้'}),this.setState({check5:!check5})}}
+                              />
+                              <TextInput style={styles.textInput}  placeholder="เหตุผลอื่น ๆ"  onChangeText={txt=>{this.setState({other:txt})}}>
+                                  
+                              </TextInput>
+                              <TouchableOpacity style={{borderRadius:20,height:40,width:100,backgroundColor:'#457B9D',justifyContent:'center',alignItems:'center',marginLeft:150,}} onPress={()=>this.cancelWork()}>
+                                  <Text style={{color:'white'}}>ยืนยัน</Text>
+                              </TouchableOpacity>
+                          </Modal>
                 
                     </View>
             </View>
@@ -289,6 +308,11 @@ class Matching extends Component{
     }
 }
 const styles = StyleSheet.create({
+    checkBox:{
+      backgroundColor:'#A8DADC',
+      justifyContent:'center',
+      
+    },
     container: {
       position: 'absolute',
       top: 0,
@@ -310,7 +334,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 22
+        marginTop: 22,
+        backgroundColor:'#F1FAEE'
       },
       modalView: {
         margin: 20,
@@ -348,13 +373,15 @@ const styles = StyleSheet.create({
         textAlign: "center"
       },
       textInput:{
-        borderColor: 'pink',
+        borderColor: '#457B9D',
         borderWidth: 1,
-        paddingStart:20,
+        paddingStart:15,
         marginBottom:8,
         padding:8,
-        fontSize:16,
-        color:'pink'
+        fontSize:14,
+        color:'#457B9D',
+        marginHorizontal:10,
+        height:40
       },
   });
 

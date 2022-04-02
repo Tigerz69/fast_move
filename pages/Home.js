@@ -598,7 +598,7 @@ const styles = StyleSheet.create({
     addButton:{
       justifyContent:"center",
       alignItems: "center",
-      backgroundColor: "#457B9D",
+      backgroundColor: "#1D3557",
       width:150,
       height:30,
       borderRadius: 20,
@@ -638,7 +638,7 @@ const styles = StyleSheet.create({
     pickDateTimeButton:{
       justifyContent:"center",
       alignItems: "center",
-      backgroundColor: "#457B9D",
+      backgroundColor: "#1D3557",
       marginHorizontal:'5%',
       paddingHorizontal:'5%',
       height:30,

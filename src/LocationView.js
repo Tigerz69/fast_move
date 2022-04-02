@@ -193,8 +193,8 @@ class LocationView extends Component {
         </TouchableOpacity> */}
         <View style={styles.detailView}>
           <Text style={styles.headers}>ระบุข้อมูลจุดรับ-ส่ง </Text>
-          <View style={{flexDirection:'row',paddingBottom:'5%'}}>
-            <Feather name="phone-call" size={24} color="black"  />
+          <View style={{flexDirection:'row',paddingBottom:'5%',}}>
+            <Feather name="phone-call" size={22} color="black" alignItems='center'  />
             <TextInput style={styles.detailTextInput} placeholder=' เบอร์ติดต่อ' 
             onChangeText={txt=>{this.setState({phonenumber:txt})}}></TextInput>
           </View>
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
   },
   actionButton: {
     backgroundColor: '#000',
-    width:'80%',
+    width:'50%',
     height:'20%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -286,6 +286,9 @@ const styles = StyleSheet.create({
   detailTextInput:{
     borderWidth: 1,
     width:'70%',
+    paddingLeft:10,
+    borderRadius:15,
+    marginLeft:10
   }
 });
 

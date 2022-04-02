@@ -550,46 +550,51 @@ class Matched extends Component {
                         <Image source={{ uri:(this.state.uploadURI ? this.state.uploadURI:imgBill )}} style={styles.imageBill} />
                     </Modal>
                     <Modal
-                      animationType="slide"
-                      transparent={false}
-                      visible={modalVisible}
-                      onRequestClose={() => {
-                        
-                        this.setModalVisible(!modalVisible);
-                      }}
-                    >
-                        <CheckBox
-                        title='รอนานเกินไป'
-                        checked={check1}
-                        onPress={()=>{this.setState({check1data:'รอนานเกินไป'}),this.setState({check1:!check1})}}
-                        />
-                        <CheckBox
-                        title='ต้องการแก้ไขคำสั่ง'
-                        checked={check2}
-                        onPress={()=>{this.setState({check2data:'ต้องการแก้ไขคำสั่ง'}),this.setState({check2:!check2})}}
-                        />
-                        <CheckBox
-                        title='ไม่ต้องการสั่งอีกต่อไป'
-                        checked={check3}
-                        onPress={()=>{this.setState({check3data:'ไม่ต้องการสั่งอีกต่อไป'}),this.setState({check3:!check3})}}
-                        />
-                        <CheckBox
-                        title='คนขับบอกให้ยกเลิก'
-                        checked={check4}
-                        onPress={()=>{this.setState({check4data:'คนขับบอกให้ยกเลิก'}),this.setState({check4:!check4})}}
-                        />
-                        <CheckBox
-                        title='ไม่สามารถติดต่อคนขับได้'
-                        checked={check5}
-                        onPress={()=>{this.setState({check5data:'ไม่สามารถติดต่อคนขับได้'}),this.setState({check5:!check5})}}
-                        />
-                        <TextInput style={styles.textInput}  placeholder="เหตุผลอื่น ๆ"  onChangeText={txt=>{this.setState({other:txt})}}>
-                            
-                        </TextInput>
-                        <TouchableOpacity style={{justifyContent:'center',alignItems:'center'}} onPress={()=>this.cancelWork()}>
-                            <Text>ยืนยัน</Text>
-                        </TouchableOpacity>
-                    </Modal>
+                            animationType="slide"
+                            transparent={false}
+                            visible={modalVisible}
+                            onRequestClose={() => {
+                              
+                              this.setModalVisible(!modalVisible);
+                            }}
+                          >
+                              <CheckBox 
+                              containerStyle={styles.checkBox}
+                              title='รอนานเกินไป'
+                              checked={check1}
+                              onPress={()=>{this.setState({check1data:'รอนานเกินไป'}),this.setState({check1:!check1})}}
+                              />
+                              <CheckBox
+                              containerStyle={styles.checkBox}
+                              title='ต้องการแก้ไขคำสั่ง'
+                              checked={check2}
+                              onPress={()=>{this.setState({check2data:'ต้องการแก้ไขคำสั่ง'}),this.setState({check2:!check2})}}
+                              />
+                              <CheckBox
+                              containerStyle={styles.checkBox}
+                              title='ไม่ต้องการสั่งอีกต่อไป'
+                              checked={check3}
+                              onPress={()=>{this.setState({check3data:'ไม่ต้องการสั่งอีกต่อไป'}),this.setState({check3:!check3})}}
+                              />
+                              <CheckBox
+                              containerStyle={styles.checkBox}
+                              title='คนขับบอกให้ยกเลิก'
+                              checked={check4}
+                              onPress={()=>{this.setState({check4data:'คนขับบอกให้ยกเลิก'}),this.setState({check4:!check4})}}
+                              />
+                              <CheckBox
+                              containerStyle={styles.checkBox}
+                              title='ไม่สามารถติดต่อคนขับได้'
+                              checked={check5}
+                              onPress={()=>{this.setState({check5data:'ไม่สามารถติดต่อคนขับได้'}),this.setState({check5:!check5})}}
+                              />
+                              <TextInput style={styles.textInput}  placeholder="เหตุผลอื่น ๆ"  onChangeText={txt=>{this.setState({other:txt})}}>
+                                  
+                              </TextInput>
+                              <TouchableOpacity style={{borderRadius:20,height:40,width:100,backgroundColor:'#457B9D',justifyContent:'center',alignItems:'center',marginLeft:150,}} onPress={()=>this.cancelWork()}>
+                                  <Text style={{color:'white'}}>ยืนยัน</Text>
+                              </TouchableOpacity>
+                          </Modal>
                 
                     </View>
               <Text>เวลารับสินค้า  {this.renderTime(this.state.gettime)}</Text>
@@ -619,6 +624,11 @@ class Matched extends Component {
 }
 
 const styles = StyleSheet.create({
+  checkBox:{
+    backgroundColor:'#A8DADC',
+    justifyContent:'center',
+    
+  },
   buttonLogin: {
     
    justifyContent:"center",
@@ -703,14 +713,15 @@ const styles = StyleSheet.create({
       textAlign: "center"
     },
     textInput:{
-      borderColor: 'black',
+      borderColor: '#457B9D',
       borderWidth: 1,
-      paddingStart:20,
+      paddingStart:15,
       marginBottom:8,
       padding:8,
-      marginHorizontal:8,
-      fontSize:16,
-      color:'pink'
+      fontSize:14,
+      color:'#457B9D',
+      marginHorizontal:10,
+      height:40
     },
     image: {
       borderColor: '#6b4683',

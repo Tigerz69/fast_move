@@ -233,9 +233,7 @@ class AddDetails extends Component{
             this.state.loading ? (<Loading></Loading>):
             (
             <View style={styles.container}>
-                <View style={{alignItems:'center'}}>
-                    <Text style={styles.Header}>เพิ่มรายละเอียด</Text>
-                </View>
+                
                 <View style={{paddingLeft:'5%'}}>
                     <Text style={styles.SubHeader}>เวลารับสินค้า</Text>
                     <Text>{this.state.date+'/'+this.state.month+'/'+this.state.years+'  '+this.state.hour+':'+this.state.minute}</Text>
@@ -289,7 +287,7 @@ class AddDetails extends Component{
                 </Text>
               </View> 
               <TouchableOpacity style={styles.button} onPress={this.save}>
-                  <Text style={{color:'white'}}>เรียกงานขนส่ง</Text>
+                  <Text style={{color:'white',fontSize:18}}>เรียกงานขนส่ง</Text>
                 </TouchableOpacity>
             </View>)
         )
@@ -300,7 +298,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         
-        backgroundColor:'pink',
+        backgroundColor:'#F1FAEE',
     },
       Header : {
         paddingTop:'10%',
@@ -321,23 +319,30 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems:'center',
         width:'100%',
+        borderRadius:20,
+        borderWidth:1,
+        marginLeft:10,
+        paddingLeft:10
       },
       detailView:{
         flexDirection:'row',paddingBottom:'5%',
         width:'90%'  ,paddingLeft:'5%',alignItems:'center',paddingTop:'5%'    },
       button:{
-        backgroundColor:'black',
+        backgroundColor:'#1D3557',
         alignItems:'center',
         justifyContent: 'center',
         margin:100,
-        height:50
+        height:50,
+        borderRadius:10
+        
 
       },
       bottomView:{
-        
+        marginTop:20,
         justifyContent: 'flex-end',
         alignItems:'flex-start',
-        paddingLeft:20 
+        paddingLeft:20 ,
+        
       },
       
 });
