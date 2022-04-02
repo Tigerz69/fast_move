@@ -134,8 +134,8 @@ const MyTabs=()=> {
           ),}} />
         
         
-        <Tab.Screen name="Show" 
-        component={AccountScreen} options={{tabBarLabel: 'Show',
+        <Tab.Screen name="Account" 
+        component={AccountScreen} options={{headerStyle:{backgroundColor: '#457B9D'},tabBarLabel: 'Account',headerTitleStyle: { color: 'white' },
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="ios-settings-outline" size={24} color="black" />
           ),}} />

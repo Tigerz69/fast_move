@@ -20,14 +20,15 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import axios from 'axios';
 import Loading from './Loading';
 import * as RootNavigation from '../src/RootNavigation.js';
+//import {apiKey,appEngineUrl} from 'react-native-dotenv'
 const options = [
   { value: 'instanly', label: 'รับสินค้าทันที' },
   { value: 'picktime', label: 'รับสินค้าล่วงหน้า' }
   
 ];
-const apiKey="AIzaSyCfjk1u2VcAvNfK31VMN581MMNePvR2J-k";
+const apiKey="AIzaSyCfjk1u2VcAvNfK31VMN581MMNePvR2J-k"
 const Distance_URL="https://maps.googleapis.com/maps/api/distancematrix/json"
-      
+const appEngineUrl="https://fast-move-or-something-diff.as.r.appspot.com"
 
 class Home extends Component {
   constructor(props){
@@ -386,7 +387,7 @@ class Home extends Component {
       // console.log('print temp_dur',temp_dur[0])
       var sendParaToAPI2 = {
         method: 'post',
-        url: `https://fast-move-or-something-diff.as.r.appspot.com/send2point`,
+        url: `${appEngineUrl}/send2point`,
 
         data: {
           
@@ -424,7 +425,7 @@ class Home extends Component {
       
       var sendParaToAPI = {
         method: 'post',
-        url: `https://fast-move-or-something-diff.as.r.appspot.com/send`,
+        url: `${appEngineUrl}/send`,
  
         data: {
           num : num,

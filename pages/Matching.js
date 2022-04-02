@@ -12,6 +12,9 @@ import { TextInput } from 'react-native-gesture-handler';
 import firestore from '../Firebase/Firestore';
 import {startChat} from '../actions/Users'
 import Loading from './Loading'
+import placepin from '../assets/placeholder.png';
+
+const place_pin = Image.resolveAssetSource(placepin).uri;
 
 class Matching extends Component{
     constructor(props){
@@ -220,7 +223,7 @@ class Matching extends Component{
                               
                             >
                               <Text>{marker.title}</Text>
-                              <Image source={{uri:"https://cdn-icons.flaticon.com/png/512/819/premium/819814.png?token=exp=1648839960~hmac=11703d38a26292a6f9c66f433b2e5d93"}}
+                              <Image source={{uri:place_pin}}
                               style={{width: 30, height: 30}}></Image>
                             </MapView.Marker>
                           ))}
@@ -268,30 +271,40 @@ class Matching extends Component{
                               containerStyle={styles.checkBox}
                               title='รอนานเกินไป'
                               checked={check1}
+                              uncheckedColor="#FFFFFF"
+                              checkedColor="blue"
                               onPress={()=>{this.setState({check1data:'รอนานเกินไป'}),this.setState({check1:!check1})}}
                               />
                               <CheckBox
                               containerStyle={styles.checkBox}
                               title='ต้องการแก้ไขคำสั่ง'
                               checked={check2}
+                              uncheckedColor="#FFFFFF"
+                              checkedColor="blue"
                               onPress={()=>{this.setState({check2data:'ต้องการแก้ไขคำสั่ง'}),this.setState({check2:!check2})}}
                               />
                               <CheckBox
                               containerStyle={styles.checkBox}
                               title='ไม่ต้องการสั่งอีกต่อไป'
                               checked={check3}
+                              uncheckedColor="#FFFFFF"
+                              checkedColor="blue"
                               onPress={()=>{this.setState({check3data:'ไม่ต้องการสั่งอีกต่อไป'}),this.setState({check3:!check3})}}
                               />
                               <CheckBox
                               containerStyle={styles.checkBox}
                               title='คนขับบอกให้ยกเลิก'
                               checked={check4}
+                              uncheckedColor="#FFFFFF"
+                              checkedColor="blue"
                               onPress={()=>{this.setState({check4data:'คนขับบอกให้ยกเลิก'}),this.setState({check4:!check4})}}
                               />
                               <CheckBox
                               containerStyle={styles.checkBox}
                               title='ไม่สามารถติดต่อคนขับได้'
                               checked={check5}
+                              uncheckedColor="#FFFFFF"
+                              checkedColor="blue"
                               onPress={()=>{this.setState({check5data:'ไม่สามารถติดต่อคนขับได้'}),this.setState({check5:!check5})}}
                               />
                               <TextInput style={styles.textInput}  placeholder="เหตุผลอื่น ๆ"  onChangeText={txt=>{this.setState({other:txt})}}>

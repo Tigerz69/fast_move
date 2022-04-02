@@ -22,11 +22,15 @@ import storage from '../Firebase/Storage'
 import * as ImagePicker from 'expo-image-picker'; 
 LogBox.ignoreLogs(['source.uri should not be an empty string']);
 import { NavigationActions,StackActions  } from 'react-navigation';
+import carpin from '../assets/car.png';
+import placepin from '../assets/placeholder.png';
 
 // const resetAction = StackActions .reset({
 //   index: 0,
 //   actions: [NavigationActions.navigate({ routeName: 'Home' })],
 // });
+const car_pin = Image.resolveAssetSource(carpin).uri;
+const place_pin = Image.resolveAssetSource(placepin).uri;
 
 class Matched extends Component {
   constructor(props){
@@ -495,7 +499,7 @@ class Matched extends Component {
                 
         </View>
         <View style={{flex:1}}>
-        <MapView  key={this.state.realLocation.longitude+this.state.realLocation.latitude}  style={{width:'100%', height:'100%'}}
+        <MapView  key={this.state.realLocation.longitude.length}  style={{width:'100%', height:'100%'}}
                         region={this.state.medLoc}
                         
                         
@@ -509,7 +513,7 @@ class Matched extends Component {
                               
                               >
                               <Text>{marker.title}</Text>
-                              <Image source={{uri:"https://cdn-icons.flaticon.com/png/512/819/premium/819814.png?token=exp=1648839960~hmac=11703d38a26292a6f9c66f433b2e5d93"}}
+                              <Image source={{uri:place_pin}}
                               style={{width: 30, height: 30}}></Image>
                               </MapView.Marker>
                               
@@ -517,13 +521,13 @@ class Matched extends Component {
                           ))}
                           <MapView.Marker
                             pinColor={'green'}
-                            key={this.state.realLocation.longitude+this.state.realLocation.latitude}
+                            key={this.state.realLocation.longitude.length}
                             coordinate={this.state.realLocation}
                             title={"คนขับ"}
                           >
                             <Text>คนขับ</Text>
-                            <Image source={{uri:"https://cdn-icons.flaticon.com/png/512/1365/premium/1365700.png?token=exp=1648836382~hmac=d191c39ccad0d2832b5a4f4650960424"}}
-                              style={{width: 30, height: 30}}></Image>
+                            <Image source={{uri:car_pin}}
+                              style={{width: 40, height: 40}}></Image>
                           </MapView.Marker>
                       
                         
@@ -562,30 +566,40 @@ class Matched extends Component {
                               containerStyle={styles.checkBox}
                               title='รอนานเกินไป'
                               checked={check1}
+                              uncheckedColor="#FFFFFF"
+                              checkedColor="blue"
                               onPress={()=>{this.setState({check1data:'รอนานเกินไป'}),this.setState({check1:!check1})}}
                               />
                               <CheckBox
                               containerStyle={styles.checkBox}
                               title='ต้องการแก้ไขคำสั่ง'
                               checked={check2}
+                              uncheckedColor="#FFFFFF"
+                              checkedColor="blue"
                               onPress={()=>{this.setState({check2data:'ต้องการแก้ไขคำสั่ง'}),this.setState({check2:!check2})}}
                               />
                               <CheckBox
                               containerStyle={styles.checkBox}
                               title='ไม่ต้องการสั่งอีกต่อไป'
                               checked={check3}
+                              uncheckedColor="#FFFFFF"
+                              checkedColor="blue"
                               onPress={()=>{this.setState({check3data:'ไม่ต้องการสั่งอีกต่อไป'}),this.setState({check3:!check3})}}
                               />
                               <CheckBox
                               containerStyle={styles.checkBox}
                               title='คนขับบอกให้ยกเลิก'
                               checked={check4}
+                              uncheckedColor="#FFFFFF"
+                              checkedColor="blue"
                               onPress={()=>{this.setState({check4data:'คนขับบอกให้ยกเลิก'}),this.setState({check4:!check4})}}
                               />
                               <CheckBox
                               containerStyle={styles.checkBox}
                               title='ไม่สามารถติดต่อคนขับได้'
                               checked={check5}
+                              uncheckedColor="#FFFFFF"
+                              checkedColor="blue"
                               onPress={()=>{this.setState({check5data:'ไม่สามารถติดต่อคนขับได้'}),this.setState({check5:!check5})}}
                               />
                               <TextInput style={styles.textInput}  placeholder="เหตุผลอื่น ๆ"  onChangeText={txt=>{this.setState({other:txt})}}>

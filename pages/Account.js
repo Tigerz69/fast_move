@@ -78,13 +78,14 @@ class Account extends Component {
                 value={this.props.user.email} 
                 onChangeText={txt=>{this.setState({email:txt})}}/>
 
-              <TouchableOpacity 
+              
+
+          </View>
+          <TouchableOpacity 
                 style={styles.buttonLogin} 
                 onPress={this.signoutPress}>
                   <Text style={{fontSize:16, color:'white'}}>Log out</Text>
               </TouchableOpacity>
-
-          </View>
         </View>
       </KeyboardAvoidingView>
     );
@@ -95,9 +96,10 @@ const styles = StyleSheet.create({
   buttonLogin: {
     justifyContent:"center",
     alignItems: "center",
-    backgroundColor: "pink",
-    marginBottom:8,
-    padding:8
+    backgroundColor: "#1D3557",
+    height:50,
+    width:200,
+    borderRadius:15
   },
   textInput:{
     borderColor: 'black',
@@ -106,15 +108,18 @@ const styles = StyleSheet.create({
     marginBottom:8,
     padding:8,
     fontSize:16,
-    color:'pink'
+    color:'#1D3557',
+    borderRadius:15
   },
   content:{
     padding:16,
     margin:16,
-    width:"90%"
+    width:"90%",
+    backgroundColor:'#F1FAEE'
   },
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor:'#F1FAEE'
   },
   
 });
