@@ -28,7 +28,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 const SplashScreen=({navigation})=>(
@@ -137,7 +137,7 @@ const MyTabs=()=> {
         <Tab.Screen name="Account" 
         component={AccountScreen} options={{headerStyle:{backgroundColor: '#457B9D'},tabBarLabel: 'Account',headerTitleStyle: { color: 'white' },
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="ios-settings-outline" size={24} color="black" />
+            <MaterialCommunityIcons name="account-outline" size={28} color="black" />
           ),}} />
       </Tab.Navigator>
     

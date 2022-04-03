@@ -42,7 +42,7 @@ class Firestore{
 
   saveOrder=(item,success,unsuccess)=>{ 
     item.time = firebase.firestore.FieldValue.serverTimestamp();
-    item.getTime = firebase.firestore.Timestamp.fromDate(item.getTime)
+    item.getTime = firebase.firestore.Timestamp.fromDate(new Date(item.getTime))
     item.imageBill =""
     console.log('getTime in saveOrder',item.getTime)
     var orderRef = this.db.collection("orders");

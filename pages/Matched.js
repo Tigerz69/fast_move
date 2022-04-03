@@ -22,7 +22,7 @@ import storage from '../Firebase/Storage'
 import * as ImagePicker from 'expo-image-picker'; 
 LogBox.ignoreLogs(['source.uri should not be an empty string']);
 import { NavigationActions,StackActions  } from 'react-navigation';
-import carpin from '../assets/car.png';
+import carpin from '../assets/pin.png';
 import placepin from '../assets/placeholder.png';
 
 // const resetAction = StackActions .reset({
@@ -390,7 +390,7 @@ class Matched extends Component {
     pickImage=async()=>{
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes:ImagePicker.MediaTypeOptions.All,
-        allowsEditing:true,
+        allowsEditing:false,
         quality:1
       });
 
@@ -463,17 +463,16 @@ class Matched extends Component {
         style={styles.container2}>
         
         <View style={{flex:1}}>
-          <TouchableOpacity style={{paddingTop:20,alignItems:'flex-end'}} onPress={()=>this.cancel()}>
-                          <
-                              Text>ยกเลิก</Text>
+          <TouchableOpacity style={{marginTop:25,marginRight:5,justifyContent:'center',alignItems:'center',alignSelf:'flex-end',backgroundColor:'#E63946',borderRadius:20,width:50}} onPress={()=>this.cancel()}>
+                          <Text style={{color:'white'}}>ยกเลิก</Text>
           </TouchableOpacity>
           <Text style={{paddingLeft:10}}>คำสั่ง :{id}</Text>
           <Text style={{paddingLeft:10}}>สถานะ :{this.state.statusOrder}</Text>
-                <View style={{flex:1 ,flexDirection:'row',alignItems:'center',marginTop:30,marginLeft:20}}>
+                <View style={{flex:1 ,flexDirection:'row',alignItems:'center',marginTop:30,marginLeft:20,backgroundColor:'white'}}>
                   
                       
                                 <Image source={{ uri:this.state.image }} style={styles.image} />
-                                <Text> {this.state.driverName}</Text>
+                                <Text style={{}}> {this.state.driverName}</Text>
                         <TouchableOpacity style={{marginLeft:10}}
                         
                         
@@ -485,14 +484,14 @@ class Matched extends Component {
                                   <Ionicons name="ios-call" style={styles.callTxt}/>
                                 </TouchableOpacity>   
                 </View>
-                <View style={{flex:1,flexDirection:'row'}}>
-                  <View style={{flex:1,flexDirection:'column',marginLeft:100}}>
+                <View style={{flex:1,flexDirection:'row',backgroundColor:'white'}}>
+                  <View style={{flex:1,flexDirection:'column',marginLeft:125}}>
                     <Text>{this.state.bank}</Text>
                     <Text>{this.state.bankno}</Text>
                   </View>
-                  <View style={{flex:1,flexDirection:'column'}}>
-                    <Text>{this.state.phoneNumber}</Text>
-                    <Text>{this.state.carid}</Text>
+                  <View style={{flex:1,flexDirection:'column',marginRight:10}}>
+                    
+                    <Text style={{paddingRight:25}}>ทะเบียนรถ: {this.state.carid}</Text>
                   </View>
                   
                   
@@ -528,7 +527,7 @@ class Matched extends Component {
                           >
                             <Text>คนขับ</Text>
                             <Image source={{uri:car_pin}}
-                              style={{width: 25, height: 25}}></Image>
+                              style={{width: 30, height: 30}}></Image>
                           </MapView.Marker>
                       
                         
@@ -648,9 +647,10 @@ const styles = StyleSheet.create({
     
    justifyContent:"center",
     alignItems: "center",
-    backgroundColor: "#6b4683",
+    backgroundColor: "#457B9D",
     padding:8,
-    margin:8
+    margin:8,
+    borderRadius:20
   },
   textInput:{
     borderColor: '#6b4683',
@@ -667,7 +667,8 @@ const styles = StyleSheet.create({
     width:"90%"
   },
   container2: {
-    flex: 1
+    flex: 1,
+    backgroundColor:'#F1FAEE'
   },
   container: {
     position: 'absolute',
@@ -739,7 +740,7 @@ const styles = StyleSheet.create({
       height:40
     },
     image: {
-      borderColor: '#6b4683',
+      borderColor: '#1D3557',
       borderWidth: 1,
       width: 100,
       height: 100,
@@ -748,7 +749,7 @@ const styles = StyleSheet.create({
   
     },
     callTxt:{
-      backgroundColor:"#42b883",
+      backgroundColor:"#457B9D",
       padding:10,
       borderRadius:30,
       width:60,
@@ -758,8 +759,10 @@ const styles = StyleSheet.create({
     },
     imageBill: {
       borderColor: '#6b4683',
-      borderWidth: 1,
-      flex:1,
+      flex: 1,
+      width: '100%',
+      height: '100%',
+      resizeMode: 'contain',
      
       
   
