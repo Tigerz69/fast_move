@@ -211,6 +211,7 @@ class Matched extends Component {
 
     componentWillUnmount=()=>{
      this._isMounted=false;
+     this.statusListener();
     }
     componentDidMount=()=>{
       this._isMounted=true;
@@ -225,7 +226,7 @@ class Matched extends Component {
         const driverid=route.params.driverid
         console.log('this id',id)
         
-        this.db.collection("orders").where("id","==",fieldid)
+        this.statusListener=this.db.collection("orders").where("id","==",fieldid)
         .onSnapshot((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             console.log('tumrai')
@@ -527,7 +528,7 @@ class Matched extends Component {
                           >
                             <Text>คนขับ</Text>
                             <Image source={{uri:car_pin}}
-                              style={{width: 40, height: 40}}></Image>
+                              style={{width: 25, height: 25}}></Image>
                           </MapView.Marker>
                       
                         

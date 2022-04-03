@@ -16,6 +16,8 @@ import placepin from '../assets/placeholder.png';
 
 const place_pin = Image.resolveAssetSource(placepin).uri;
 
+
+
 class Matching extends Component{
     constructor(props){
         super(props);
@@ -114,7 +116,7 @@ class Matching extends Component{
         );  
       } 
       componentWillUnmount=()=>{
-        
+        this.matchingListener();
       }
     componentDidMount=()=>{
       this._isMounted=true;
@@ -122,7 +124,7 @@ class Matching extends Component{
         const id=route.params.orderid
         const fieldid=route.params.fieldid
         console.log('this id',id)
-        this.db.collection("orders").where("id","==",fieldid)
+        this.matchingListener=this.db.collection("orders").where("id","==",fieldid)
         .onSnapshot((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             console.log('tumrai')

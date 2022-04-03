@@ -154,6 +154,7 @@ class AddDetails extends Component{
       detail:this.state.details
     }
     console.log('here is save ')
+    console.log('get time is',order.getTime)
     let item2=this.state.gnome
     this.props.addGnomeOrder(item2)
     
