@@ -135,6 +135,16 @@ class Home extends Component {
         ]  
     );  
   }  
+  AlertLocation() {  
+    Alert.alert(  
+        'Error',  
+        'Locations have somthing wrong',  
+        [  
+            
+            {text: 'OK', onPress: () => console.log('OK Pressed')},  
+        ]  
+    );  
+  }  
 
   goToPickLocationPage=(i)=>{
 
@@ -316,6 +326,7 @@ class Home extends Component {
         })
         .catch(function (error) {
           console.log(error);
+          
         })))})
         this.waitresponse2point(temp_dist,temp_dur)
         break;
@@ -368,6 +379,7 @@ class Home extends Component {
                  
             }).catch(function (error) {
               console.log(error);
+              
             })))})
           }      
         }
@@ -379,9 +391,12 @@ class Home extends Component {
   
   waitresponse2point=(temp_dist,temp_dur)=>{
     this.setState({loading:true})
+    const start = performance.now()
     Promise.all(this.state.promises)
     
     .then(function (data){
+      const duration = performance.now()-start
+      console.log('executed time is ',duration,' ms')
       // console.log(data);
       // console.log('print temp_dist',temp_dist[0])
       // console.log('print temp_dur',temp_dur[0])
@@ -414,9 +429,12 @@ class Home extends Component {
 
   waitresponse=(Disarr,Timearr,num)=>{
     this.setState({loading:true})
+    const start = performance.now()
     //console.log(this.state.promises)
     Promise.all(this.state.promises)
     .then(function (data) {
+      const duration = performance.now()-start
+      console.log('executed time is ',duration,' ms')
       // Log the data to the console
       // You would do something with both sets of data here
       // console.log(data);

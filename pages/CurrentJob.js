@@ -205,7 +205,7 @@ class CurrentJob extends Component {
                                 </Card.Content>
                                 <Card.Actions style={{justifyContent:'space-between'}}>
                                   
-                                  <TouchableOpacity style={styles.button} onPress={()=>this.onPressDetail(item)}   ><Text>รายละเอียด</Text>
+                                  <TouchableOpacity style={styles.button} onPress={()=>this.onPressDetail(item)}   ><Text style={{color:'black'}}>รายละเอียด</Text>
                                   </TouchableOpacity>
                                 </Card.Actions>
                                 
@@ -234,7 +234,15 @@ class CurrentJob extends Component {
 }
 
 const styles = StyleSheet.create({
-  
+  button:{
+    width:100,
+    height:30,
+    borderRadius:20,
+    backgroundColor:'#A8DADC',
+    justifyContent:'center',
+    alignItems:'center'
+    
+  }
 });
 
 const mapStateToProps = (state) => (

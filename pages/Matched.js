@@ -468,34 +468,39 @@ class Matched extends Component {
           </TouchableOpacity>
           <Text style={{paddingLeft:10}}>คำสั่ง :{id}</Text>
           <Text style={{paddingLeft:10}}>สถานะ :{this.state.statusOrder}</Text>
-                <View style={{flex:1 ,flexDirection:'row',alignItems:'center',marginTop:30,marginLeft:20,backgroundColor:'white'}}>
+              <View style={{flex:1,flexDirection:'row'}}>
+                <View style={{flex:1 ,flexDirection:'column',justifyContent:'center',alignItems:'center',backgroundColor:'white'}}>
                   
                       
-                                <Image source={{ uri:this.state.image }} style={styles.image} />
-                                <Text style={{}}> {this.state.driverName}</Text>
-                        <TouchableOpacity style={{marginLeft:10}}
-                        
-                        
-                        onPress={this.onPressChat}>
-                          <Ionicons name="ios-chatbubble-sharp" size={24} color="black" style={styles.callTxt} />
-                      </TouchableOpacity >
-
-                      <TouchableOpacity style={{marginLeft:10}} onPress={()=> this.call()}>
-                                  <Ionicons name="ios-call" style={styles.callTxt}/>
-                                </TouchableOpacity>   
+                  <Image source={{ uri:this.state.image }} style={styles.image} />
+                                
+                  <Text style={{}}> {this.state.driverName}</Text>
                 </View>
-                <View style={{flex:1,flexDirection:'row',backgroundColor:'white'}}>
-                  <View style={{flex:1,flexDirection:'column',marginLeft:125}}>
+                
+                <View style={{flex:1,flexDirection:'column',backgroundColor:'white',justifyContent:'center',alignItems:'center'}}>
+                  
+                  <View style={{paddingRight:10}}>
                     <Text>{this.state.bank}</Text>
                     <Text>{this.state.bankno}</Text>
                   </View>
-                  <View style={{flex:1,flexDirection:'column',marginRight:10}}>
-                    
-                    <Text style={{paddingRight:25}}>ทะเบียนรถ: {this.state.carid}</Text>
-                  </View>
                   
-                  
+                  <Text style={{}}>ทะเบียนรถ: {this.state.carid}</Text>
                 </View>
+                <View style={{flex:1,flexDirection:'column',backgroundColor:'white',justifyContent:'center',alignItems:'center'}}>
+                  <View style={{flex:1,flexDirection:'row',justifyContent:'center',alignItems:'center',paddingRight:5}}>
+                    <TouchableOpacity style={{marginLeft:10}}
+                      onPress={this.onPressChat}>
+                      <Ionicons name="ios-chatbubble-sharp" size={24} color="black" style={styles.callTxt} />
+                    </TouchableOpacity >
+
+                    <TouchableOpacity style={{marginLeft:10}} onPress={()=> this.call()}>
+                      <Ionicons name="ios-call" style={styles.callTxt}/>
+                    </TouchableOpacity>  
+                  </View>
+                </View>
+                  
+              </View>
+                
                 
         </View>
         <View style={{flex:1}}>
@@ -535,7 +540,7 @@ class Matched extends Component {
         </View>
           
                     
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ flex: 1, alignItems: 'center' }}>
           <View style={styles.content}>
                             
           
@@ -613,7 +618,7 @@ class Matched extends Component {
                     </View>
               <Text>เวลารับสินค้า  {this.renderTime(this.state.gettime)}</Text>
               <Text>ราคารวม   {this.state.price}    บาท</Text>
-              <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+              <View style={{flexDirection:'row',justifyContent:'space-between',paddingTop:15}}>
                     <TouchableOpacity 
                       style={styles.buttonLogin} 
                       onPress={this.pickImage}>
